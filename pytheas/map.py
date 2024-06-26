@@ -1,3 +1,6 @@
+import numpy as np
+import pandas as pd
+
 class Map:
     """
     The map object of Pytheas.
@@ -18,3 +21,15 @@ class Map:
         self.wind = wind_data_path
         self.current = current_data_path
         self.waves = waves_data_path
+        
+    def measure_winds(location: np.ndarray, time: pd.Timestamp):
+        # TODO write wind measuring function
+        pass
+    
+    def measure_currents(location: np.ndarray, time: pd.Timestamp):
+        # TODO write current measuring function
+        pass
+    
+    def measure_waves (location: np.ndarray, time: pd.Timestamp):
+        # TODO write waves measuring function
+        pass
