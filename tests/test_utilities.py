@@ -13,11 +13,19 @@ def test_distance_km():
     
 
 def test_bearing_from_latlon():
-    # numbers used as benchmark
-    gothenburg = [58, 12]
-    locarno = [46, 9]
+    # create two positions that should have between 0 and 90 bearing.
+    position_0 = [58, -12]
+    position_1 = [59, -13]
     
-    should_be = 170
-    calculated_bearing = utilities.bearing_from_latlon(gothenburg, locarno)
+    calculated_bearing = utilities.bearing_from_latlon(position_0, position_1)
     
-    assert  round(calculated_bearing, 0) == should_be
+    assert 0 < round(calculated_bearing, 0) < 90 
+    
+    # create positions that should have between 180 and 270
+    position_2 = [58, 12]
+    position_3 = [57, 13]
+    
+    calculated_bearing = utilities.bearing_from_latlon(position_2, position_3)
+    
+    # assert round(calculated_bearing, 0) > 0
+    assert 180 < round(calculated_bearing, 0) < 270

@@ -10,6 +10,8 @@ Pytheas is designed following modules typically used in agent-based modelling fr
 - Boat: the agent-like model, representing a boat moving from A to B. The interaction rules determining how the Boat moves in space are included either in a polar diagram, which is a table stating current speed and leeway based on wind speeds. The current speed is added linearly to movement. Waves do not affect movement, but they are recorded to asses _post hoc_ the feasibility of a travel.
 - Travel: the scheduler, including aspects of the Mesa Time and Model modules. The Travel in Pytheas contains the movement of a Boat on the Map, but includes also rules for coastal navigation ("coast hugging") and night navigation.
 
+As it should happen in true OOP, the different classes deal with what pertain to them. For example, the local wind speed at any given time and coordinate is a charactersitic of the Map, as such it will not be measured by the Boat. The Boat will receive it as an input within the Travel object. The bearing on the other hand is not an intrisinc property of the Map, but is something that pertains to the Boat. The function to calculate the bearing between two lat/lon will then be calculated within the Boat class.
+
 ## Simulation
 
-Outside of the Pytheas package, a simulation file shows the base example to illustrate how to perform a travel.
+Outside of the Pytheas package, a simulation file, `simulation.py` shows the base example to illustrate how to perform a travel. It comes with a `parameters.py` file containing the parameters and locations to run a simulation.

@@ -34,15 +34,16 @@ class Travel:
         self.target = target
         
         self.current_time = start_time
-        
+    
+    
     def step(self):
         current_location = [self.boat.latitude, self.boat.longitude]
-        bearing = bearing_from_latlon(current_location, self.boat.target)
+        # bearing = bearing_from_latlon(current_location, self.boat.target)
         
         wind_here_and_now = self.map.measure_winds(current_location, self.current_time)
         current_here_and_now = self.map.measure_currents(current_location, self.current_time)
         
-        self.boat.move_boat(wind_here_and_now, current_here_and_now, bearing)
+        self.boat.move_boat(wind_here_and_now, current_here_and_now)
         
     def run(self):
         max_date = self.start_time + pd.Timedelta(hours=self.max_duration)

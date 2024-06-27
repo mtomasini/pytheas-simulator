@@ -42,3 +42,36 @@ def bearing_from_latlon(position: Tuple[float, float], target: Tuple[float, floa
     bearing = (np.rad2deg(bearing) + 360) % 360
 
     return bearing
+
+def knots_to_si(knots: float) -> float:
+    """Converts knots to SI units (m/s)
+
+    Args:
+        knots (float): Speed in knots
+
+    Returns:
+        float: Speed in metres/second
+    """
+
+    return knots / 1.94
+
+
+def si_to_knots(si: float) -> float:
+    """Converts SI units (m/s) to knots
+
+    Args:
+        si (float): Speed in m/s
+
+    Returns:
+        float: Speed in knots
+    """
+
+    return si * 1.94
+
+
+def angle_uncertainty(sigma=0) -> float:
+    """Returns an angle error in radiants. 
+    """
+    angle_error = np.random.normal(0, sigma)
+    
+    return angle_error

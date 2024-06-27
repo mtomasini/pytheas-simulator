@@ -20,5 +20,6 @@ def test_move_boat():
     # if winds and currents are 0, there should be no movement, but still append a point
     test_boat.move_boat([0, 0], [0, 0])
     assert len(test_boat.trajectory)
-    # assert test_boat.trajectory[-1] == (58, 12)
+    assert test_boat.trajectory[-1] == (58, 12)
+    
     # test_boat.move_boat([])

@@ -1,2 +1,5 @@
+### caches and related
 .pytest_cache/
 *__pycache__/
+
+./configs
