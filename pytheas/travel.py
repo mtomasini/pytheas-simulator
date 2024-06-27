@@ -4,7 +4,7 @@ from typing import Tuple
 
 from .boat import Boat
 from .map import Map
-import utilities
+from .utilities import *
 
 class Travel:
     """The Travel class of Pytheas. 

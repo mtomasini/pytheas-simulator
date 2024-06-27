@@ -25,7 +25,7 @@ class Boat:
         self.target = target
         self.polar_diagram = polar_diagram
         
-        self.trajectory = [(longitude, latitude)]
+        self.trajectory = [(latitude, longitude)]
     
     @staticmethod     
     def calculate_displacement(polar_diagram: np.ndarray, local_winds: np.ndarray, local_currents: np.ndarray):
