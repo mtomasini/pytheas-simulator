@@ -1,1 +1,1 @@
-from .context import pytheas
+from pytheas import utilities

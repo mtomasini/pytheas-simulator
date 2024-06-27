@@ -30,12 +30,12 @@ class Boat:
     @staticmethod     
     def calculate_displacement(polar_diagram: np.ndarray, local_winds: np.ndarray, local_currents: np.ndarray):
         # TODO write displacement function for a boat with polar diagram, given winds and currents
-        pass
+        return [0, 0]
     
     @staticmethod     
     def generic_displacement(local_winds: np.ndarray, local_currents: np.ndarray):
         # TODO write displacement function for a boat without polar diagram, given winds and currents
-        pass
+        return [0, 0]
     
     def move_boat(self, local_winds: np.ndarray,
                   local_currents: np.ndarray):
