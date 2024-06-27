@@ -36,8 +36,8 @@ class Travel:
         self.current_time = start_time
         
     def step(self):
-        current_location = np.array([self.boat.latitude, self.boat.longitude])
-        bearing = utilities.bearing_from_latlon()
+        current_location = [self.boat.latitude, self.boat.longitude]
+        bearing = bearing_from_latlon(current_location, self.boat.target)
         
         wind_here_and_now = self.map.measure_winds(current_location, self.current_time)
         current_here_and_now = self.map.measure_currents(current_location, self.current_time)

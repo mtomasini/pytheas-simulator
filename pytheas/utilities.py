@@ -7,7 +7,7 @@ import numpy as np
 from typing import Tuple
 
 
-def distance(origin: Tuple[float, float], target: Tuple[float, float]) -> float:
+def distance_km(origin: Tuple[float, float], target: Tuple[float, float]) -> float:
     """Calculates distance in km between two lon/lat points, in km
 
     Args:
@@ -20,7 +20,7 @@ def distance(origin: Tuple[float, float], target: Tuple[float, float]) -> float:
     return gp.distance(gp.lonlat(*origin), gp.lonlat(*target)).km
 
 
-def bearing_from_latlon(position: np.ndarray, target: np.ndarray) -> float:
+def bearing_from_latlon(position: Tuple[float, float], target: Tuple[float, float]) -> float:
     """Gives angle between a coordinate and a target (in degrees with respect to North). Taken from Voyager.
 
     Args:
