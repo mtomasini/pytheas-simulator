@@ -43,7 +43,7 @@ class Travel:
         wind_here_and_now = self.map.measure_winds(current_location, self.current_time)
         current_here_and_now = self.map.measure_currents(current_location, self.current_time)
         
-        self.boat.move_boat(wind_here_and_now, current_here_and_now)
+        self.boat.move_boat(wind_here_and_now, current_here_and_now, self.timestep)
         
     def run(self):
         max_date = self.start_time + pd.Timedelta(hours=self.max_duration)

@@ -8,6 +8,7 @@ def test_calculate_displacement():
     LEEWAY_POLAR_DIAGRAM_PATH = './configs/hjortspring_leeway_16pad_3000kg_44cad_75oars.txt'
     speed_polar_diagram = pd.read_csv(SPEED_POLAR_DIAGRAM_PATH, sep="\t", index_col=0)
     leeway_polar_diagram = pd.read_csv(LEEWAY_POLAR_DIAGRAM_PATH, sep="\t", index_col=0)
+    timestep = 15
     
     test_boat = boat.Boat(
         craft = "Hjortspring",
@@ -22,7 +23,7 @@ def test_calculate_displacement():
     winds = np.zeros(2)
     currents = np.zeros(2)
     bearing = 0
-    displacement = test_boat.calculate_displacement(winds, currents, bearing)
+    displacement = test_boat.calculate_displacement(winds, currents, bearing, timestep)
     assert displacement[0] < 1e-10
     assert displacement[1] > 0
     
@@ -30,7 +31,7 @@ def test_calculate_displacement():
     winds = np.zeros(2)
     currents = np.zeros(2)
     bearing = 90
-    displacement = test_boat.calculate_displacement(winds, currents, bearing)
+    displacement = test_boat.calculate_displacement(winds, currents, bearing, timestep)
     assert displacement[0] > 0
     assert displacement[1] < 1e-10
     
@@ -38,7 +39,7 @@ def test_calculate_displacement():
     winds = np.zeros(2)
     currents = np.zeros(2)
     bearing = 180
-    displacement = test_boat.calculate_displacement(winds, currents, bearing)
+    displacement = test_boat.calculate_displacement(winds, currents, bearing, timestep)
     assert displacement[0] < 1e-10
     assert displacement[1] < 0
     
@@ -46,7 +47,7 @@ def test_calculate_displacement():
     winds = np.zeros(2)
     currents = np.zeros(2)
     bearing = 270
-    displacement = test_boat.calculate_displacement(winds, currents, bearing)
+    displacement = test_boat.calculate_displacement(winds, currents, bearing, timestep)
     assert displacement[0] < 0
     assert displacement[1] < 1e-10
     
@@ -54,20 +55,30 @@ def test_calculate_displacement():
 def test_generic_displacement():
     pass
 
-# def test_move_boat():
-#     test_boat = boat.Boat(
-#         craft = "Hjortspring",
-#         latitude = 58,
-#         longitude = 12,
-#         target = [1,1] 
-#     )
+def test_move_boat():
+    SPEED_POLAR_DIAGRAM_PATH = './configs/hjortspring_speeds_16pad_3000kg_44cad_75oars.txt'
+    LEEWAY_POLAR_DIAGRAM_PATH = './configs/hjortspring_leeway_16pad_3000kg_44cad_75oars.txt'
+    speed_polar_diagram = pd.read_csv(SPEED_POLAR_DIAGRAM_PATH, sep="\t", index_col=0)
+    leeway_polar_diagram = pd.read_csv(LEEWAY_POLAR_DIAGRAM_PATH, sep="\t", index_col=0)
+    timestep = 15
     
-#     assert len(test_boat.trajectory) == 1
-#     assert test_boat.trajectory == [(58, 12)]
+    test_boat = boat.Boat(
+        craft = "Hjortspring",
+        latitude = 58,
+        longitude = -12,
+        speed_polar_diagram=speed_polar_diagram,
+        leeway_polar_diagram=leeway_polar_diagram,
+        target = [59,-12]
+    )
     
-#     # if winds and currents are 0, there should be no movement, but still append a point
-#     test_boat.move_boat([0, 0], [0, 0])
-#     assert len(test_boat.trajectory)
-#     assert test_boat.trajectory[-1] == (58, 12)
+    assert len(test_boat.trajectory) == 1
+    assert test_boat.trajectory == [(58, -12)]
     
-#     # test_boat.move_boat([])
+    # if winds and currents are 0, there should be no movement, but still append a point
+    winds = np.array([0, 0])
+    currents = np.array([0, 0])
+    test_boat.move_boat(winds, currents, timestep)
+    assert len(test_boat.trajectory) == 2
+    assert test_boat.trajectory[-1][1] == test_boat.target[1]
+    
+    # test_boat.move_boat([])

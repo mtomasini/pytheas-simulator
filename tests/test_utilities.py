@@ -63,3 +63,15 @@ def test_difference_between_geographic_angles():
     
     # if bearing is 150 and angle_wind is 300, difference is 150
     assert utilities.difference_between_geographic_angles(150.0, 300.0) == 150.0
+    
+
+def test_direction_from_displacement():
+    # a movement of 1, 1 is 45 degrees
+    displacement = np.array([1,1])
+    bearing = utilities.direction_from_displacement(displacement)
+    assert bearing - 45 < 1e-8
+    
+    # for the transormation of bearing into dx and dy, there are two formulas. I use the fact that dy = cos(bearing) to calculate the bearing.
+    # but dx = sin(pi - bearing), so we have also that bearing = pi - arcsin(dx)
+    bearing_alternative = np.rad2deg( np.pi - np.arcsin(displacement[0]) )
+    assert bearing - bearing_alternative < 1e-8

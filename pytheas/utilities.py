@@ -106,17 +106,15 @@ def difference_between_geographic_angles(bearing: float, angle_wind: float) -> f
         effective_wind_angle = 360 - effective_wind_angle
     if effective_wind_angle < -180:
         effective_wind_angle = 360 + effective_wind_angle
-    
-    # # if both angles are in the same half (both left of N or both right of N)
-    # if (bearing <= 180 and angle_wind <= 180) or (bearing > 180 and angle_wind > 180): 
-    #         effective_wind_angle = angle_wind - bearing
-    # # second, if winds are from the left and bearing is to the right: 
-    # elif (bearing <= 180 and angle_wind > 180):
-    #     difference_between_angles = angle_wind - bearing
-    #     effective_wind_angle = difference_between_angles - 360
-    # # third, if winds are from the right and bearing is to the left
-    # elif (bearing > 180 and angle_wind <= 180):
-    #     difference_between_angles = angle_wind - bearing
-    #     effective_wind_angle = 360 + difference_between_angles
         
     return effective_wind_angle
+
+
+def direction_from_displacement(displacement: np.ndarray) -> float:
+    # normalization is necessary to keep dy between -1 and 1
+    normalized_displacement = displacement / np.max(displacement)
+    bearing_rad = np.arccos(normalized_displacement[1])
+    
+    bearing = np.rad2deg(bearing_rad)
+    
+    return bearing
