@@ -15,21 +15,30 @@ def test_distance_km():
 
 def test_bearing_from_latlon():
     # create two positions that should have between 0 and 90 bearing.
-    position_0 = [58, -12]
-    position_1 = [59, -13]
+    position_0 = [58, 12]
+    position_1 = [59, 13]
     
     calculated_bearing = utilities.bearing_from_latlon(position_0, position_1)
     
     assert 0 < round(calculated_bearing, 0) < 90 
     
-    # create positions that should have between 180 and 270
+    # create positions that should have between 90 and 180
     position_2 = [58, 12]
     position_3 = [57, 13]
     
     calculated_bearing = utilities.bearing_from_latlon(position_2, position_3)
     
     # assert round(calculated_bearing, 0) > 0
-    assert 180 < round(calculated_bearing, 0) < 270
+    assert 90 < round(calculated_bearing, 0) < 180
+    
+    # create positions that should have bearing 0
+    position_4 = [58, 12]
+    position_5 = [59, 12]
+    
+    calculated_bearing = utilities.bearing_from_latlon(position_4, position_5)
+    
+    # assert round(calculated_bearing, 0) > 0
+    assert calculated_bearing - 0.0 < 1e-8
     
     
 def test_geographic_angle_to_xy():
@@ -67,11 +76,14 @@ def test_difference_between_geographic_angles():
 
 def test_direction_from_displacement():
     # a movement of 1, 1 is 45 degrees
-    displacement = np.array([1,1])
+    displacement = np.array([2,2])
     bearing = utilities.direction_from_displacement(displacement)
     assert bearing - 45 < 1e-8
     
-    # for the transormation of bearing into dx and dy, there are two formulas. I use the fact that dy = cos(bearing) to calculate the bearing.
-    # but dx = sin(pi - bearing), so we have also that bearing = pi - arcsin(dx)
-    bearing_alternative = np.rad2deg( np.pi - np.arcsin(displacement[0]) )
-    assert bearing - bearing_alternative < 1e-8
+    displacement = np.array([0.0000001, 5])
+    bearing = utilities.direction_from_displacement(displacement)
+    assert bearing - 90 < 1e-8
+    
+    displacement = np.array([5, 0])
+    bearing = utilities.direction_from_displacement(displacement)
+    assert bearing - 0 < 1e-8

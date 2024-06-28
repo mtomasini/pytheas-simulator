@@ -145,6 +145,7 @@ class Boat:
         # TODO write displacement function for a boat with polar diagram, given winds and currents
         
         paddling_speed = self.speed_due_to_wind(local_winds, bearing)
+        print(paddling_speed)
         leeway_angle = self.leeway_due_to_wind(local_winds, bearing)
         effective_direction = bearing - leeway_angle
         movement_angle_dxy = pytheas.utilities.geographic_angle_to_xy(effective_direction)
@@ -152,8 +153,8 @@ class Boat:
         # paddling_speed is in m/s, timestep is in minutes
         timestep_seconds = timestep * 60.
         wind_dxy = paddling_speed*movement_angle_dxy*timestep_seconds # wind_dxy in meters
-        
-        displacement_dxy = (wind_dxy + local_currents) / 1000
+        currents_dxy = local_currents*timestep_seconds
+        displacement_dxy = (wind_dxy + currents_dxy) / 1000
         
         return displacement_dxy
     
@@ -173,7 +174,7 @@ class Boat:
             uncertainty_sigma (float, optional): uncertainty of bearing due to navigational error. Defaults to 0.0.
         """
         # first, update the bearing based on the local position
-        self.bearing = pytheas.utilities.bearing_from_latlon([self.longitude, self.latitude], self.target)
+        self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
         
         # next, add uncertainty to the bearing and split the bearing into x and y
         bearing_with_uncertainty = self.bearing + pytheas.utilities.angle_uncertainty(self.uncertainty_sigma)
@@ -182,14 +183,12 @@ class Boat:
             displacement_xy = self.calculate_displacement(local_winds, local_currents, bearing_with_uncertainty, timestep)
             direction_of_displacement = pytheas.utilities.direction_from_displacement(displacement_xy)
             distance_of_displacement = np.linalg.norm(displacement_xy)
-            print(displacement_xy)
             new_coordinates = gp.distance(distance_of_displacement).destination((self.latitude, self.longitude), bearing = direction_of_displacement)
             
         else:
             raise ValueError('There is no polar diagram attached!')
             # TODO write logic for generic displacement without polar diagram
             
-        
         self.latitude = new_coordinates.latitude
         self.longitude = new_coordinates.longitude
         self.trajectory.append((new_coordinates.latitude, new_coordinates.longitude))

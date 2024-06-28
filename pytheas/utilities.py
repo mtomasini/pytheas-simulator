@@ -31,8 +31,11 @@ def bearing_from_latlon(position: Tuple[float, float], target: Tuple[float, floa
     """
 
     local_latitude = np.deg2rad(position[0])
+    local_longitude = np.deg2rad(position[1])
     target_latitude = np.deg2rad(target[0])
-    delta_longitude = np.deg2rad(position[1]-target[1])
+    target_longitude = np.deg2rad(target[1])
+    # delta_longitude = np.deg2rad(position[1]-target[1])
+    delta_longitude = target_longitude - local_longitude
 
     x = np.sin(delta_longitude) * np.cos(target_latitude)
     y = np.cos(local_latitude) * np.sin(target_latitude) - np.sin(local_latitude) * np.cos(target_latitude) * np.cos(delta_longitude)
@@ -42,6 +45,7 @@ def bearing_from_latlon(position: Tuple[float, float], target: Tuple[float, floa
     bearing = (np.rad2deg(bearing) + 360) % 360
 
     return bearing
+
 
 def knots_to_si(knots: float) -> float:
     """Converts knots to SI units (m/s)
@@ -53,7 +57,7 @@ def knots_to_si(knots: float) -> float:
         float: Speed in metres/second
     """
 
-    return knots / 1.94
+    return knots / 1.94384
 
 
 def si_to_knots(si: float) -> float:
@@ -66,7 +70,7 @@ def si_to_knots(si: float) -> float:
         float: Speed in knots
     """
 
-    return si * 1.94
+    return si * 1.94384
 
 
 def angle_uncertainty(sigma=0) -> float:
@@ -111,9 +115,8 @@ def difference_between_geographic_angles(bearing: float, angle_wind: float) -> f
 
 
 def direction_from_displacement(displacement: np.ndarray) -> float:
-    # normalization is necessary to keep dy between -1 and 1
-    normalized_displacement = displacement / np.max(displacement)
-    bearing_rad = np.arccos(normalized_displacement[1])
+    
+    bearing_rad = np.arctan(displacement[1]/displacement[0])
     
     bearing = np.rad2deg(bearing_rad)
     

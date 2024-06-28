@@ -16,7 +16,7 @@ def test_calculate_displacement():
         longitude = -12,
         speed_polar_diagram=speed_polar_diagram,
         leeway_polar_diagram=leeway_polar_diagram,
-        target = [57,-12]
+        target = [59, -12]
     )
     
     # with no winds and no currents, if bearing = 0 (North), there is no displacement in dx and dy is positive
@@ -24,7 +24,7 @@ def test_calculate_displacement():
     currents = np.zeros(2)
     bearing = 0
     displacement = test_boat.calculate_displacement(winds, currents, bearing, timestep)
-    assert displacement[0] < 1e-10
+    assert displacement[0] - 0 < 1e-10
     assert displacement[1] > 0
     
     # with no winds and no currents, if bearing = 90 (East), there is no displacement in dy and dx is positive
@@ -33,14 +33,14 @@ def test_calculate_displacement():
     bearing = 90
     displacement = test_boat.calculate_displacement(winds, currents, bearing, timestep)
     assert displacement[0] > 0
-    assert displacement[1] < 1e-10
+    assert displacement[1] - 0 < 1e-10
     
     # with no winds and no currents, if bearing = 180 (South), there is no displacement in dx and dy is negative
     winds = np.zeros(2)
     currents = np.zeros(2)
     bearing = 180
     displacement = test_boat.calculate_displacement(winds, currents, bearing, timestep)
-    assert displacement[0] < 1e-10
+    assert displacement[0] - 0 < 1e-10
     assert displacement[1] < 0
     
     # with no winds and no currents, if bearing = 270 (West), there is no displacement in dy and dx is negative
@@ -49,7 +49,38 @@ def test_calculate_displacement():
     bearing = 270
     displacement = test_boat.calculate_displacement(winds, currents, bearing, timestep)
     assert displacement[0] < 0
-    assert displacement[1] < 1e-10
+    assert displacement[1] - 0 < 1e-10
+    
+    # with slight Northern winds, bearing N, and currents at 45 degrees, the boat should move towards NNE (= positive dx, positive dy)
+    winds = np.array([0.05, 0])
+    currents = np.array([0.5, 0.5])
+    bearing = 0
+    displacement = test_boat.calculate_displacement(winds, currents, bearing, timestep)
+    assert displacement[0] > 0
+    assert displacement[1] > 0
+    
+    # with slight Eastern winds, bearing N, and currents at 315 degrees, the boat should move towards NW (= negative dx, positive dy)
+    winds = np.array([0.05, 90])
+    currents = np.array([-0.5, 0.5])
+    bearing = 0
+    displacement = test_boat.calculate_displacement(winds, currents, bearing, timestep)
+    assert displacement[0] < 0
+    assert displacement[1] > 0
+    
+    # No winds, no currents, bearing 0 should cause a northerly displacement of 3.402 km
+    winds = np.array([0.0, 0.0])
+    currents = np.array([0.0, 0.0])
+    bearing = 0
+    displacement = test_boat.calculate_displacement(winds, currents, bearing, timestep)
+    assert displacement[1] - 3.402 < 1e-8
+    
+    # Example calculated by hand!
+    winds = np.array([10.0, 90.0])
+    currents = np.array([-0.5, 0.5])
+    bearing = 0
+    displacement = test_boat.calculate_displacement(winds, currents, bearing, timestep)   
+    assert displacement[0] - (-0.6083) < 1e-3
+    assert displacement[1] - 0.8850 < 1e-3
     
 
 def test_generic_displacement():
@@ -65,20 +96,29 @@ def test_move_boat():
     test_boat = boat.Boat(
         craft = "Hjortspring",
         latitude = 58,
-        longitude = -12,
+        longitude = 12,
         speed_polar_diagram=speed_polar_diagram,
         leeway_polar_diagram=leeway_polar_diagram,
-        target = [59,-12]
+        target = [59, 12]
     )
     
-    assert len(test_boat.trajectory) == 1
-    assert test_boat.trajectory == [(58, -12)]
+    old_latitude = test_boat.latitude
+    old_longitude = test_boat.longitude
     
-    # if winds and currents are 0, there should be no movement, but still append a point
-    winds = np.array([0, 0])
-    currents = np.array([0, 0])
+    # with slight Northern winds, bearing N, and currents at 45 degrees, the boat should move towards NNE
+    winds = np.array([0.05, 0])
+    currents = np.array([0.5, 0.5])
     test_boat.move_boat(winds, currents, timestep)
     assert len(test_boat.trajectory) == 2
-    assert test_boat.trajectory[-1][1] == test_boat.target[1]
+    assert test_boat.trajectory[-1][0] > old_latitude
+    assert test_boat.trajectory[-1][1] > old_longitude
     
-    # test_boat.move_boat([])
+    # with slight Eastern winds, bearing N, and currents at 315 degrees, the boat should move towards NW
+    winds = np.array([0.05, 90])
+    currents = np.array([-0.5, 0.5])
+    old_latitude = test_boat.latitude
+    old_longitude = test_boat.longitude
+    test_boat.move_boat(winds, currents, timestep)
+    assert len(test_boat.trajectory) == 3
+    assert test_boat.trajectory[-1][0] > old_latitude
+    assert test_boat.trajectory[-1][1] < old_longitude
