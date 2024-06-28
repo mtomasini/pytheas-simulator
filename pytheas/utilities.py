@@ -75,3 +75,19 @@ def angle_uncertainty(sigma=0) -> float:
     angle_error = np.random.normal(0, sigma)
     
     return angle_error
+
+
+def geographic_angle_to_xy(angle: float) -> np.ndarray:
+    """From a geographic angle (with 0 degrees signifying North, 90 East, 180 South and 270 W) return x and y.
+
+    Args:
+        angle (float): geographic angle in degrees
+
+    Returns:
+        np.ndarray: array with dx (horizontal Eastward) and dy (vertical Northward)
+    """
+    angle_radians = np.deg2rad(angle)
+    dx = np.sin(np.pi - angle_radians)
+    dy = np.cos(angle_radians)
+    
+    return np.array([dx, dy])
