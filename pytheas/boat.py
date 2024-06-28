@@ -36,10 +36,10 @@ class Boat:
         self.leeway_polar_diagram = leeway_polar_diagram
         
         self.trajectory = [(latitude, longitude)]
-        self.bearing = pytheas.utilities.bearing_from_latlon([(self.longitude, self.latitude)], self.target)
+        self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
     
     
-    def speed_due_to_wind(self, local_winds: np.ndarray, bearing_xy: np.ndarray):
+    def speed_due_to_wind(self, current_winds: np.ndarray, bearing: float):
         """Calculates the combined speed of paddling with the effect of the wind according to a polar diagram, when existing.
 
         Args:
@@ -54,24 +54,28 @@ class Boat:
             speed (float): speed in m/s of the paddling crew
         """
 
-        true_wind_angle = np.arctan2(np.linalg.det([bearing_xy, local_winds]), np.dot(bearing_xy, local_winds))
-        true_wind_angle = np.abs(np.rad2deg(true_wind_angle))
+        # find angle of wind compared to bearing of boat. 
+        effective_wind_angle = pytheas.utilities.difference_between_geographic_angles(bearing, current_winds[1])
+        # wind_sign = np.sign(effective_wind_angle)
 
-        true_wind_speed = np.linalg.norm(local_winds)
-        true_wind_speed_knots = pytheas.utilities.si_to_knots(true_wind_speed)
+        # then adapt to the polar diagram (symmetric, only reported for positive angles, with negative angles having opposite sign results)
+        abs_wind_angle = np.abs(effective_wind_angle)
+
+        wind_speed = current_winds[0] # np.linalg.norm(current_winds)
+        wind_speed_knots = pytheas.utilities.si_to_knots(wind_speed)
 
         # round angle to next 10 and speed to next 5
-        if 0 <= true_wind_angle <= 180:
-            rounded_angle = math.ceil(true_wind_angle/10)*10
+        if 0 <= abs_wind_angle <= 180:
+            rounded_angle = math.ceil(abs_wind_angle/10)*10
         else:
-            raise ValueError(f"Wind angle is not between 0 and 180 ({true_wind_angle} deg)")
-        if 0 <= true_wind_speed_knots <= 30:
-            rounded_speed = math.ceil(true_wind_speed_knots/5)*5
-        elif true_wind_speed_knots > 30:
+            raise ValueError(f"Absolute wind angle is not between 0 and 180 ({abs_wind_angle} deg)")
+        if 0 <= wind_speed_knots <= 30:
+            rounded_speed = math.ceil(wind_speed_knots/5)*5
+        elif wind_speed_knots > 30:
             # OPEN what if speed is too high? Set final speed of boat to zero, possibly
             rounded_speed = 30
         else:
-            raise ValueError(f"Wind speed is negative ({true_wind_speed} m/s)")
+            raise ValueError(f"Wind speed is negative ({wind_speed} m/s)")
 
         speed_in_knots = self.speed_polar_diagram[str(rounded_speed)][rounded_angle]
         speed = pytheas.utilities.knots_to_si(speed_in_knots)
@@ -79,7 +83,7 @@ class Boat:
         return speed
     
     
-    def leeway_due_to_wind(self, current_winds: np.ndarray, bearing_xy: np.ndarray):
+    def leeway_due_to_wind(self, current_winds: np.ndarray, bearing: float):
         """Calculates the leeway due to wind according to a polar diagram, when existing.
 
         Args:
@@ -91,55 +95,62 @@ class Boat:
             ValueError: Raised if the speed of the wind is higher than 30
             
         Returns:
-            leeway_angle: angle of leeway due to the wind to be added to the bearing to obtain the real angle
+            leeway_angle: geographic angle of leeway due to the wind to be added to the bearing to obtain the real angle
                             at which the boat travels, in degrees
         """
 
-        # find angle of wind compared to bearing of boat
-        true_wind_angle = np.arctan2(np.linalg.det([bearing_xy, current_winds]), np.dot(bearing_xy, current_winds))
+        # find angle of wind compared to bearing of boat. 
+        effective_wind_angle = pytheas.utilities.difference_between_geographic_angles(bearing, current_winds[1])
+        wind_sign = np.sign(effective_wind_angle)
 
-        # find the wind_sign, will be used in leeway_angle to apply the correct angle to leeway.
-        wind_sign = np.sign(true_wind_angle)
         # then adapt to the polar diagram (symmetric, only reported for positive angles, with negative angles having opposite sign results)
-        true_wind_angle = np.abs(np.rad2deg(true_wind_angle))
+        abs_wind_angle = np.abs(effective_wind_angle)
 
-        true_wind_speed = np.linalg.norm(current_winds)
-        true_wind_speed_knots = pytheas.utilities.si_to_knots(true_wind_speed)
+        wind_speed = current_winds[0] # np.linalg.norm(current_winds)
+        wind_speed_knots = pytheas.utilities.si_to_knots(wind_speed)
 
         # round angle to next 10 and speed to next 5
-        if 0 <= true_wind_angle <= 180:
-            rounded_angle = math.ceil(true_wind_angle/10)*10
+        if 0 <= abs_wind_angle <= 180:
+            rounded_angle = math.ceil(abs_wind_angle/10)*10
         else:
-            raise ValueError(f"Wind angle is not between 0 and 180 ({true_wind_angle} deg)")
-        if 0 <= true_wind_speed_knots <= 30:
-            rounded_speed = math.ceil(true_wind_speed_knots/5)*5
-        elif true_wind_speed_knots > 30:
+            raise ValueError(f"Absolute wind angle is not between 0 and 180 ({abs_wind_angle} deg)")
+        if 0 <= wind_speed_knots <= 30:
+            rounded_speed = math.ceil(wind_speed_knots/5)*5
+        elif wind_speed_knots > 30:
             # OPEN what if speed is too high? Set final speed of boat to zero, possibly
             rounded_speed = 30
         else:
-            raise ValueError(f"Wind speed is negative ({true_wind_speed} m/s)")
+            raise ValueError(f"Wind speed is negative ({wind_speed} m/s)")
 
-        leeway_angle = -wind_sign*self.leeway_polar_diagram[str(rounded_speed)][rounded_angle]
+        leeway_angle = wind_sign*self.leeway_polar_diagram[str(rounded_speed)][rounded_angle]
 
         return leeway_angle
     
     
     def calculate_displacement(self, local_winds: np.ndarray, local_currents: np.ndarray,
-                               bearing_xy: np.ndarray):
+                               bearing: float) -> np.ndarray:
+        """Function to calculate the displacement of a boat from its current position given winds, currents and bearing.
+
+        Args:
+            local_winds (np.ndarray): array containing speed and direction of the wind in the local position.
+            local_currents (np.ndarray): array containing Eastward (x) and Northward (y) speed of currents in the local position.
+            bearing (float): bearing taken by the boat.
+
+        Returns:
+            np.ndarray: array containing Eastward and Northward displacement of the boat from current position. 
+        """
         # TODO write displacement function for a boat with polar diagram, given winds and currents
         
-        paddling_speed = self.speed_due_to_wind(local_winds, bearing_xy)
-        leeway_angle = self.leeway_due_to_wind(local_winds, bearing_xy)
+        paddling_speed = self.speed_due_to_wind(local_winds, bearing)
+        leeway_angle = self.leeway_due_to_wind(local_winds, bearing)
+        effective_direction = bearing - leeway_angle
+        movement_angle_dxy = pytheas.utilities.geographic_angle_to_xy(effective_direction)
         
+        wind_dxy = paddling_speed*movement_angle_dxy
         
+        displacement = wind_dxy + local_currents
         
-        # 1) calculate dx, dy due to wind
-        # 2) calculate dy, dy due to current
-        # 3) 
-        
-        
-        
-        return [0, 0]
+        return displacement
     
     
     def generic_displacement(self, local_winds: np.ndarray, local_currents: np.ndarray,
@@ -148,16 +159,25 @@ class Boat:
         return [0, 0]
     
     def move_boat(self, local_winds: np.ndarray, local_currents: np.ndarray, uncertainty_sigma: float = 0.0):
+        """Function tha determines the movement of a boat at each time step. It is ran from Travel.
+
+        Args:
+            local_winds (np.ndarray): array containing the speed and geographic angle of the wind.
+            local_currents (np.ndarray): array containing Northward and Eastward components of sea currents speed.
+            uncertainty_sigma (float, optional): uncertainty of bearing due to navigational error. Defaults to 0.0.
+        """
         # first, update the bearing based on the local position
         self.bearing = pytheas.utilities.bearing_from_latlon([(self.longitude, self.latitude)], self.target)
-        bearing_radiants = np.deg2rad(self.bearing + pytheas.utilities.angle_uncertainty(uncertainty_sigma))
-        bearing_xy = np.array[np.cos(bearing_radiants), np.sin(bearing_radiants)]
+        
+        # next, add uncertainty to the bearing and split the bearing into x and y
+        bearing_with_uncertainty = self.bearing + pytheas.utilities.angle_uncertainty(uncertainty_sigma)
+        #  bearing_xy = pytheas.utilities.geographic_angle_to_xy(bearing_with_uncertainty)
         
         if self.polar_diagram is not None:
-            moved_horizontal, moved_vertical = Boat.calculate_displacement(local_winds, local_currents, bearing_xy)
+            moved_horizontal, moved_vertical = Boat.calculate_displacement(local_winds, local_currents, bearing_with_uncertainty)
             new_longitude, new_latitude
         else:
-            new_longitude, new_latitude = Boat.generic_displacement(local_winds, local_currents, bearing_xy)
+            new_longitude, new_latitude = Boat.generic_displacement(local_winds, local_currents, bearing_with_uncertainty)
             
         self.trajectory.append((new_longitude, new_latitude))
         self.longitude = new_longitude

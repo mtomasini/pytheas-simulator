@@ -44,5 +44,22 @@ def test_geographic_angle_to_xy():
         dxy_geo = utilities.geographic_angle_to_xy(angle_geo)
         dxy_rad = np.array([np.cos(angle_tri_rad), np.sin(angle_tri_rad)])
         assert np.allclose(dxy_geo, dxy_rad , rtol=1e-8, atol=1e-8)
+        
+
+def test_difference_between_geographic_angles():
+    # if bearing is 50 and angle_wind is 60, difference is +10
+    # if bearing is 60 and angle_wind is 50, difference is -10
+    assert utilities.difference_between_geographic_angles(50.0, 60.0) == 10.0
+    assert utilities.difference_between_geographic_angles(50.0, 60.0) == -utilities.difference_between_geographic_angles(60.0, 50.0)
     
+    # if bearing is 190 and angle_wind is 200, difference is 10
+    assert utilities.difference_between_geographic_angles(190.0, 200.0) == 10.0
     
+    # if bearing is 30 and angle_wind is 350, difference is -40
+    assert utilities.difference_between_geographic_angles(30.0, 350.0) == -40.0
+    
+    # if bearing is 190 and angle_wind is 30, difference is 160
+    assert utilities.difference_between_geographic_angles(190.0, 30.0) == 160.0
+    
+    # if bearing is 150 and angle_wind is 300, difference is 150
+    assert utilities.difference_between_geographic_angles(150.0, 300.0) == 150.0
