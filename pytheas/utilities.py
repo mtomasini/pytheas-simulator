@@ -4,6 +4,7 @@ Script that contains utility functions that are not used within a particular cla
 
 import geopy.distance as gp
 import numpy as np
+import pandas as pd
 from typing import Tuple
 
 
@@ -121,3 +122,14 @@ def direction_from_displacement(displacement: np.ndarray) -> float:
     bearing = np.rad2deg(bearing_rad)
     
     return bearing
+
+
+def calculate_start_of_day(day : str, type_of_start: str = 'sunrise') -> pd.Timestamp:
+    """Function to calculate at what time the sun rises (or twilight).
+
+    Args:
+        day (_type_): day of which the sunrise needs to be calculated, in format 'yyyy-mm-dd'
+    Returns:
+        pd.Timestamp: timestamp of start date and time
+    """
+    return pd.Timestamp(day)

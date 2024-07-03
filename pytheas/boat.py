@@ -142,7 +142,6 @@ class Boat:
         Returns:
             np.ndarray: array containing Eastward and Northward displacement of the boat from current position. 
         """
-        # TODO write displacement function for a boat with polar diagram, given winds and currents
         
         paddling_speed = self.speed_due_to_wind(local_winds, bearing)
         print(paddling_speed)

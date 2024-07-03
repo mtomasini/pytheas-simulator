@@ -14,24 +14,25 @@ class Travel:
     """
     
     def __init__(self, boat: Boat, map: Map,
-                 start_time: pd.Timestamp, max_duration: int,
-                 timestep: int, target: np.ndarray):
+                 start_time: pd.Timestamp,
+                 max_duration: int,
+                 timestep: int):
         """Creates a new travel. 
 
         Args:
             boat (Boat): the boat that will travel.
             map (Map): the map over which the boat will travel.
-            start_time (pd.Timestamp): the day and time of departure for the trip. 
+            start_time (pd.Timestamp): the day and time of departure for the trip.
             maximum_duration (int): the maximum duration of each trip (in hours). Explicits the number of hours after which the travel will be stopped.
             timestep (int): time between each step (in minutes)
-            target (np.ndarray): lat/lon of the target of the travel
         """
         self.boat = boat
         self.map = map
         self.start_time = start_time
         self.max_duration = max_duration
         self.timestep = timestep
-        self.target = target
+        self.launching_site = [boat.latitude, boat.longitude]
+        self.target = boat.target
         
         self.current_time = start_time
     

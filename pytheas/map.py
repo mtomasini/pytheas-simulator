@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from typing import Tuple
 
 class Map:
     """
@@ -10,14 +11,16 @@ class Map:
     In the Agent-Based Modelling framework, the Map corresponds to the Space. 
     """
     
-    def __init__(self, wind_data_path: str, current_data_path: str, waves_data_path: str):
+    def __init__(self, bounding_box: Tuple[float, float, float, float], wind_data_path: str, current_data_path: str, waves_data_path: str):
         """Creates new map.
 
         Args:
+            bounding_box (List[float, float, float, float]): [min_latitude, min_longitude, max_latitude, max_longitude]
             wind_data_path (str): folder where the wind data are stored
             current_data_path (str): folder where the current data are stored
             waves_data_path (str): folder where the waves data are stored
         """
+        self.bounding_box = bounding_box
         self.wind = wind_data_path
         self.current = current_data_path
         self.waves = waves_data_path
