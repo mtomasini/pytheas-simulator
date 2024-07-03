@@ -125,16 +125,16 @@ def direction_from_displacement(displacement: np.ndarray) -> float:
     return bearing
 
 
-def calculate_start_of_day(day : str, position: Tuple[float, float], type_of_twilight: str = 'sunrise') -> pd.Timestamp:
+def calculate_start_of_day(day : str, position: Tuple[float, float], type_of_twilight: str = 'sun') -> pd.Timestamp:
     """Function to calculate at what time the sun rises (or twilight).
 
     Args:
         day (str): date in format 'yyyy-mm-dd'
         position (Tuple[float, float]): position at which you want to calculate the start of the day, in format lon / lat
-        type_of_twilight (str, optional): whether you want to calculate sunrise, civil, nautical or astronomical twilight. Defaults to 'sunrise'.
+        type_of_twilight (str, optional): whether you want to calculate sunrise, civil, nautical or astronomical twilight. Defaults to 'sun'.
 
     Raises:
-        ValueError: If 'type_of_twilight' is not one  of 'civil', 'nautical', 'astronomical' or 'sunrise'.
+        ValueError: If 'type_of_twilight' is not one  of 'civil', 'nautical', 'astronomical' or 'sun'.
 
     Returns:
         pd.Timestamp: timestamp of date and time of end of the day.
@@ -153,26 +153,26 @@ def calculate_start_of_day(day : str, position: Tuple[float, float], type_of_twi
         earth.horizon = "-12"
     elif type_of_twilight == "astronomical":
         earth.horizon = "-18"
-    elif type_of_twilight == "sunrise":
+    elif type_of_twilight == "sun":
         pass
     else:
-        raise ValueError("type_of_twilight needs to be among 'civil', 'nautical', 'astronomical' or 'sunrise'")
+        raise ValueError("type_of_twilight needs to be among 'civil', 'nautical', 'astronomical' or 'sun'")
 
     morning_twilight = ephem.localtime(earth.next_rising(sun))
 
     return pd.Timestamp(morning_twilight)
 
 
-def calculate_end_of_day(day : str, position: Tuple[float, float], type_of_twilight: str = 'sunset') -> pd.Timestamp:
+def calculate_end_of_day(day : str, position: Tuple[float, float], type_of_twilight: str = 'sun') -> pd.Timestamp:
     """Function to calculate at what time the sun goes down (or twilight).
 
     Args:
         day (str): date in format 'yyyy-mm-dd'
         position (Tuple[float, float]): position at which you want to calculate the end of the day
-        type_of_twilight (str, optional): whether you want to calculate sunrise, civil, nautical or astronomical twilight. Defaults to 'sunrise'.
+        type_of_twilight (str, optional): whether you want to calculate sunset, civil, nautical or astronomical twilight. Defaults to 'sun'.
 
     Raises:
-        ValueError: If 'type_of_twilight' is not one  of 'civil', 'nautical', 'astronomical' or 'sunset'.
+        ValueError: If 'type_of_twilight' is not one  of 'civil', 'nautical', 'astronomical' or 'sun'.
 
     Returns:
         pd.Timestamp: timestamp of date and time of end of the day.
@@ -191,11 +191,30 @@ def calculate_end_of_day(day : str, position: Tuple[float, float], type_of_twili
         earth.horizon = "-12"
     elif type_of_twilight == "astronomical":
         earth.horizon = "-18"
-    elif type_of_twilight == "sunset":
+    elif type_of_twilight == "sun":
         pass
     else:
-        raise ValueError("type_of_twilight needs to be among 'civil', 'nautical', 'astronomical' or 'sunset'")
+        raise ValueError("type_of_twilight needs to be among 'civil', 'nautical', 'astronomical' or 'sun'")
 
     evening_twilight = ephem.localtime(earth.next_setting(sun))
 
     return pd.Timestamp(evening_twilight)
+
+
+def is_it_night(date_and_time: pd.Timestamp, position: Tuple[float, float], type_of_twilight="sun") -> bool:
+    """Calculates whether a set of coordinates refer to a moment in the day or in the night. We consider sunrise time as day, and sunset time as night.
+
+    Args:
+        date_and_time (pd.Timestamp): day of the year
+        position (Tuple[float, float]): place in format [longitude, latitude]
+        type_of_twilight (str): type of twilight, "civil", "nautical" or "astronomical". Defaults to "sun".
+
+    Returns:
+        bool: returns whether the point is during the night or not
+    """
+    what_day = date_and_time.date()
+    sunrise = calculate_start_of_day(what_day, position, type_of_twilight)
+    sunset = calculate_end_of_day(what_day, position, type_of_twilight)
+    
+    is_night = (date_and_time < sunrise) or (sunset <= date_and_time)
+    return is_night
