@@ -202,6 +202,7 @@ def calculate_end_of_day(day : str, position: Tuple[float, float], type_of_twili
 
 
 def is_it_night(date_and_time: pd.Timestamp, position: Tuple[float, float], type_of_twilight="sun") -> bool:
+    # TODO test this function
     """Calculates whether a set of coordinates refer to a moment in the day or in the night. We consider sunrise time as day, and sunset time as night.
 
     Args:
