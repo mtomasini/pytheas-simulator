@@ -14,27 +14,28 @@ class Travel:
     """
     
     def __init__(self, boat: Boat, map: Map,
-                 start_time: pd.Timestamp,
+                 start_day: str,
                  max_duration: int,
-                 timestep: int):
+                 timestep: int,
+                 twilights_of_stops: str = 'sunrise'):
         """Creates a new travel. 
 
         Args:
             boat (Boat): the boat that will travel.
             map (Map): the map over which the boat will travel.
-            start_time (pd.Timestamp): the day and time of departure for the trip.
+            start_day (pd.Timestamp): the day and time of departure for the trip.
             maximum_duration (int): the maximum duration of each trip (in hours). Explicits the number of hours after which the travel will be stopped.
             timestep (int): time between each step (in minutes)
         """
         self.boat = boat
         self.map = map
-        self.start_time = start_time
         self.max_duration = max_duration
         self.timestep = timestep
         self.launching_site = [boat.latitude, boat.longitude]
+        self.start_time = calculate_start_of_day(start_day, self.launching_site, type_of_twilight=twilights_of_stops)
         self.target = boat.target
         
-        self.current_time = start_time
+        self.current_time = self.start_time
     
     
     def step(self):

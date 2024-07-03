@@ -2,6 +2,7 @@
 Script that contains utility functions that are not used within a particular class.
 """
 
+import ephem
 import geopy.distance as gp
 import numpy as np
 import pandas as pd
@@ -124,12 +125,77 @@ def direction_from_displacement(displacement: np.ndarray) -> float:
     return bearing
 
 
-def calculate_start_of_day(day : str, type_of_start: str = 'sunrise') -> pd.Timestamp:
+def calculate_start_of_day(day : str, position: Tuple[float, float], type_of_twilight: str = 'sunrise') -> pd.Timestamp:
     """Function to calculate at what time the sun rises (or twilight).
 
     Args:
-        day (_type_): day of which the sunrise needs to be calculated, in format 'yyyy-mm-dd'
+        day (str): date in format 'yyyy-mm-dd'
+        position (Tuple[float, float]): position at which you want to calculate the start of the day, in format lon / lat
+        type_of_twilight (str, optional): whether you want to calculate sunrise, civil, nautical or astronomical twilight. Defaults to 'sunrise'.
+
+    Raises:
+        ValueError: If 'type_of_twilight' is not one  of 'civil', 'nautical', 'astronomical' or 'sunrise'.
+
     Returns:
-        pd.Timestamp: timestamp of start date and time
+        pd.Timestamp: timestamp of date and time of end of the day.
     """
-    return pd.Timestamp(day)
+    earth = ephem.Observer()
+    earth.lat = str(position[0])
+    earth.lon = str(position[1])
+    earth.date = pd.Timestamp(day)
+
+    sun = ephem.Sun()
+    sun.compute()
+
+    if type_of_twilight == "civil":
+        earth.horizon = "-6"
+    elif type_of_twilight == "nautical":
+        earth.horizon = "-12"
+    elif type_of_twilight == "astronomical":
+        earth.horizon = "-18"
+    elif type_of_twilight == "sunrise":
+        pass
+    else:
+        raise ValueError("type_of_twilight needs to be among 'civil', 'nautical', 'astronomical' or 'sunrise'")
+
+    morning_twilight = ephem.localtime(earth.next_rising(sun))
+
+    return pd.Timestamp(morning_twilight)
+
+
+def calculate_end_of_day(day : str, position: Tuple[float, float], type_of_twilight: str = 'sunset') -> pd.Timestamp:
+    """Function to calculate at what time the sun goes down (or twilight).
+
+    Args:
+        day (str): date in format 'yyyy-mm-dd'
+        position (Tuple[float, float]): position at which you want to calculate the end of the day
+        type_of_twilight (str, optional): whether you want to calculate sunrise, civil, nautical or astronomical twilight. Defaults to 'sunrise'.
+
+    Raises:
+        ValueError: If 'type_of_twilight' is not one  of 'civil', 'nautical', 'astronomical' or 'sunset'.
+
+    Returns:
+        pd.Timestamp: timestamp of date and time of end of the day.
+    """
+    earth = ephem.Observer()
+    earth.lat = str(position[0])
+    earth.lon = str(position[1])
+    earth.date = day
+
+    sun = ephem.Sun()
+    sun.compute()
+
+    if type_of_twilight == "civil":
+        earth.horizon = "-6"
+    elif type_of_twilight == "nautical":
+        earth.horizon = "-12"
+    elif type_of_twilight == "astronomical":
+        earth.horizon = "-18"
+    elif type_of_twilight == "sunset":
+        pass
+    else:
+        raise ValueError("type_of_twilight needs to be among 'civil', 'nautical', 'astronomical' or 'sunset'")
+
+    evening_twilight = ephem.localtime(earth.next_setting(sun))
+
+    return pd.Timestamp(evening_twilight)

@@ -20,7 +20,7 @@ landing_site = [58.0487, 6.6845] # Listafjorden
 
 bounding_box = [56.3, 5.8, 58.8, 13.1]
 start_day = '1995-03-03'
-start_time = pytheas.utilities.calculate_start_of_day(start_day)
+
 
 # initiate boat
 hjortspring = Boat('hjortspring', latitude=launching_site[0], longitude=launching_site[1],
@@ -30,4 +30,4 @@ hjortspring = Boat('hjortspring', latitude=launching_site[0], longitude=launchin
 skagerrak_map = Map(bounding_box, wind_data_path = WIND_DATA, current_data_path=CURRENT_DATA, waves_data_path=WAVES_DATA)
 
 # initiate travel
-limfjorden_lista = Travel(boat = hjortspring, map = skagerrak_map, start_time=start_time, max_duration = 72, timestep = 15)
+limfjorden_lista = Travel(boat = hjortspring, map = skagerrak_map, start_day=start_day, max_duration = 72, timestep = 15)
