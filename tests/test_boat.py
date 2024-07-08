@@ -13,10 +13,10 @@ def test_calculate_displacement():
     test_boat = boat.Boat(
         craft = "Hjortspring",
         latitude = 58,
-        longitude = -12,
+        longitude = 12,
         speed_polar_diagram=speed_polar_diagram,
         leeway_polar_diagram=leeway_polar_diagram,
-        target = [59, -12]
+        target = [59, 12]
     )
     
     # with no winds and no currents, if bearing = 0 (North), there is no displacement in dx and dy is positive
