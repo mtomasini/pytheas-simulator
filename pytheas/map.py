@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from typing import Tuple
 import xarray as xr
+import xoak
 
 class Map:
     """
@@ -51,6 +52,8 @@ class Map:
         path = f"{self.current_path}{earliest_year}/month_{earliest_month}.nc"
         
         dataset = xr.open_dataset(path)
+        dataset.close()
+        
         if latest_month == earliest_month and latest_year == earliest_year:
             dataset_bounded = dataset.sel(time=slice(earliest_time, latest_time), 
                                           latitude=slice(self.bounding_box[0], self.bounding_box[2]),
@@ -65,7 +68,11 @@ class Map:
                 # the flag "MS" in pd.date_range creates an item for each beginning of the month, starting with the second month in the range (the first is calculated above0)
                 further_path = f"{self.current_path}{date.year}/month_{date.month}.nc"
                 further_dataset = xr.open_dataset(further_path)
-                further_dataset_bounded = further_dataset.sel(latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
+                further_dataset_bounded = further_dataset.xoak.sel(latitude=xr.DataArray([self.bounding_box[0], self.bounding_box[2]]), 
+                                                                   longitude=xr.DataArray([self.bounding_box[1], self.bounding_box[3]]))
+                
+                
+                further_dataset.sel(latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
                                                               longitude=slice(self.bounding_box[1], self.bounding_box[3]))
                 dataset_bounded = dataset_bounded.combine_first(further_dataset_bounded)
                 further_dataset.close()
@@ -83,22 +90,24 @@ class Map:
         path = f"{self.wind_path}{earliest_year}/{earliest_year}_{earliest_month}.nc"
         
         dataset = xr.open_dataset(path)
+        dataset.close()
         if latest_month == earliest_month and latest_year == earliest_year:
-            dataset_bounded = dataset.sel(time=slice(earliest_time, latest_time))# , 
-                                        #   latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
-                                        #   longitude=slice(self.bounding_box[1], self.bounding_box[3]))
+            dataset_bounded = dataset.where((dataset.latitude >= self.bounding_box[0]) & (dataset.latitude <= self.bounding_box[2]) & 
+                                            (dataset.longitude >= self.bounding_box[1]) & (dataset.longitude <= self.bounding_box[3]), drop=True)
+            dataset_bounded = dataset_bounded.sel(time=slice(earliest_time, latest_time))
+            
         else:
-            dataset_bounded = dataset.sel(time=slice(earliest_time, None) )#, 
-                                        #   latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
-                                        #   longitude=slice(self.bounding_box[1], self.bounding_box[3]))
+            dataset_bounded = dataset.where((dataset.latitude >= self.bounding_box[0]) & (dataset.latitude <= self.bounding_box[2]) & 
+                                            (dataset.longitude >= self.bounding_box[1]) & (dataset.longitude <= self.bounding_box[3]), drop=True)
+            dataset_bounded = dataset_bounded.sel(time=slice(earliest_time, None))
         
         if earliest_month != latest_month or earliest_year != latest_year:
             for date in pd.date_range(earliest_time, latest_time, freq="MS"):
                 # the flag "MS" in pd.date_range creates an item for each beginning of the month, starting with the second month in the range (the first is calculated above0)
                 further_path = f"{self.current_path}{date.year}/{date.year}_{date.month}.nc"
                 further_dataset = xr.open_dataset(further_path)
-                # further_dataset_bounded = further_dataset.sel(latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
-                #                                               longitude=slice(self.bounding_box[1], self.bounding_box[3]))
+                further_dataset_bounded = further_dataset.where((dataset.latitude >= self.bounding_box[0]) & (dataset.latitude <= self.bounding_box[2]) & 
+                                                                (dataset.longitude >= self.bounding_box[1]) & (dataset.longitude <= self.bounding_box[3]), drop=True)
                 dataset_bounded = dataset_bounded.combine_first(further_dataset)
                 further_dataset.close()
                 
@@ -115,6 +124,8 @@ class Map:
         path = f"{self.waves_path}{earliest_year}/month_{earliest_month}.nc"
         
         dataset = xr.open_dataset(path)
+        # dataset.xoak.set_index(['longitude', 'latitude'], index_type='scipy_kdtree')
+        dataset.close()
         if latest_month == earliest_month and latest_year == earliest_year:
             dataset_bounded = dataset.sel(time=slice(earliest_time, latest_time), 
                                           latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
@@ -129,11 +140,14 @@ class Map:
                 # the flag "MS" in pd.date_range creates an item for each beginning of the month, starting with the second month in the range (the first is calculated above0)
                 further_path = f"{self.current_path}{date.year}/month_{date.month}.nc"
                 further_dataset = xr.open_dataset(further_path)
-                further_dataset_bounded = further_dataset.sel(latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
-                                                              longitude=slice(self.bounding_box[1], self.bounding_box[3]))
-                dataset_bounded = dataset_bounded.combine_first(further_dataset_bounded)
+                # further_dataset.xoak.set_index(['longitude', 'latitude'], index_type='scipy_kdtree')
+                # further_dataset_bounded = further_dataset.sel(latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
+                #                                               longitude=slice(self.bounding_box[1], self.bounding_box[3]))
+                dataset_bounded = dataset_bounded.combine_first(further_dataset)
                 further_dataset.close()
-                
+        
+        # dataset_bounded.xoak.set_index(['longitude', 'latitude'], index_type='scipy_kdtree')
+        
         return dataset_bounded
     
     def measure_winds(location: np.ndarray, time: pd.Timestamp, radius: float = 0.02):
