@@ -32,7 +32,11 @@ hjortspring = Boat('hjortspring', latitude=launching_site[0], longitude=launchin
 skagerrak_map = Map(bounding_box, earliest_time=start_day, latest_time=end_day, 
                     wind_data_path = WIND_DATA, current_data_path=CURRENT_DATA, waves_data_path=WAVES_DATA)
 
-print(skagerrak_map.winds_data)
+dataset = skagerrak_map.winds_data.sel(time=start_day + pd.Timedelta(6, unit="hours"), method="nearest")
 
+point = [57.3, 7.1]
+
+wind_mean = dataset.where((dataset.latitude >= point[0] - 0.05) & (dataset.latitude <= point[0] + 0.05) & (dataset.longitude >= point[1] - 0.05) & (dataset.longitude <= point[1] + 0.05), drop=True)
+print(wind_mean.wdir10.values.mean())
 # initiate travel
 # limfjorden_lista = Travel(boat = hjortspring, map = skagerrak_map, start_day=start_day, max_duration = 72, timestep = 15)
