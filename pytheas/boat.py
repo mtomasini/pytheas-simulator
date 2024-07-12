@@ -20,15 +20,15 @@ class Boat:
                  uncertainty_sigma: float = 0.0,
                  speed_polar_diagram: pd.DataFrame = None, 
                  leeway_polar_diagram: pd.DataFrame = None):
-        """Creates a new boat.
+        """Create a new boat.
 
         Args:
-            craft (str): type of boat (e.g. "Hjortspring")
-            longitude (float): current longitude of the boat. It gets updated when running move_step().
-            latitude (float): current latitude of the boat. It gets updated when running move_step().
-            target (Tuple[float, float]): tuple of lon/lat of the target.
-            speed_polar_diagram (pd.DataFrame): table representing the boat speed polar diagram. Defaults to None.
-            leeway_polar_diagram (pd.DataFrame): table representing the boat leeway polar diagram. Defaults to None.
+            craft (str): Type of boat (e.g. "Hjortspring").
+            longitude (float): Current longitude of the boat. It gets updated when running move_step().
+            latitude (float): Current latitude of the boat. It gets updated when running move_step().
+            target (Tuple[float, float]): Tuple of lon/lat of the target.
+            speed_polar_diagram (pd.DataFrame): Table representing the boat speed polar diagram. Defaults to None.
+            leeway_polar_diagram (pd.DataFrame): Table representing the boat leeway polar diagram. Defaults to None.
         """
         self.craft = craft
         self.latitude = latitude
@@ -43,18 +43,19 @@ class Boat:
     
     
     def speed_due_to_wind(self, current_winds: np.ndarray, bearing: float):
-        """Calculates the combined speed of paddling with the effect of the wind according to a polar diagram, when existing.
+        """
+        Calculate the combined speed of paddling with the effect of the wind according to a polar diagram, when existing.
 
         Args:
-            current_winds (np.ndarray): Wind velocity (two components)
-            bearing_xy (np.ndarray): bearing of the boat split in x, y components
+            current_winds (np.ndarray): Wind velocity (two components), 0-element is speed in m/s, 1-element is direction in degrees.
+            bearing_xy (np.ndarray): Bearing of the boat split in x, y components.
 
         Raises:
-            ValueError: Raised if the angle between the bearing and reference is a non-positive number
-            ValueError: Raised if the speed of the wind is higher than 30
+            ValueError: Raised if the angle between the bearing and reference is a non-positive number.
+            ValueError: Raised if the speed of the wind is higher than 30.
             
         Returns:
-            speed (float): speed in m/s of the paddling crew
+            speed (float): Speed in m/s of the paddling crew.
         """
 
         # find angle of wind compared to bearing of boat. 
@@ -64,7 +65,7 @@ class Boat:
         # then adapt to the polar diagram (symmetric, only reported for positive angles, with negative angles having opposite sign results)
         abs_wind_angle = np.abs(effective_wind_angle)
 
-        wind_speed = current_winds[0] # np.linalg.norm(current_winds)
+        wind_speed = current_winds[0]
         wind_speed_knots = pytheas.utilities.si_to_knots(wind_speed)
 
         # round angle to next 10 and speed to next 5
@@ -109,7 +110,7 @@ class Boat:
         # then adapt to the polar diagram (symmetric, only reported for positive angles, with negative angles having opposite sign results)
         abs_wind_angle = np.abs(effective_wind_angle)
 
-        wind_speed = current_winds[0] # np.linalg.norm(current_winds)
+        wind_speed = current_winds[0]
         wind_speed_knots = pytheas.utilities.si_to_knots(wind_speed)
 
         # round angle to next 10 and speed to next 5
@@ -144,7 +145,6 @@ class Boat:
         """
         
         paddling_speed = self.speed_due_to_wind(local_winds, bearing)
-        print(paddling_speed)
         leeway_angle = self.leeway_due_to_wind(local_winds, bearing)
         effective_direction = bearing - leeway_angle
         movement_angle_dxy = pytheas.utilities.geographic_angle_to_xy(effective_direction)
@@ -191,3 +191,5 @@ class Boat:
         self.latitude = new_coordinates.latitude
         self.longitude = new_coordinates.longitude
         self.trajectory.append((new_coordinates.latitude, new_coordinates.longitude))
+        
+    

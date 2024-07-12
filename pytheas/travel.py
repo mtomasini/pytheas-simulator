@@ -17,7 +17,7 @@ class Travel:
                  start_day: str,
                  max_duration: int,
                  timestep: int,
-                 twilights_of_stops: str = 'sunrise'):
+                 twilights_of_stops: str = 'sun'):
         """Creates a new travel. 
 
         Args:
@@ -34,6 +34,7 @@ class Travel:
         self.launching_site = [boat.latitude, boat.longitude]
         self.start_time = calculate_start_of_day(start_day, self.launching_site, type_of_twilight=twilights_of_stops)
         self.target = boat.target
+        self.twilight_of_stops = twilights_of_stops
         
         self.current_time = self.start_time
     
@@ -42,12 +43,13 @@ class Travel:
         current_location = [self.boat.latitude, self.boat.longitude]
         # bearing = bearing_from_latlon(current_location, self.boat.target)
         
-        wind_here_and_now = self.map.measure_winds(current_location, self.current_time)
-        current_here_and_now = self.map.measure_currents(current_location, self.current_time)
+        wind_here_and_now = self.map.return_local_winds(current_location, self.current_time)
+        current_here_and_now = self.map.return_local_currents(current_location, self.current_time)
         
         self.boat.move_boat(wind_here_and_now, current_here_and_now, self.timestep)
         
     def run(self):
+        # TODO add land hitting conditions
         max_date = self.start_time + pd.Timedelta(hours=self.max_duration)
         
         while self.current_time < max_date:

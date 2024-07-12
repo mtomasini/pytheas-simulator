@@ -38,7 +38,7 @@ class Map:
         self.waves_data = self.load_dataset_waves(earliest_time, latest_time)
         
         
-        # TODO measure data as averages of the boat with a radius of 0.02 around! 0.02 * 111km = ~2.2 km
+        # TODO measure data as averages of the boat with a radius of 0.05 around! 0.05 * 111km = ~5.55 km
         
     
     
@@ -146,15 +146,103 @@ class Map:
     
     
     
-    def measure_winds(location: np.ndarray, time: pd.Timestamp, radius: float = 0.02):
-        # TODO write wind measuring function
+    def return_local_winds(self, location: np.ndarray, time: pd.Timestamp, radius: float = 0.02) -> np.ndarray:
+        """
+        Return wind speed and direction given a location and a time. Winds are measured in a square of +/-0.02 degrees around the location, and an average of all the values found
+        in that radius is output. The radius is chosen based on the grid size for the CERRA dataset (~2 x 2 km).
+
+        Args:
+            location (np.ndarray): Array of latitude and longitude of a location.
+            time (pd.Timestamp): Timestamp of time at which one wants the measure.
+            radius (float, optional): "Square" radius around which the measure of wind datapoints is performed. Defaults to 0.02.
+
+        Returns:
+            np.ndarray: An array containing wind speed (m/s) and wind direction (degrees).
+        """
+        # The winds dataset longitude is expressed in degrees from 0 to 360, instead of -180 to 180 like the rest of the dataset. Thus:
+        latitude_minus = location[0] - radius
+        latitude_plus = location[0] + radius
+        if location[1] < 0:
+            # transform number between -180 and 0 into one between 180 and 360
+            longitude_minus = 360 + location[1] - radius
+            longitude_plus = 360 + location[1] + radius
+        elif location[1] >= 0: 
+            longitude_minus = location[1] - radius
+            longitude_plus = location[1] + radius
         
-        pass
+        winds_now = self.winds_data.sel(time=time, method="nearest")
+        
+        if (longitude_minus <= 180 and longitude_plus <= 180) or (longitude_minus > 180 and longitude_plus > 180):
+            # if both longitude_minus and longitude_plus are in the same half quadrant, there is no problem in slicing the database
+            winds_here_and_now = winds_now.where((winds_now.latitude >= latitude_minus) & (winds_now.latitude <= latitude_plus) &
+                                                 (winds_now.longitude >= longitude_minus) & (winds_now.longitude <= longitude_plus), drop = True)
+            wind_speed_si = winds_here_and_now.si10.values.mean()
+            wind_direction = winds_here_and_now.wdir10.values.mean()
+            
+        elif (longitude_minus > 180 and longitude_plus <= 180):
+            # this is the situation where the longitude_plus is in the right quadrant (0 to 180), and longitude_minus in the left quadrant (-180 to 0, transformed into 180 to 360). 
+            # in this situation, because of how xarray works, we need to calculate the average quantities for the quadrant < 0 and average them with the avg quantities of the quadrant > 0:
+            winds_here_and_now_pos = winds_now.where((winds_now.latitude >= latitude_minus) & (winds_now.latitude <= latitude_plus) &
+                                                     (winds_now.longitude >= 0) & (winds_now.longitude <= longitude_plus), drop = True)
+            winds_here_and_now_neg = winds_now.where((winds_now.latitude >= latitude_minus) & (winds_now.latitude <= latitude_plus) &
+                                                     (winds_now.longitude >= longitude_minus) & (winds_now.longitude < 360), drop = True)
+            
+            wind_speed_si = (np.nanmean(winds_here_and_now_pos.si10.values) + np.nanmean(winds_here_and_now_neg.si10.values)) / 2
+            wind_direction = (np.nanmean(winds_here_and_now_pos.wdir10.values) + np.nanmean(winds_here_and_now_neg.wdir10.values)) / 2
+        
+        return np.array([wind_speed_si, wind_direction])
+        
+            
+    def return_local_currents(self, location: np.ndarray, time: pd.Timestamp, radius: float = 0.05):
+        """
+        Return horizontal and vertical components of current speed at a location and a time. Currents are measured in a square of +/-0.05 degrees around the location, 
+        and an average of all the values found in that "radius" is output. The radius is chosen based on the grid size for the ECMWF dataset (~5.5 x 5.5 km).
+
+        Args:
+            location (np.ndarray): Array of latitude and longitude of a location.
+            time (pd.Timestamp): Timestamp of time at which one wants the measure.
+            radius (float, optional): "Square" radius around which the measure of wind datapoints is performed. Defaults to 0.02.
+
+        Returns:
+            np.ndarray: An array containing horizontal (Eastward) and vertical (Northward) component of the currents speed.
+        """
+        
+        latitude_minus = location[0] - radius
+        latitude_plus = location[0] + radius
+        longitude_minus = location[1] - radius
+        longitude_plus = location[1] + radius
+        
+        data_now = self.currents_data.sel(time=time, method="nearest")
+        
+        u = np.nanmean(data_now.uo.sel(latitude=slice(latitude_minus, latitude_plus), 
+                            longitude=slice(longitude_minus, longitude_plus)).values)
+        v = np.nanmean(data_now.vo.sel(latitude=slice(latitude_minus, latitude_plus), 
+                            longitude=slice(longitude_minus, longitude_plus)).values)
+        
+        return np.array([u, v])
     
-    def measure_currents(location: np.ndarray, time: pd.Timestamp, radius: float = 0.02):
-        # TODO write wind measuring function
-        pass
     
-    def measure_waves (location: np.ndarray, time: pd.Timestamp, radius: float = 0.02):
-        # TODO write waves measuring function
-        pass
+    def return_local_waves(self, location: np.ndarray, time: pd.Timestamp, radius: float = 0.05) -> float:
+        """
+        Return wave height at a location and a time. Waves are measured in a square of +/-0.05 degrees around the location, 
+        and an average of all the values found in that "radius" is output. The radius is chosen based on the grid size for the ECMWF dataset (~5.5 x 5.5 km).
+
+        Args:
+            location (np.ndarray): Array of latitude and longitude of a location.
+            time (pd.Timestamp): Timestamp of time at which one wants the measure.
+            radius (float, optional): "Square" radius around which the measure of wind datapoints is performed. Defaults to 0.02.
+
+        Returns:
+            float: A wave height.
+        """
+        # TODO deal with longitudes around 0
+        latitude_minus = location[0] - radius
+        latitude_plus = location[0] + radius
+        longitude_minus = location[1] - radius
+        longitude_plus = location[1] + radius
+        
+        data_now = self.waves_data.sel(time=time, method="nearest")
+        wave_height = np.nanmean(data_now.VHM0.sel(latitude=slice(latitude_minus, latitude_plus), 
+                                        longitude=slice(longitude_minus, longitude_plus)).values)
+        
+        return wave_height
