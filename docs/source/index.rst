@@ -12,6 +12,7 @@ Welcome to Pytheas simulator's documentation!
 
    overview.md
    modules
+   testing.md
    author.md
 
 

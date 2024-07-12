@@ -68,7 +68,7 @@ class Travel:
         wind_here_and_now = self.map.return_local_winds(current_location, self.current_time)
         current_here_and_now = self.map.return_local_currents(current_location, self.current_time)
         
-        if current_here_and_now[0] is None:
+        if np.isnan(current_here_and_now[0]):
             self.boat.has_hit_land = True
             return
         
@@ -86,12 +86,14 @@ class Travel:
                 break
             
             # check how far one is from the target
-            distance_from_target = distance_km([self.boat.latitude, self.boat.longitude], self.boat.target)
+            distance_from_target = distance_km(self.boat.trajectory[-1], self.boat.target)
             if distance_from_target < self.tolerance:
                 self.is_completed = True
             
             self.step()
             self.current_time += pd.Timedelta(minutes=self.timestep)
+            
+        print(f"Travel finished! \n Was land hit? {self.boat.has_hit_land}! \n Was the trip completed? {self.is_completed}! \n Distance from target: {distance_from_target} km")
     
     
     def output_geojson(self, output_path: str) -> None:

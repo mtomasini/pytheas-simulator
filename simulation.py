@@ -18,7 +18,7 @@ launching_site = [57.1224, 8.4475] # Limfjorden
 landing_site = [58.0487, 6.6845] # Listafjorden
 
 bounding_box = [56.3, 5.8, 58.8, 13.1]
-start_day = '1995-03-03' #calculate_start_of_day('1995-03-03', launching_site) #pd.Timestamp('1995-03-03')
+start_day = calculate_start_of_day('1995-03-03', launching_site) #pd.Timestamp('1995-03-03')
 max_duration_h = 72
 end_day = start_day + pd.Timedelta(max_duration_h, unit="hours")
 
@@ -33,9 +33,9 @@ skagerrak_map = Map(bounding_box, earliest_time=start_day, latest_time=end_day,
 
 dataset = skagerrak_map.winds_data.sel(time=start_day + pd.Timedelta(6, unit="hours"), method="nearest")
 
-point = [57.3, 7.1]
+# point = [57.3, 7.1]
 
-wind_mean = dataset.where((dataset.latitude >= point[0] - 0.05) & (dataset.latitude <= point[0] + 0.05) & (dataset.longitude >= point[1] - 0.05) & (dataset.longitude <= point[1] + 0.05), drop=True)
+# wind_mean = dataset.where((dataset.latitude >= point[0] - 0.05) & (dataset.latitude <= point[0] + 0.05) & (dataset.longitude >= point[1] - 0.05) & (dataset.longitude <= point[1] + 0.05), drop=True)
 
 # initiate travel
 limfjorden_lista = Travel(boat = hjortspring, map = skagerrak_map, start_day=start_day, max_duration = 72, timestep = 15)

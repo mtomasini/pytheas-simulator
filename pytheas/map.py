@@ -159,7 +159,7 @@ class Map:
     
     
     
-    def return_local_winds(self, location: np.ndarray, time: pd.Timestamp, radius: float = 0.02) -> np.ndarray:
+    def return_local_winds(self, location: np.ndarray, time: pd.Timestamp, radius: float = 0.05) -> np.ndarray:
         """
         Return wind speed and direction given a location and a time. Winds are measured in a square of +/-0.02 degrees around the location, and an average of all the values found
         in that radius is output. The radius is chosen based on the grid size for the CERRA dataset (~2 x 2 km).
@@ -189,8 +189,8 @@ class Map:
             # if both longitude_minus and longitude_plus are in the same half quadrant, there is no problem in slicing the database
             winds_here_and_now = winds_now.where((winds_now.latitude >= latitude_minus) & (winds_now.latitude <= latitude_plus) &
                                                  (winds_now.longitude >= longitude_minus) & (winds_now.longitude <= longitude_plus), drop = True)
-            wind_speed_si = winds_here_and_now.si10.values.mean()
-            wind_direction = winds_here_and_now.wdir10.values.mean()
+            wind_speed_si = np.nanmean(winds_here_and_now.si10.values)
+            wind_direction = np.nanmean(winds_here_and_now.wdir10.values)
             
         elif (longitude_minus > 180 and longitude_plus <= 180):
             # this is the situation where the longitude_plus is in the right quadrant (0 to 180), and longitude_minus in the left quadrant (-180 to 0, transformed into 180 to 360). 
@@ -206,7 +206,7 @@ class Map:
         return np.array([wind_speed_si, wind_direction])
         
             
-    def return_local_currents(self, location: np.ndarray, time: pd.Timestamp, radius: float = 0.05):
+    def return_local_currents(self, location: np.ndarray, time: pd.Timestamp, radius: float = 0.07):
         """
         Return horizontal and vertical components of current speed at a location and a time. Currents are measured in a square of +/-0.05 degrees around the location, 
         and an average of all the values found in that "radius" is output. The radius is chosen based on the grid size for the ECMWF dataset (~5.5 x 5.5 km).
