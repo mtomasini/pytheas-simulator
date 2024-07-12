@@ -1,5 +1,6 @@
 """
-Script that contains utility functions that are not used within a particular class.
+Module containing utility functions that are not used within a particular class. These are generally functions that deal with geography, measurements 
+and distances, or time functions, such as ephemeris functions.
 """
 
 import ephem
