@@ -1,4 +1,3 @@
-
 import pandas as pd
 
 from pytheas.boat import Boat
@@ -19,7 +18,7 @@ launching_site = [57.1224, 8.4475] # Limfjorden
 landing_site = [58.0487, 6.6845] # Listafjorden
 
 bounding_box = [56.3, 5.8, 58.8, 13.1]
-start_day = calculate_start_of_day('1995-03-03', launching_site) #pd.Timestamp('1995-03-03')
+start_day = '1995-03-03' #calculate_start_of_day('1995-03-03', launching_site) #pd.Timestamp('1995-03-03')
 max_duration_h = 72
 end_day = start_day + pd.Timedelta(max_duration_h, unit="hours")
 

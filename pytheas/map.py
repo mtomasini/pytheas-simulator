@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from typing import Tuple
 import xarray as xr
-import xoak
 
 class Map:
     """
@@ -65,15 +64,19 @@ class Map:
         
         if earliest_month != latest_month or earliest_year != latest_year:
             for date in pd.date_range(earliest_time, latest_time, freq="MS"):
-                # the flag "MS" in pd.date_range creates an item for each beginning of the month, starting with the second month in the range (the first is calculated above0)
+                # the flag "MS" in pd.date_range creates an item for each beginning of the month, thus NOT including the first
                 further_path = f"{self.current_path}{date.year}/month_{date.month}.nc"
                 further_dataset = xr.open_dataset(further_path)
-                further_dataset_bounded = further_dataset.xoak.sel(latitude=xr.DataArray([self.bounding_box[0], self.bounding_box[2]]), 
-                                                                   longitude=xr.DataArray([self.bounding_box[1], self.bounding_box[3]]))
+                if (latest_month == date.month) and (latest_year == date.year):
+                    # if year-month of the last date calculated are the same as the latest_time, just select up to latest_time.
+                    further_dataset_bounded = further_dataset.sel(time=slice(None, latest_time),
+                                                                  latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
+                                                                  longitude=slice(self.bounding_box[1], self.bounding_box[3]))
+                else:
+                    # in every other case, it means that we want to take the whole month in our map.
+                    further_dataset_bounded = further_dataset.sel(latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
+                                                                  longitude=slice(self.bounding_box[1], self.bounding_box[3]))
                 
-                
-                further_dataset.sel(latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
-                                                              longitude=slice(self.bounding_box[1], self.bounding_box[3]))
                 dataset_bounded = dataset_bounded.combine_first(further_dataset_bounded)
                 further_dataset.close()
                 
@@ -104,11 +107,11 @@ class Map:
         if earliest_month != latest_month or earliest_year != latest_year:
             for date in pd.date_range(earliest_time, latest_time, freq="MS"):
                 # the flag "MS" in pd.date_range creates an item for each beginning of the month, starting with the second month in the range (the first is calculated above0)
-                further_path = f"{self.current_path}{date.year}/{date.year}_{date.month}.nc"
+                further_path = f"{self.wind_path}{date.year}/{date.year}_{date.month}.nc"
                 further_dataset = xr.open_dataset(further_path)
                 further_dataset_bounded = further_dataset.where((dataset.latitude >= self.bounding_box[0]) & (dataset.latitude <= self.bounding_box[2]) & 
                                                                 (dataset.longitude >= self.bounding_box[1]) & (dataset.longitude <= self.bounding_box[3]), drop=True)
-                dataset_bounded = dataset_bounded.combine_first(further_dataset)
+                dataset_bounded = dataset_bounded.combine_first(further_dataset_bounded)
                 further_dataset.close()
                 
         return dataset_bounded
@@ -137,9 +140,19 @@ class Map:
         if earliest_month != latest_month or earliest_year != latest_year:
             for date in pd.date_range(earliest_time, latest_time, freq="MS"):
                 # the flag "MS" in pd.date_range creates an item for each beginning of the month, starting with the second month in the range (the first is calculated above0)
-                further_path = f"{self.current_path}{date.year}/month_{date.month}.nc"
+                further_path = f"{self.waves_path}{date.year}/month_{date.month}.nc"
                 further_dataset = xr.open_dataset(further_path)
-                dataset_bounded = dataset_bounded.combine_first(further_dataset)
+                if (latest_month == date.month) and (latest_year == date.year):
+                    # if year-month of the last date calculated are the same as the latest_time, just select up to latest_time.
+                    further_dataset_bounded = further_dataset.sel(time=slice(None, latest_time),
+                                                                  latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
+                                                                  longitude=slice(self.bounding_box[1], self.bounding_box[3]))
+                else:
+                    # in every other case, it means that we want to take the whole month in our map.
+                    further_dataset_bounded = further_dataset.sel(latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
+                                                                  longitude=slice(self.bounding_box[1], self.bounding_box[3]))
+                
+                dataset_bounded = dataset_bounded.combine_first(further_dataset_bounded)
                 further_dataset.close()
         
         return dataset_bounded

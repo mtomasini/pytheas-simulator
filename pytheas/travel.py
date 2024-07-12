@@ -17,13 +17,13 @@ class Travel:
         map (Map): The map over which the boat will travel.
         max_duration (int): The maximal duration of the trip (in hours).
         timestep (int): Time between each step (in minutes).
-        launching_site (Tuple[float, float]): departure site in lat/lon format, inherited from boat.
+        launching_site (Tuple[float, float]): Departure site in lat/lon format, inherited from boat.
         start_time (pd.Timestamp): The day and time of departure for the trip.
-        target (Tuple[float, float]): target landing site in lat/lon format, inherited from boat.
-        twilight_of_stops (str): determines whether tips start and end at sunrise or twilight. Options are "sun" (sunrise), "civil", "nautical" and "astronomical".
-        current_time (pd.Timestamp): keeps track of the current time in the travel.
-        is_completed (bool): marks whether the travel is completed within tolerance. 
-        tolerance (float): tolerance distance from target to be considered "arrived" (in km). Defaults to 0.2 km.
+        target (Tuple[float, float]): Target landing site in lat/lon format, inherited from boat.
+        twilight_of_stops (str): Determines whether tips start and end at sunrise or twilight. Options are "sun" (sunrise), "civil", "nautical" and "astronomical".
+        current_time (pd.Timestamp): Keeps track of the current time in the travel.
+        is_completed (bool): Marks whether the travel is completed within tolerance. 
+        tolerance (float): Tolerance distance from target to be considered "arrived" (in km). Defaults to 0.2 km.
     """
     
     def __init__(self, boat: Boat, map: Map,
@@ -33,8 +33,16 @@ class Travel:
                  tolerance_distance: float = 0.2,
                  twilights_of_stops: str = 'sun'):
         """
-        Create a new travel. 
-        
+        Create a new travel.
+
+        Args:
+            boat (Boat): A boat that will accomplish the travel.
+            map (Map): The map over which the travel is accomplished (includes temporal and spatial data).
+            start_day (pd.Timestamp): Day in which the travel is started.
+            max_duration (int): Maximal duration of the travel (in hours).
+            timestep (int): Time between subsequent steps (in minutes).
+            tolerance_distance (float, optional): Distance from target within which a travel is considered finished (in km). Defaults to 0.2.
+            twilights_of_stops (str, optional): Determines whether tips start and end at sunrise or twilight. Options are "sun" (sunrise), "civil", "nautical" and "astronomical".. Defaults to 'sun'.
         """
         self.boat = boat
         self.map = map
@@ -52,6 +60,9 @@ class Travel:
     
     
     def step(self) -> None:
+        """
+        Advance the travel by one step.
+        """
         current_location = [self.boat.latitude, self.boat.longitude]
         
         wind_here_and_now = self.map.return_local_winds(current_location, self.current_time)
@@ -65,6 +76,9 @@ class Travel:
         
         
     def run(self) -> None:
+        """
+        Run the travel from the launching site to the target landing site or until it hits land.
+        """
         max_date = self.start_time + pd.Timedelta(hours=self.max_duration)
         
         while self.current_time < max_date:
@@ -80,6 +94,7 @@ class Travel:
             self.current_time += pd.Timedelta(minutes=self.timestep)
     
     
-    def output_geojson():
+    def output_geojson(self, output_path: str) -> None:
+        
         # print out geojson based on boat data at the end of the trip
         pass
