@@ -40,6 +40,8 @@ class Boat:
         
         self.trajectory = [(latitude, longitude)]
         self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
+        
+        self.has_hit_land = False
     
     
     def speed_due_to_wind(self, current_winds: np.ndarray, bearing: float):
@@ -174,6 +176,8 @@ class Boat:
         """
         # first, update the bearing based on the local position
         self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
+        
+        # TODO find land ahead to avoid it!
         
         # next, add uncertainty to the bearing and split the bearing into x and y
         bearing_with_uncertainty = self.bearing + pytheas.utilities.angle_uncertainty(self.uncertainty_sigma)
