@@ -11,7 +11,7 @@ from typing import Tuple
 
 
 def distance_km(origin: Tuple[float, float], target: Tuple[float, float]) -> float:
-    """Calculates distance in km between two lon/lat points, in km
+    """Calculates distance in km between two lat/lon points, in km
 
     Args:
         origin (Tuple[float, float]): point of origin as [lon, lat]
@@ -20,7 +20,7 @@ def distance_km(origin: Tuple[float, float], target: Tuple[float, float]) -> flo
     Returns:
         float: distance between origin and target
     """
-    return gp.distance(gp.lonlat(*origin), gp.lonlat(*target)).km
+    return gp.distance(*origin, *target).km
 
 
 def bearing_from_latlon(position: Tuple[float, float], target: Tuple[float, float]) -> float:

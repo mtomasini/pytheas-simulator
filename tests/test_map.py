@@ -3,7 +3,7 @@ from pytheas.map import Map
 
 
 def local_test_load_map_data():
-    # WORKED FINE. CHANGED NAME OF TEST TO AVOID AUTOMATIC TESTS
+    # WORKED FINE. CHANGED NAME OF TEST TO AVOID AUTOMATIC TEST INTEGRATION
     WIND_DATA = "/media/mtomasini/LaCie/LIR/Full_data/winds_cerra/"
     CURRENT_DATA = "/media/mtomasini/LaCie/LIR/Full_data/currents_northwest/"
     WAVES_DATA = "/media/mtomasini/LaCie/LIR/Full_data/waves_northwest/"
