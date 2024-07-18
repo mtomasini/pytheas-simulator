@@ -9,7 +9,7 @@ def test_distance_km():
     distance_between_1 = utilities.distance_km(gothenburg, locarno)
     distance_between_2 = utilities.distance_km(locarno, gothenburg)
     
-    assert round(distance_between_1, 0) == 1355.0
+    assert round(distance_between_1, 0) == 1351.0
     assert distance_between_1 == distance_between_2
     
 

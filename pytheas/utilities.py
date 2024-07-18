@@ -20,7 +20,7 @@ def distance_km(origin: Tuple[float, float], target: Tuple[float, float]) -> flo
     Returns:
         float: distance between origin and target
     """
-    return gp.distance(*origin, *target).km
+    return gp.distance(origin, target).km
 
 
 def bearing_from_latlon(position: Tuple[float, float], target: Tuple[float, float]) -> float:
