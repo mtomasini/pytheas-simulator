@@ -261,10 +261,9 @@ class Map:
         r_earth = 6371 # km
 
         # select only currents_data, since if u is None, then v is None too.
-        # selected_radius = self.currents_data.sel(, method = "nearest")
-        selected_radius = self.currents_data.sel(time=self.earliest_time, 
-                                              latitude=slice(position_on_water[0] - radar_radius, position_on_water[0] + radar_radius),
-                                              longitude=slice(position_on_water[1] - radar_radius, position_on_water[1] + radar_radius))
+        data_now = self.currents_data.sel(time=self.earliest_time, method = "nearest")
+        selected_radius = data_now.sel(latitude=slice(position_on_water[0] - radar_radius, position_on_water[0] + radar_radius),
+                                       longitude=slice(position_on_water[1] - radar_radius, position_on_water[1] + radar_radius))
         # calculate whether there is land anywhere
         nan_count = sum(sum(np.isnan(selected_radius.uo.values)))
         isThereLand = False if nan_count == 0 else True
@@ -276,12 +275,13 @@ class Map:
                 (r_earth*np.pi/180)*np.sqrt((x.uo.latitude - position_on_water[0])**2 + (x.uo.longitude - position_on_water[1])**2)*np.cos(position_on_water[0]*np.pi/180))
             idx_lat_closest = distances.where(distances.uo.isnull()).distance.argmin(dim=['latitude', 'longitude'])['latitude'].values
             idx_lon_closest = distances.where(distances.uo.isnull()).distance.argmin(dim=['latitude', 'longitude'])['longitude'].values
+            
             lat_closest = distances.latitude[idx_lat_closest].values
             lon_closest = distances.longitude[idx_lon_closest].values
             
-            # print(lat_closest, lon_closest)
+            print(lat_closest, lon_closest)
 
-            distance_to_land = distances.distance[idx_lon_closest][idx_lat_closest].values
+            distance_to_land = distances.distance[idx_lat_closest][idx_lon_closest].values
             angle_to_land = utilities.bearing_from_latlon(position_on_water, [lat_closest, lon_closest])
 
             return [distance_to_land, angle_to_land]

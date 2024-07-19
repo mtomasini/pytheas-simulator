@@ -168,7 +168,7 @@ class Boat:
         return [0, 0]
     
     
-    def move_boat(self, local_winds: np.ndarray, local_currents: np.ndarray, timestep: int):
+    def move_boat(self, landmarks, local_winds: np.ndarray, local_currents: np.ndarray, timestep: int):
         """Function tha determines the movement of a boat at each time step. It is ran from Travel.
 
         Args:
@@ -180,6 +180,31 @@ class Boat:
         self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
         
         # TODO find land ahead to avoid it!
+        if landmarks[0] is not None:
+            land_angle = np.deg2rad(landmarks[1])
+            # we need to define "ahead", this would be within +/- 45 degrees from the bearing. 
+            left_limit = (self.bearing - np.pi/4 + 2*np.pi) % (2*np.pi)
+            right_limit = (self.bearing + np.pi/4 + 2*np.pi) % (2*np.pi)
+            
+            # the bearing is given as a number between 0 and 2pi, we need to split here. is_ahead is True if:
+            if np.pi/4 <= self.bearing <= 7/4*np.pi:
+                is_ahead = (left_limit <= land_angle <= right_limit)
+            else:
+                is_ahead = (0 <= land_angle <= right_limit) or (left_limit <= land_angle <= 2*np.pi)
+
+            if is_ahead:
+                # in general, if (bearing - land_angle) > 0 , then land is on the left (steering to the right - positive - is necessary). And viceversa.
+                sign_of_steering = np.sign(self.bearing - land_angle)
+                if sign_of_steering != 0:
+                    self.bearing = self.bearing + sign_of_steering * np.pi/2
+                else:
+                    # the case where (bearing - land_angle) = 0 represent land right ahead. In this (hopefully rare) case we just move in the 
+                    # opposite direction and try again...
+                    self.bearing = self.bearing + np.pi    
+            else:
+                pass
+        else:
+            pass
         
         # next, add uncertainty to the bearing and split the bearing into x and y
         bearing_with_uncertainty = self.bearing + pytheas.utilities.angle_uncertainty(self.uncertainty_sigma)

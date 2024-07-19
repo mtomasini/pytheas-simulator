@@ -72,7 +72,8 @@ class Travel:
             self.boat.has_hit_land = True
             return
         
-        self.boat.move_boat(wind_here_and_now, current_here_and_now, self.timestep)
+        landmarks = self.map.find_closest_land(current_location)
+        self.boat.move_boat(landmarks, wind_here_and_now, current_here_and_now, self.timestep)
         
         
     def run(self, verbose: bool = False) -> None:
