@@ -1,5 +1,7 @@
+import cartopy
 import geopy.distance as gp
 import math
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from typing import Tuple
@@ -197,3 +199,17 @@ class Boat:
         self.trajectory.append((new_coordinates.latitude, new_coordinates.longitude))
         
     
+    def plot_trajectory(self, bbox):
+        fig, ax = plt.subplots(subplot_kw={'projection': cartopy.crs.PlateCarree()}, )
+        ax.set_extent([bbox[1], bbox[3], bbox[0], bbox[2]], cartopy.crs.PlateCarree())
+        ax.add_feature(cartopy.feature.OCEAN, zorder=0)
+        ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
+        ax.gridlines(crs=cartopy.crs.PlateCarree(), draw_labels=True,
+                     linewidth=1, color='gray', alpha=0.2, linestyle='--')
+        
+        trajectory = pd.DataFrame(self.trajectory) 
+        ax.plot(trajectory[1], trajectory[0], zorder=10)
+        ax.scatter(self.trajectory[0][1], self.trajectory[0][0], s = 50, marker="<", color="tab:red")
+        ax.scatter(self.target[1], self.target[0], s = 50, marker="X", color="tab:green")
+        
+        plt.show()

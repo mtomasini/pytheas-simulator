@@ -3,7 +3,7 @@ import pandas as pd
 from pytheas.boat import Boat
 from pytheas.map import Map
 from pytheas.travel import Travel
-from pytheas.utilities import calculate_start_of_day 
+from pytheas.utilities import calculate_start_of_day, distance_km
 from parameters import SPEED_POLAR_DIAGRAM_PATH, LEEWAY_POLAR_DIAGRAM_PATH
 
 # initiate parameters
@@ -15,10 +15,10 @@ speed_polar_diagram = pd.read_csv(SPEED_POLAR_DIAGRAM_PATH, sep="\t", index_col=
 leeway_polar_diagram = pd.read_csv(LEEWAY_POLAR_DIAGRAM_PATH, sep="\t", index_col=0)
 
 launching_site = [57.1224, 8.4475] # Limfjorden
-landing_site = [58.0487, 6.6845] # Listafjorden
+landing_site = [58.0236, 7.4554] # Listafjorden [58.0487, 6.6845] #
 
 bounding_box = [56.3, 5.8, 58.8, 13.1]
-start_day = calculate_start_of_day('1995-03-03', launching_site) #pd.Timestamp('1995-03-03')
+start_day = calculate_start_of_day('1993-08-10', launching_site) #pd.Timestamp('1995-03-03')
 max_duration_h = 72
 end_day = start_day + pd.Timedelta(max_duration_h, unit="hours")
 
@@ -40,3 +40,5 @@ dataset = skagerrak_map.winds_data.sel(time=start_day + pd.Timedelta(6, unit="ho
 # initiate travel
 limfjorden_lista = Travel(boat = hjortspring, map = skagerrak_map, start_day=start_day, max_duration = 72, timestep = 15)
 limfjorden_lista.run()
+
+limfjorden_lista.boat.plot_trajectory(bounding_box)
