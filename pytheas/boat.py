@@ -204,7 +204,7 @@ class Boat:
             else:
                 pass
             
-            self.bearing = np.rad2deg(self.bearing) if self.bearing >= 0 else 360 + np.rad2deg(self.bearing)
+            self.bearing = self.bearing if self.bearing >= 0 else 2*np.pi + self.bearing
         else:
             pass
         

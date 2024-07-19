@@ -81,7 +81,7 @@ def angle_uncertainty(sigma=0) -> float:
     """
     angle_error = np.random.normal(0, sigma)
     
-    return angle_error
+    return np.rad2deg(angle_error)
 
 
 def geographic_angle_to_xy(angle: float) -> np.ndarray:

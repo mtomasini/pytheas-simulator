@@ -278,8 +278,6 @@ class Map:
             
             lat_closest = distances.latitude[idx_lat_closest].values
             lon_closest = distances.longitude[idx_lon_closest].values
-            
-            print(lat_closest, lon_closest)
 
             distance_to_land = distances.distance[idx_lat_closest][idx_lon_closest].values
             angle_to_land = utilities.bearing_from_latlon(position_on_water, [lat_closest, lon_closest])
