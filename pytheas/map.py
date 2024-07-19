@@ -3,6 +3,8 @@ import pandas as pd
 from typing import Tuple
 import xarray as xr
 
+from pytheas import utilities
+
 class Map:
     """
     The map object of Pytheas.
@@ -80,7 +82,6 @@ class Map:
     
     
     def load_dataset_winds(self, earliest_time: pd.Timestamp, latest_time: pd.Timestamp):
-        # TODO re-consider that winds longitude is labelled from 0 to 360, instead of -180 to 180
         earliest_year = earliest_time.year
         earliest_month = earliest_time.month
         latest_year = latest_time.year
@@ -244,7 +245,6 @@ class Map:
         Returns:
             float: A wave height.
         """
-        # TODO deal with longitudes around 0
         latitude_minus = location[0] - radius
         latitude_plus = location[0] + radius
         longitude_minus = location[1] - radius
@@ -252,6 +252,40 @@ class Map:
         
         data_now = self.waves_data.sel(time=time, method="nearest")
         wave_height = np.nanmean(data_now.VHM0.sel(latitude=slice(latitude_minus, latitude_plus), 
-                                        longitude=slice(longitude_minus, longitude_plus)).values)
+                                 longitude=slice(longitude_minus, longitude_plus)).values)
         
         return wave_height
+    
+    
+    def find_closest_land(self, position_on_water: Tuple[float, float], radar_radius: float = 0.2):
+        r_earth = 6371 # km
+
+        # select only currents_data, since if u is None, then v is None too.
+        # selected_radius = self.currents_data.sel(, method = "nearest")
+        selected_radius = self.currents_data.sel(time=self.earliest_time, 
+                                              latitude=slice(position_on_water[0] - radar_radius, position_on_water[0] + radar_radius),
+                                              longitude=slice(position_on_water[1] - radar_radius, position_on_water[1] + radar_radius))
+        # calculate whether there is land anywhere
+        nan_count = sum(sum(np.isnan(selected_radius.uo.values)))
+        isThereLand = False if nan_count == 0 else True
+        
+        if isThereLand:
+            # selected_radius = selected_radius.to_dataset()
+            # calculate matrix of distances
+            distances = selected_radius.assign(distance = lambda x: 
+                (r_earth*np.pi/180)*np.sqrt((x.uo.latitude - position_on_water[0])**2 + (x.uo.longitude - position_on_water[1])**2)*np.cos(position_on_water[0]*np.pi/180))
+            idx_lat_closest = distances.where(distances.uo.isnull()).distance.argmin(dim=['latitude', 'longitude'])['latitude'].values
+            idx_lon_closest = distances.where(distances.uo.isnull()).distance.argmin(dim=['latitude', 'longitude'])['longitude'].values
+            lat_closest = distances.latitude[idx_lat_closest].values
+            lon_closest = distances.longitude[idx_lon_closest].values
+            
+            # print(lat_closest, lon_closest)
+
+            distance_to_land = distances.distance[idx_lon_closest][idx_lat_closest].values
+            angle_to_land = utilities.bearing_from_latlon(position_on_water, [lat_closest, lon_closest])
+
+            return [distance_to_land, angle_to_land]
+        
+        else:
+            return [None, None]
+        
