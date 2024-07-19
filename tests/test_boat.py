@@ -108,7 +108,8 @@ def test_move_boat():
     # with slight Northern winds, bearing N, and currents at 45 degrees, the boat should move towards NNE
     winds = np.array([0.05, 0])
     currents = np.array([0.5, 0.5])
-    test_boat.move_boat(winds, currents, timestep)
+    landmarks = [None, None]
+    test_boat.move_boat(landmarks, winds, currents, timestep)
     assert len(test_boat.trajectory) == 2
     assert test_boat.trajectory[-1][0] > old_latitude
     assert test_boat.trajectory[-1][1] > old_longitude
@@ -118,7 +119,17 @@ def test_move_boat():
     currents = np.array([-0.5, 0.5])
     old_latitude = test_boat.latitude
     old_longitude = test_boat.longitude
-    test_boat.move_boat(winds, currents, timestep)
+    test_boat.move_boat(landmarks, winds, currents, timestep)
     assert len(test_boat.trajectory) == 3
     assert test_boat.trajectory[-1][0] > old_latitude
     assert test_boat.trajectory[-1][1] < old_longitude
+    
+    winds = np.array([0.0, 0.0])
+    currents = np.array([0.0, 0.0])
+    old_latitude = test_boat.latitude
+    old_longitude = test_boat.longitude
+    landmarks = [5, 10]
+    old_bearing = test_boat.bearing
+    test_boat.move_boat(landmarks, winds, currents, timestep)
+    assert len(test_boat.trajectory) == 4
+    assert test_boat.bearing < old_bearing - 45
