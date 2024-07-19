@@ -1,4 +1,6 @@
 import numpy as np
+import pandas as pd
+
 from pytheas import utilities
 
 def test_distance_km():
@@ -87,3 +89,15 @@ def test_direction_from_displacement():
     displacement = np.array([5, 0])
     bearing = utilities.direction_from_displacement(displacement)
     assert bearing - 0 < 1e-8
+    
+    
+def test_is_it_night():
+    test_date = pd.Timestamp('2024-07-19 21:55:39.52')
+    test_position = [58.0, 12.0]
+    is_night = utilities.is_it_night(test_date, test_position)
+    assert is_night == False
+    
+    test_date = pd.Timestamp('1989-11-21 03:03:30')
+    test_position = [46.1670, 8.7943]
+    is_night = utilities.is_it_night(test_date, test_position)
+    assert is_night == True

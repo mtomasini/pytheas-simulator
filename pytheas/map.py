@@ -35,10 +35,6 @@ class Map:
         self.winds_data = self.load_dataset_winds(earliest_time, latest_time)
         self.currents_data = self.load_dataset_currents(earliest_time, latest_time)
         self.waves_data = self.load_dataset_waves(earliest_time, latest_time)
-        
-        
-        # TODO measure data as averages of the boat with a radius of 0.05 around! 0.05 * 111km = ~5.55 km
-        
     
     
     def load_dataset_currents(self, earliest_time: pd.Timestamp, latest_time: pd.Timestamp):

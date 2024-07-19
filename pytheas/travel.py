@@ -75,7 +75,7 @@ class Travel:
         self.boat.move_boat(wind_here_and_now, current_here_and_now, self.timestep)
         
         
-    def run(self) -> None:
+    def run(self, verbose: bool = False) -> None:
         """
         Run the travel from the launching site to the target landing site or until it hits land.
         """
@@ -92,8 +92,9 @@ class Travel:
             
             self.step()
             self.current_time += pd.Timedelta(minutes=self.timestep)
-            
-        print(f"Travel finished! \n Was land hit? {self.boat.has_hit_land}! \n Was the trip completed? {self.is_completed}! \n Distance from target: {distance_from_target} km")
+        
+        if verbose:
+            print(f"Travel finished! \n Was land hit? {self.boat.has_hit_land}! \n Was the trip completed? {self.is_completed}! \n Distance from target: {distance_from_target} km")
     
     
     def output_geojson(self, output_path: str) -> None:

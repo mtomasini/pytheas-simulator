@@ -19,7 +19,7 @@ landing_site = [58.0236, 7.4554] # Listafjorden [58.0487, 6.6845] #
 
 bounding_box = [56.3, 5.8, 58.8, 13.1]
 start_day = calculate_start_of_day('1993-08-10', launching_site) #pd.Timestamp('1995-03-03')
-max_duration_h = 72
+max_duration_h = 144
 end_day = start_day + pd.Timedelta(max_duration_h, unit="hours")
 
 
