@@ -82,13 +82,13 @@ def test_direction_from_displacement():
     bearing = utilities.direction_from_displacement(displacement)
     assert bearing - 45 < 1e-8
     
-    displacement = np.array([0.0000001, 5])
+    displacement = np.array([0, 5])
     bearing = utilities.direction_from_displacement(displacement)
-    assert bearing - 90 < 1e-8
+    assert bearing - 0 < 1e-8
     
     displacement = np.array([5, 0])
     bearing = utilities.direction_from_displacement(displacement)
-    assert bearing - 0 < 1e-8
+    assert bearing - 90 < 1e-8
     
     
 def test_is_it_night():
