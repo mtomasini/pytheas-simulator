@@ -119,9 +119,8 @@ def difference_between_geographic_angles(bearing: float, angle_wind: float) -> f
 
 def direction_from_displacement(displacement: np.ndarray) -> float:
     
-    bearing_rad = np.arctan(displacement[1]/displacement[0])
-    
-    bearing = np.rad2deg(bearing_rad)
+    bearing_rad = np.arctan2(displacement[1], displacement[0])
+    bearing = (90 - np.rad2deg(bearing_rad)) % 360
     
     return bearing
 

@@ -68,11 +68,12 @@ class Travel:
         wind_here_and_now = self.map.return_local_winds(current_location, self.current_time)
         current_here_and_now = self.map.return_local_currents(current_location, self.current_time)
         
-        if np.isnan(current_here_and_now[0]):
+        if np.isnan(current_here_and_now[0]) or np.isnan(wind_here_and_now[0]):
             self.boat.has_hit_land = True
             return
         
         landmarks = self.map.find_closest_land(current_location)
+        
         self.boat.move_boat(landmarks, wind_here_and_now, current_here_and_now, self.timestep)
         
         

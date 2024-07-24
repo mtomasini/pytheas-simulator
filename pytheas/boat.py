@@ -181,30 +181,32 @@ class Boat:
         
         # TODO find land ahead to avoid it!
         if landmarks[0] is not None:
-            land_angle = np.deg2rad(landmarks[1])
+            land_angle = landmarks[1]
             # we need to define "ahead", this would be within +/- 45 degrees from the bearing. 
-            left_limit = (self.bearing - np.pi/4 + 2*np.pi) % (2*np.pi)
-            right_limit = (self.bearing + np.pi/4 + 2*np.pi) % (2*np.pi)
+            left_limit = (self.bearing - 45) % 360 
+            right_limit = (self.bearing + 45) % 360 
             
             # the bearing is given as a number between 0 and 2pi, we need to split here. is_ahead is True if:
-            if np.pi/4 <= self.bearing <= 7/4*np.pi:
+            if 45 <= self.bearing <= 315:
                 is_ahead = (left_limit <= land_angle <= right_limit)
             else:
-                is_ahead = (0 <= land_angle <= right_limit) or (left_limit <= land_angle <= 2*np.pi)
+                is_ahead = (0 <= land_angle <= right_limit) or (left_limit <= land_angle <= 360)
+                
+           #  print(f"bearing is {self.bearing}, closest land is at {landmarks[1]}. The value of is_ahead is {is_ahead}")
 
             if is_ahead:
                 # in general, if (bearing - land_angle) > 0 , then land is on the left (steering to the right - positive - is necessary). And viceversa.
                 sign_of_steering = np.sign(self.bearing - land_angle)
                 if sign_of_steering != 0:
-                    self.bearing = self.bearing + sign_of_steering * np.pi/2
+                    self.bearing = self.bearing + sign_of_steering * 90
                 else:
                     # the case where (bearing - land_angle) = 0 represent land right ahead. In this (hopefully rare) case we just move in the 
                     # opposite direction and try again...
-                    self.bearing = self.bearing + np.pi    
+                    self.bearing = self.bearing + 180 
             else:
                 pass
             
-            self.bearing = self.bearing if self.bearing >= 0 else 2*np.pi + self.bearing
+            self.bearing = self.bearing % 360
         else:
             pass
         
@@ -215,6 +217,7 @@ class Boat:
             displacement_xy = self.calculate_displacement(local_winds, local_currents, bearing_with_uncertainty, timestep)
             direction_of_displacement = pytheas.utilities.direction_from_displacement(displacement_xy)
             distance_of_displacement = np.linalg.norm(displacement_xy)
+            
             new_coordinates = gp.distance(distance_of_displacement).destination((self.latitude, self.longitude), bearing = direction_of_displacement)
             
         else:
