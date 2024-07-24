@@ -93,12 +93,12 @@ def test_direction_from_displacement():
     
 def test_is_it_night():
     # TODO this throws an error on Github!!!! WHY?
-    # test_date = pd.Timestamp('2024-07-19 21:50:00') #21:55:39')
-    # test_position = [58.0, 12.0]
-    # is_night = utilities.is_it_night(test_date, test_position)
-    # assert is_night == False ## ERROR HERE
-    
-    test_date = pd.Timestamp('1989-11-21 03:03:30')
-    test_position = [46.1670, 8.7943]
+    test_date = pd.Timestamp('2024-07-19 21:55:39') #21:55:39')
+    test_position = [58.0, 12.0]
     is_night = utilities.is_it_night(test_date, test_position)
-    assert is_night == True
+    assert is_night == False ## ERROR HERE
+    
+    test_date_2 = pd.Timestamp('1989-11-21 03:03:30')
+    test_position_2 = [46.1670, 8.7943]
+    is_night_2 = utilities.is_it_night(test_date_2, test_position_2)
+    assert is_night_2 == True
