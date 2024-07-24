@@ -217,5 +217,6 @@ def is_it_night(date_and_time: pd.Timestamp, position: Tuple[float, float], type
     sunrise = calculate_start_of_day(what_day, position, type_of_twilight)
     sunset = calculate_end_of_day(what_day, position, type_of_twilight)
     
-    is_night = (date_and_time < sunrise) or (sunset <= date_and_time)
+    is_night = (date_and_time < sunrise) or (sunset < date_and_time)
+    
     return is_night
