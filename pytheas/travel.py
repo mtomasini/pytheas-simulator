@@ -23,14 +23,14 @@ class Travel:
         twilight_of_stops (str): Determines whether tips start and end at sunrise or twilight. Options are "sun" (sunrise), "civil", "nautical" and "astronomical".
         current_time (pd.Timestamp): Keeps track of the current time in the travel.
         is_completed (bool): Marks whether the travel is completed within tolerance. 
-        tolerance (float): Tolerance distance from target to be considered "arrived" (in km). Defaults to 0.2 km.
+        tolerance (float): Tolerance distance from target to be considered "arrived" (in km). Defaults to 1 km.
     """
     
     def __init__(self, boat: Boat, map: Map,
                  start_day: str,
                  max_duration: int,
                  timestep: int,
-                 tolerance_distance: float = 0.2,
+                 tolerance_distance: float = 1,
                  twilights_of_stops: str = 'sun'):
         """
         Create a new travel.
@@ -41,7 +41,7 @@ class Travel:
             start_day (pd.Timestamp): Day in which the travel is started.
             max_duration (int): Maximal duration of the travel (in hours).
             timestep (int): Time between subsequent steps (in minutes).
-            tolerance_distance (float, optional): Distance from target within which a travel is considered finished (in km). Defaults to 0.2.
+            tolerance_distance (float, optional): Distance from target within which a travel is considered finished (in km). Defaults to 1 km.
             twilights_of_stops (str, optional): Determines whether tips start and end at sunrise or twilight. Options are "sun" (sunrise), "civil", "nautical" and "astronomical".. Defaults to 'sun'.
         """
         self.boat = boat
@@ -74,12 +74,15 @@ class Travel:
         
         landmarks = self.map.find_closest_land(current_location)
         
-        self.boat.move_boat(landmarks, wind_here_and_now, current_here_and_now, self.timestep)
+        self.boat.move_boat(landmarks, wind_here_and_now, current_here_and_now, self.timestep, self.tolerance)
         
         
     def run(self, verbose: bool = False) -> None:
         """
         Run the travel from the launching site to the target landing site or until it hits land.
+        
+        Args:
+            verbose (bool): Boolean determining whether to print a final short summary of the trip.
         """
         max_date = self.start_time + pd.Timedelta(hours=self.max_duration)
         

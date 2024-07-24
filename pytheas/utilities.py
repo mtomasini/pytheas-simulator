@@ -101,6 +101,16 @@ def geographic_angle_to_xy(angle: float) -> np.ndarray:
 
 
 def difference_between_geographic_angles(bearing: float, angle_wind: float) -> float:
+    """
+    Calculate the difference between geographic angles. Used to turn the absolute wind angle into the wind angle with the respect to the boat.
+
+    Args:
+        bearing (float): Bearing of the boat (in degrees).
+        angle_wind (float): Absolute angle of the wind (in degrees).
+
+    Returns:
+        float: Returns the angle of the wind with respect to the boat (in degrees).
+    """
     # first, turn angle into the range -180, 180
     if bearing > 180:
         bearing -= 360
@@ -118,7 +128,15 @@ def difference_between_geographic_angles(bearing: float, angle_wind: float) -> f
 
 
 def direction_from_displacement(displacement: np.ndarray) -> float:
-    
+    """
+    Calculates the absolute direction of a displacement in given as a vector (x, y).
+
+    Args:
+        displacement (np.ndarray): Array containing displacement (in km) in the x and y axis.
+
+    Returns:
+        float: Angle of displacement with respect to the North (in degrees).
+    """
     bearing_rad = np.arctan2(displacement[1], displacement[0])
     bearing = (90 - np.rad2deg(bearing_rad)) % 360
     

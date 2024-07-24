@@ -82,17 +82,28 @@ def test_direction_from_displacement():
     bearing = utilities.direction_from_displacement(displacement)
     assert bearing - 45 < 1e-8
     
+    # a movement only on the y axis has bearing 0 (= N)
     displacement = np.array([0, 5])
     bearing = utilities.direction_from_displacement(displacement)
     assert bearing - 0 < 1e-8
     
+    # a movement only on the x axis has bearing 90 (= E)
     displacement = np.array([5, 0])
     bearing = utilities.direction_from_displacement(displacement)
     assert bearing - 90 < 1e-8
     
+    # a movement only on the x axis (negative) has bearing 270 (W)
+    displacement = np.array([-5, 0])
+    bearing = utilities.direction_from_displacement(displacement)
+    assert bearing - 270 < 1e-8
+    
+    # a movement only in -1, 1 is 315 degrees
+    displacement = np.array([-1, 1])
+    bearing = utilities.direction_from_displacement(displacement)
+    assert bearing - 315 < 1e-8
+    
     
 def test_is_it_night():
-    # TODO this throws an error on Github!!!! WHY?
     test_date = pd.Timestamp('1995-03-03 12:00:00')
     test_position = [58.0, 12.0]
     is_night = utilities.is_it_night(test_date, test_position)

@@ -168,19 +168,24 @@ class Boat:
         return [0, 0]
     
     
-    def move_boat(self, landmarks, local_winds: np.ndarray, local_currents: np.ndarray, timestep: int):
+    def move_boat(self, landmarks: Tuple[float, float], 
+                  local_winds: np.ndarray, local_currents: np.ndarray, 
+                  timestep: int, accepted_distance_from_target: float = 1):
         """Function tha determines the movement of a boat at each time step. It is ran from Travel.
 
         Args:
-            local_winds (np.ndarray): array containing the speed and geographic angle of the wind.
-            local_currents (np.ndarray): array containing Northward and Eastward components of sea currents speed.
-            uncertainty_sigma (float, optional): uncertainty of bearing due to navigational error. Defaults to 0.0.
+            landmarks (Tuple[float, float]: List containing the distance to the closest land (in km) and the direction to the closest land (in degrees)).
+            local_winds (np.ndarray): Array containing the speed and geographic angle of the wind.
+            local_currents (np.ndarray): Array containing Northward and Eastward components of sea currents speed.
+            timestep (int): Time step between steps of movement, in minutes.
+            acceted_distance_from_target (float): Distance from target that does not trigger stirring away from land (if target is not distant, the boat should keep going towards it, not stir away.)
         """
         # first, update the bearing based on the local position
         self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
+        distance_from_target = pytheas.utilities.distance_km([self.latitude, self.longitude], self.target)
         
-        # TODO find land ahead to avoid it!
-        if landmarks[0] is not None:
+        # if there is land ahead stir away, but only if we're not close to the target! If we're close to the target, let hit either target or land.
+        if landmarks[0] is not None and distance_from_target:
             land_angle = landmarks[1]
             # we need to define "ahead", this would be within +/- 45 degrees from the bearing. 
             left_limit = (self.bearing - 45) % 360 
@@ -229,7 +234,13 @@ class Boat:
         self.trajectory.append((new_coordinates.latitude, new_coordinates.longitude))
         
     
-    def plot_trajectory(self, bbox):
+    def plot_trajectory(self, bbox: Tuple[float, float, float, float]) -> None:
+        """
+        Quick trajectory plot utility, to show a simulated trajectory. 
+
+        Args:
+            bbox (Tuple[float, float, float, float]): list containing [min latitude, min longitude, max latitude, max longitude] for map plotting.
+        """
         fig, ax = plt.subplots(subplot_kw={'projection': cartopy.crs.PlateCarree()}, )
         ax.set_extent([bbox[1], bbox[3], bbox[0], bbox[2]], cartopy.crs.PlateCarree())
         ax.add_feature(cartopy.feature.OCEAN, zorder=0)

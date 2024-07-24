@@ -257,7 +257,7 @@ class Map:
         return wave_height
     
     
-    def find_closest_land(self, position_on_water: Tuple[float, float], radar_radius: float = 0.2):
+    def find_closest_land(self, position_on_water: Tuple[float, float], radar_radius: float = 0.2) -> Tuple[float, float]:
         r_earth = 6371 # km
 
         # select only currents_data, since if u is None, then v is None too.
