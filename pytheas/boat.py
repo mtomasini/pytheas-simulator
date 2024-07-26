@@ -39,8 +39,10 @@ class Boat:
         self.uncertainty_sigma = uncertainty_sigma
         self.speed_polar_diagram = speed_polar_diagram
         self.leeway_polar_diagram = leeway_polar_diagram
+        self.route_to_take = [] # TODO implement routing
         
         self.trajectory = [(latitude, longitude)]
+        self.distance = 0 # TODO function to update distance
         self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
         
         self.has_hit_land = False

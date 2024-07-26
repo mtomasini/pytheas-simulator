@@ -41,4 +41,5 @@ skagerrak_map = Map(bounding_box, earliest_time=start_day, latest_time=end_day,
 limfjorden_lista = Travel(boat = hjortspring, map = skagerrak_map, start_day=start_day, max_duration = max_duration_h, timestep = 15)
 limfjorden_lista.run(verbose=True)
 
-limfjorden_lista.boat.plot_trajectory(bounding_box)
+# limfjorden_lista.boat.plot_trajectory(bounding_box)
+output = limfjorden_lista.output_geojson('./Outputs/test_trajectory')

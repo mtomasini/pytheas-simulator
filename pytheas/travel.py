@@ -1,3 +1,4 @@
+import json
 import numpy as np
 import pandas as pd
 from typing import Tuple
@@ -57,6 +58,13 @@ class Travel:
         self.is_completed = False
         self.tolerance = tolerance_distance
         
+        self.encountered_currents = []
+        self.encountered_winds = []
+        self.encountered_waves = []
+        
+        self.times_of_stops = []
+        self.stop_coords = []
+        
     
     
     def step(self) -> None:
@@ -67,6 +75,11 @@ class Travel:
         
         wind_here_and_now = self.map.return_local_winds(current_location, self.current_time)
         current_here_and_now = self.map.return_local_currents(current_location, self.current_time)
+        waves_here_and_now = self.map.return_local_waves(current_location, self.current_time)
+        
+        self.encountered_winds.append(wind_here_and_now.tolist())
+        self.encountered_currents.append(current_here_and_now.tolist())
+        self.encountered_waves.append(waves_here_and_now.tolist())
         
         if np.isnan(current_here_and_now[0]) or np.isnan(wind_here_and_now[0]):
             self.boat.has_hit_land = True
@@ -102,7 +115,47 @@ class Travel:
             print(f"Travel finished! \n Was land hit? {self.boat.has_hit_land}! \n Was the trip completed? {self.is_completed}! \n Distance from target: {distance_from_target} km")
     
     
-    def output_geojson(self, output_path: str) -> None:
+    def output_geojson(self, output_path: str) -> dict:
+        
+        duration_in_seconds = (self.current_time - self.start_time).total_seconds()
         
         # print out geojson based on boat data at the end of the trip
-        pass
+        GeoJSON_format = {
+            "type": "FeatureCollection",
+            "features": []
+        }
+        
+        GeoJSON_format["features"].append(
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": self.boat.trajectory,
+                },
+                "properties": {
+                    "start_date": self.start_time.strftime('%Y-%m-%dT%H:%M:%S'),
+                    "stop_date": self.current_time.strftime('%Y-%m-%dT%H:%M:%S'),
+                    "timestep (m)": self.timestep,
+                    "distance (km)": self.boat.distance, 
+                    "duration (h)": duration_in_seconds / 3600, # duration in hours
+                    "mean_speed (km/h)": self.boat.distance / (duration_in_seconds / 3600),
+                    "mean_speed (m/s)": self.boat.distance*1000 / duration_in_seconds,
+                    "launching_site": self.launching_site,
+                    "landing_site": self.target,
+                    "route": self.boat.route_to_take,
+                    "trip_winds": self.encountered_winds,
+                    "trip_currents": self.encountered_currents,
+                    "trip_waves": self.encountered_waves,
+                    "twilight_convention": self.twilight_of_stops,
+                    "stop_times": [(lambda x: x.strftime('%Y-%m-%dT%H:%M:%S'))(x) for x in self.times_of_stops],
+                    "stop_coords": self.stop_coords,
+                    "hit_land": self.boat.has_hit_land,
+                    "is_completed": self.is_completed,
+                }
+            }
+        )
+        
+        with open(f'{output_path}.json','w') as file:
+            json.dump(GeoJSON_format, file, indent=4)
+        
+        return GeoJSON_format
