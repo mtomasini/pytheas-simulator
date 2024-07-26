@@ -42,7 +42,7 @@ class Boat:
         self.route_to_take = [] # TODO implement routing
         
         self.trajectory = [(latitude, longitude)]
-        self.distance = 0 # TODO function to update distance
+        self.distance = 0
         self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
         
         self.has_hit_land = False
@@ -139,7 +139,7 @@ class Boat:
     
     def calculate_displacement(self, local_winds: np.ndarray, local_currents: np.ndarray,
                                bearing: float, timestep: int) -> np.ndarray:
-        """Function to calculate the displacement of a boat from its current position given winds, currents and bearing.
+        """Function to calculate the displacement in km of a boat from its current position given winds, currents and bearing.
 
         Args:
             local_winds (np.ndarray): array containing speed and direction of the wind in the local position.
@@ -159,7 +159,7 @@ class Boat:
         timestep_seconds = timestep * 60.
         wind_dxy = paddling_speed*movement_angle_dxy*timestep_seconds # wind_dxy in meters
         currents_dxy = local_currents*timestep_seconds
-        displacement_dxy = (wind_dxy + currents_dxy) / 1000
+        displacement_dxy = (wind_dxy + currents_dxy) / 1000 # displacement_dxy in km.
         
         return displacement_dxy
     
@@ -234,6 +234,7 @@ class Boat:
         self.latitude = new_coordinates.latitude
         self.longitude = new_coordinates.longitude
         self.trajectory.append((new_coordinates.latitude, new_coordinates.longitude))
+        self.distance += distance_of_displacement # BUG This seems to accumulate way too much distance by the end. 
         
     
     def plot_trajectory(self, bbox: Tuple[float, float, float, float]) -> None:
