@@ -3,7 +3,7 @@ import pandas as pd
 from pytheas.boat import Boat
 from pytheas.map import Map
 from pytheas.travel import Travel
-from pytheas.utilities import calculate_start_of_day, distance_km
+from pytheas.utilities import calculate_start_of_day
 from parameters import SPEED_POLAR_DIAGRAM_PATH, LEEWAY_POLAR_DIAGRAM_PATH
 
 # initiate parameters
@@ -22,20 +22,16 @@ start_day = calculate_start_of_day('1995-07-15', launching_site) #pd.Timestamp('
 max_duration_h = 72
 end_day = start_day + pd.Timedelta(max_duration_h, unit="hours")
 
-
-# initiate boat
-hjortspring = Boat('hjortspring', latitude=launching_site[0], longitude=launching_site[1],
-                   target=landing_site, speed_polar_diagram=speed_polar_diagram, leeway_polar_diagram=leeway_polar_diagram)
-
 # initiate map
 skagerrak_map = Map(bounding_box, earliest_time=start_day, latest_time=end_day, 
                     wind_data_path = WIND_DATA, current_data_path=CURRENT_DATA, waves_data_path=WAVES_DATA)
 
-# dataset = skagerrak_map.winds_data.sel(time=start_day + pd.Timedelta(6, unit="hours"), method="nearest")
+# find closest water point to launching site
+launching_site_water = skagerrak_map.find_closest_water(launching_site)
 
-# point = [57.3, 7.1]
-
-# wind_mean = dataset.where((dataset.latitude >= point[0] - 0.05) & (dataset.latitude <= point[0] + 0.05) & (dataset.longitude >= point[1] - 0.05) & (dataset.longitude <= point[1] + 0.05), drop=True)
+# initiate boat
+hjortspring = Boat('hjortspring', latitude=launching_site_water[0], longitude=launching_site_water[1],
+                   target=landing_site, speed_polar_diagram=speed_polar_diagram, leeway_polar_diagram=leeway_polar_diagram)
 
 # initiate travel
 limfjorden_lista = Travel(boat = hjortspring, map = skagerrak_map, start_day = start_day, max_duration = max_duration_h, timestep = 15, night_travel=False)

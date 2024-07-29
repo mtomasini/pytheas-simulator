@@ -258,6 +258,16 @@ class Map:
     
     
     def find_closest_land(self, position_on_water: Tuple[float, float], radar_radius: float = 0.2) -> Tuple[float, float]:
+        """
+        Find land closest to a point in water. 
+
+        Args:
+            position_on_water (Tuple[float, float]): Position on the water in latitude / longitude.
+            radar_radius (float, optional): Radius within which to look for land, in degrees. Defaults to 0.2 degrees.
+
+        Returns:
+            Tuple[float, float]: Distance from closest land and angle to closest land.
+        """
         r_earth = 6371 # km
 
         # select only currents_data, since if u is None, then v is None too.
@@ -286,4 +296,40 @@ class Map:
         
         else:
             return [None, None]
+       
         
+    def find_closest_water(self, position_on_land: Tuple[float, float], radar_radius: float = 10) -> Tuple[float, float]:
+        """
+        Find coordinates in water closest to a point on land.
+
+        Args:
+            position_on_land (Tuple[float, float]): Position on land in lon/lat format.
+            radar_radius (float, optional): Radius within which to look for water, in degrees. Defaults to 10 degrees.
+
+        Returns:
+            Tuple[float, float]: Lat/lon of closest point.
+        """
+        r_earth = 6371 # km
+
+        # select only currents_data, since if u is None, then v is None too.
+        data_now = self.currents_data.sel(time=self.earliest_time, method = "nearest")
+        selected_radius = data_now.sel(latitude=slice(position_on_land[0] - radar_radius, position_on_land[0] + radar_radius),
+                                        longitude=slice(position_on_land[1] - radar_radius, position_on_land[1] + radar_radius))
+        # calculate whether there is land anywhere
+        values_count = sum(sum(selected_radius.uo.notnull().values))
+        isThereWater = False if values_count == 0 else True
+            
+        if isThereWater:
+            distances = selected_radius.assign(distance = lambda x: 
+                (r_earth*np.pi/180)*np.sqrt((x.uo.latitude - position_on_land[0])**2 + 
+                                            (x.uo.longitude - position_on_land[1])**2)*np.cos(position_on_land[0]*np.pi/180))
+            idx_lat_closest = distances.where(distances.uo.notnull()).distance.argmin(dim=['latitude', 'longitude'])['latitude'].values
+            idx_lon_closest = distances.where(distances.uo.notnull()).distance.argmin(dim=['latitude', 'longitude'])['longitude'].values
+                
+            lat_closest = distances.latitude[idx_lat_closest].values
+            lon_closest = distances.longitude[idx_lon_closest].values
+
+            return [lat_closest.item(), lon_closest.item()]
+            
+        else:
+            return [None, None]
