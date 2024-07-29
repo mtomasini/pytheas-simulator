@@ -24,14 +24,14 @@ class Travel:
         twilight_of_stops (str): Determines whether tips start and end at sunrise or twilight. Options are "sun" (sunrise), "civil", "nautical" and "astronomical".
         current_time (pd.Timestamp): Keeps track of the current time in the travel.
         is_completed (bool): Marks whether the travel is completed within tolerance. 
-        tolerance (float): Tolerance distance from target to be considered "arrived" (in km). Defaults to 1 km.
+        tolerance (float): Tolerance distance from target to be considered "arrived" (in km). Defaults to 3 km, a distance within which a boat travelling at 3 m/s can travel in 15 minutes.
     """
     
     def __init__(self, boat: Boat, map: Map,
                  start_day: str,
                  max_duration: int,
                  timestep: int,
-                 tolerance_distance: float = 1,
+                 tolerance_distance: float = 3,
                  twilights_of_stops: str = 'sun'):
         """
         Create a new travel.
@@ -107,6 +107,7 @@ class Travel:
             distance_from_target = distance_km(self.boat.trajectory[-1], self.boat.target)
             if distance_from_target < self.tolerance:
                 self.is_completed = True
+                break
             
             self.step()
             self.current_time += pd.Timedelta(minutes=self.timestep)
@@ -116,6 +117,15 @@ class Travel:
     
     
     def output_geojson(self, output_path: str) -> dict:
+        """
+        Save GeoJSON file of the travel and return it.
+
+        Args:
+            output_path (str): filepath for output.
+
+        Returns:
+            dict: GeoJSON of the travel containing various data.
+        """
         
         duration_in_seconds = (self.current_time - self.start_time).total_seconds()
         

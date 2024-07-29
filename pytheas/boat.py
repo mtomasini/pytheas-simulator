@@ -173,7 +173,7 @@ class Boat:
     def move_boat(self, landmarks: Tuple[float, float], 
                   local_winds: np.ndarray, local_currents: np.ndarray, 
                   timestep: int, accepted_distance_from_target: float = 1):
-        """Function tha determines the movement of a boat at each time step. It is ran from Travel.
+        """Function tha determines the movement of a boat at each time step. It runs from Travel.
 
         Args:
             landmarks (Tuple[float, float]: List containing the distance to the closest land (in km) and the direction to the closest land (in degrees)).
@@ -186,21 +186,19 @@ class Boat:
         self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
         distance_from_target = pytheas.utilities.distance_km([self.latitude, self.longitude], self.target)
         
-        # if there is land ahead stir away, but only if we're not close to the target! If we're close to the target, let hit either target or land.
-        if landmarks[0] is not None and distance_from_target:
+        # if there is land ahead stir away, but only if we're not close to the target! If we're less than 20 km away from the target, let hit either target or land.
+        if (landmarks[0] is not None) and (distance_from_target < 20):
             land_angle = landmarks[1]
             # we need to define "ahead", this would be within +/- 45 degrees from the bearing. 
             left_limit = (self.bearing - 45) % 360 
             right_limit = (self.bearing + 45) % 360 
             
-            # the bearing is given as a number between 0 and 2pi, we need to split here. is_ahead is True if:
+            # the bearing is given as a number between 0 and 360, we need to split here. is_ahead is True if:
             if 45 <= self.bearing <= 315:
                 is_ahead = (left_limit <= land_angle <= right_limit)
             else:
                 is_ahead = (0 <= land_angle <= right_limit) or (left_limit <= land_angle <= 360)
                 
-           #  print(f"bearing is {self.bearing}, closest land is at {landmarks[1]}. The value of is_ahead is {is_ahead}")
-
             if is_ahead:
                 # in general, if (bearing - land_angle) > 0 , then land is on the left (steering to the right - positive - is necessary). And viceversa.
                 sign_of_steering = np.sign(self.bearing - land_angle)
@@ -234,7 +232,7 @@ class Boat:
         self.latitude = new_coordinates.latitude
         self.longitude = new_coordinates.longitude
         self.trajectory.append((new_coordinates.latitude, new_coordinates.longitude))
-        self.distance += distance_of_displacement # BUG This seems to accumulate way too much distance by the end. 
+        self.distance += distance_of_displacement
         
     
     def plot_trajectory(self, bbox: Tuple[float, float, float, float]) -> None:
