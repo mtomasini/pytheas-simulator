@@ -31,6 +31,7 @@ class Travel:
                  start_day: str,
                  max_duration: int,
                  timestep: int,
+                 night_travel: bool = False,
                  tolerance_distance: float = 3,
                  twilights_of_stops: str = 'sun'):
         """
@@ -52,6 +53,7 @@ class Travel:
         self.launching_site = [boat.latitude, boat.longitude]
         self.start_time = calculate_start_of_day(start_day, self.launching_site, type_of_twilight=twilights_of_stops)
         self.target = boat.target
+        self.night_travel = night_travel
         self.twilight_of_stops = twilights_of_stops
         
         self.current_time = self.start_time
@@ -85,9 +87,27 @@ class Travel:
             self.boat.has_hit_land = True
             return
         
-        landmarks = self.map.find_closest_land(current_location)
-        
-        self.boat.move_boat(landmarks, wind_here_and_now, current_here_and_now, self.timestep, self.tolerance)
+        if self.night_travel:
+            sunrise = calculate_start_of_day(self.current_time.strftime('%Y-%m-%d'), current_location, type_of_twilight=self.twilight_of_stops)
+            sunset = calculate_end_of_day(self.current_time.strftime('%Y-%m-%d'), current_location, type_of_twilight=self.twilight_of_stops)
+            
+            if sunrise <= self.current_time < sunset:
+                landmarks = self.map.find_closest_land(current_location)
+                self.boat.move_boat(landmarks, wind_here_and_now, current_here_and_now, self.timestep, self.tolerance)
+            else:
+                # save stop position and time if this was not already saved last loop
+                if len(self.stop_coords) > 0:
+                    if self.stop_coords[-1] != current_location:
+                        self.stop_coords.append(current_location)
+                        self.times_of_stops.append(self.current_time)
+                else:
+                    self.stop_coords.append(current_location)    
+                    self.times_of_stops.append(self.current_time)
+                        
+                
+        else:
+            landmarks = self.map.find_closest_land(current_location)
+            self.boat.move_boat(landmarks, wind_here_and_now, current_here_and_now, self.timestep, self.tolerance)
         
         
     def run(self, verbose: bool = False) -> None:
@@ -113,7 +133,8 @@ class Travel:
             self.current_time += pd.Timedelta(minutes=self.timestep)
         
         if verbose:
-            print(f"Travel finished! \n Was land hit? {self.boat.has_hit_land}! \n Was the trip completed? {self.is_completed}! \n Distance from target: {distance_from_target} km")
+            duration = round((self.current_time - self.start_time).total_seconds() / 3600, 2)
+            print(f"Travel finished after {duration} hours! \n Was land hit? {self.boat.has_hit_land}! \n Was the trip completed? {self.is_completed}! \n Distance from target: {distance_from_target} km")
     
     
     def output_geojson(self, output_path: str) -> dict:
@@ -152,6 +173,7 @@ class Travel:
                     "mean_speed (m/s)": self.boat.distance*1000 / duration_in_seconds,
                     "launching_site": self.launching_site,
                     "landing_site": self.target,
+                    "night_travel": self.night_travel,
                     "route": self.boat.route_to_take,
                     "trip_winds": self.encountered_winds,
                     "trip_currents": self.encountered_currents,

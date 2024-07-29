@@ -18,7 +18,7 @@ launching_site = [57.1224, 8.4475]# [51.566722, 3.261733] # Limfjorden
 landing_site = [58.0487, 6.6845] #[52.055910, 1.555690] # Listafjorden [58.0236, 7.4554] #
 
 bounding_box = [56.3, 5.8, 58.8, 13.1] #[49.806087, 0.840002, 54.935397, 7.904663]
-start_day = calculate_start_of_day('1995-07-18', launching_site) #pd.Timestamp('1995-03-03')
+start_day = calculate_start_of_day('1995-07-15', launching_site) #pd.Timestamp('1995-03-03')
 max_duration_h = 72
 end_day = start_day + pd.Timedelta(max_duration_h, unit="hours")
 
@@ -38,8 +38,8 @@ skagerrak_map = Map(bounding_box, earliest_time=start_day, latest_time=end_day,
 # wind_mean = dataset.where((dataset.latitude >= point[0] - 0.05) & (dataset.latitude <= point[0] + 0.05) & (dataset.longitude >= point[1] - 0.05) & (dataset.longitude <= point[1] + 0.05), drop=True)
 
 # initiate travel
-limfjorden_lista = Travel(boat = hjortspring, map = skagerrak_map, start_day = start_day, max_duration = max_duration_h, timestep = 15)
+limfjorden_lista = Travel(boat = hjortspring, map = skagerrak_map, start_day = start_day, max_duration = max_duration_h, timestep = 15, night_travel=False)
 limfjorden_lista.run(verbose=True)
 
 output = limfjorden_lista.output_geojson('./Outputs/test_trajectory')
-limfjorden_lista.boat.plot_trajectory(bounding_box)
+limfjorden_lista.boat.plot_trajectory(bounding_box) 
