@@ -22,6 +22,7 @@ class Boat:
         latitude (float): Latitude at which the boat is.
         longitude (float): Longitude at which the boat is.
         target (Tuple[float, float]): Lat/Lon of the target landing site.
+        land_radar_on (bool): Whether the land radar algorithm acts or not.
         uncertainty_sigma (float): standard deviation of the navigation error.
         speed_polar_diagram (pd.DataFrame): Table representing the boat speed polar diagram.
         leeway_polar_diagram (pd.DataFrame): Table representing the boat leeway polar diagram. 
@@ -35,6 +36,7 @@ class Boat:
     def __init__(self, craft: str, 
                  latitude: float, longitude: float, 
                  target: Tuple[float, float], 
+                 land_radar_on: bool = True,
                  uncertainty_sigma: float = 0.0,
                  speed_polar_diagram: pd.DataFrame = None, 
                  leeway_polar_diagram: pd.DataFrame = None, 
@@ -46,6 +48,7 @@ class Boat:
             longitude (float): Current longitude of the boat. It gets updated when running move_step().
             latitude (float): Current latitude of the boat. It gets updated when running move_step().
             target (Tuple[float, float]): Tuple of lat/lon of the target.
+            land_radar_on (bool): Whether the land radar is on. Defaults to True.
             uncertainty_sigma (float): standard deviation of the navigation error. Defaults to zero
             speed_polar_diagram (pd.DataFrame): Table representing the boat speed polar diagram. Defaults to None.
             leeway_polar_diagram (pd.DataFrame): Table representing the boat leeway polar diagram. Defaults to None.
@@ -55,6 +58,7 @@ class Boat:
         self.latitude = latitude
         self.longitude = longitude
         self.target = target
+        self.land_radar_on = land_radar_on
         self.uncertainty_sigma = uncertainty_sigma
         self.speed_polar_diagram = speed_polar_diagram
         self.leeway_polar_diagram = leeway_polar_diagram
@@ -206,7 +210,7 @@ class Boat:
         distance_from_target = pytheas.utilities.distance_km([self.latitude, self.longitude], self.target)
         
         # if there is land ahead stir away, but only if we're not close to the target! If we're less than 20 km away from the target, let hit either target or land.
-        if (landmarks[0] is not None) and (distance_from_target < 20):
+        if landmarks[0] is not None:
             land_angle = landmarks[1]
             # we need to define "ahead", this would be within +/- 45 degrees from the bearing. 
             left_limit = (self.bearing - 45) % 360 

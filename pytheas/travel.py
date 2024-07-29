@@ -103,7 +103,11 @@ class Travel:
             sunset = calculate_end_of_day(self.current_time.strftime('%Y-%m-%d'), current_location, type_of_twilight=self.twilight_of_stops)
             
             if sunrise <= self.current_time < sunset:
-                landmarks = self.map.find_closest_land(current_location)
+                if self.boat.land_radar_on:
+                    landmarks = self.map.find_closest_land(current_location)
+                else:
+                    landmarks = [None, None]
+                
                 self.boat.move_boat(landmarks, wind_here_and_now, current_here_and_now, self.timestep, self.tolerance)
             else:
                 # save stop position and time if this was not already saved last loop
@@ -117,7 +121,12 @@ class Travel:
                         
                 
         else:
-            landmarks = self.map.find_closest_land(current_location)
+            if self.boat.land_radar_on:
+                landmarks = self.map.find_closest_land(current_location)
+            else:
+                landmarks = [None, None]
+            # landmarks = self.map.find_closest_land(current_location)
+            
             self.boat.move_boat(landmarks, wind_here_and_now, current_here_and_now, self.timestep, self.tolerance)
         
         

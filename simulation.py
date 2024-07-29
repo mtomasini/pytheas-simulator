@@ -18,7 +18,7 @@ launching_site = [57.1224, 8.4475]# [51.566722, 3.261733] # Limfjorden
 landing_site = [58.0487, 6.6845] #[52.055910, 1.555690] # Listafjorden [58.0236, 7.4554] #
 
 bounding_box = [56.3, 5.8, 58.8, 13.1] #[49.806087, 0.840002, 54.935397, 7.904663]
-start_day = calculate_start_of_day('1995-07-15', launching_site) #pd.Timestamp('1995-03-03')
+start_day = calculate_start_of_day('1995-07-10', launching_site) #pd.Timestamp('1995-03-03')
 max_duration_h = 72
 end_day = start_day + pd.Timedelta(max_duration_h, unit="hours")
 
@@ -31,7 +31,7 @@ launching_site_water = skagerrak_map.find_closest_water(launching_site)
 
 # initiate boat
 hjortspring = Boat('hjortspring', latitude=launching_site_water[0], longitude=launching_site_water[1],
-                   target=landing_site, speed_polar_diagram=speed_polar_diagram, leeway_polar_diagram=leeway_polar_diagram)
+                   target=landing_site, land_radar_on=False, speed_polar_diagram=speed_polar_diagram, leeway_polar_diagram=leeway_polar_diagram)
 
 # initiate travel
 limfjorden_lista = Travel(boat = hjortspring, map = skagerrak_map, start_day = start_day, max_duration = max_duration_h, timestep = 15, night_travel=False)
