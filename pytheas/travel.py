@@ -1,3 +1,10 @@
+"""
+    The Travel class of Pytheas. 
+     
+    It represents a travel from A to B. This class collects all the different components of the travel of a Boat from A to B on a Map. 
+    In the Agent-Based Modelling framework, it represents the Model.
+"""
+
 import json
 import numpy as np
 import pandas as pd
@@ -8,10 +15,8 @@ from .map import Map
 from .utilities import *
 
 class Travel:
-    """The Travel class of Pytheas. 
-    
-    It represents a travel from A to B. This class collects all the different components of the travel of a Boat from A to B on a Map. 
-    In the Agent-Based Modelling framework, it represents the Model.
+    """
+    Base class for a Travel in Pytheas. 
     
     Attr:
         boat (Boat): The boat that will travel.
@@ -21,10 +26,16 @@ class Travel:
         launching_site (Tuple[float, float]): Departure site in lat/lon format, inherited from boat.
         start_time (pd.Timestamp): The day and time of departure for the trip.
         target (Tuple[float, float]): Target landing site in lat/lon format, inherited from boat.
+        night_travel (bool): Whether the boat is stops for night or not.
         twilight_of_stops (str): Determines whether tips start and end at sunrise or twilight. Options are "sun" (sunrise), "civil", "nautical" and "astronomical".
         current_time (pd.Timestamp): Keeps track of the current time in the travel.
         is_completed (bool): Marks whether the travel is completed within tolerance. 
         tolerance (float): Tolerance distance from target to be considered "arrived" (in km). Defaults to 3 km, a distance within which a boat travelling at 3 m/s can travel in 15 minutes.
+        encountered_currents (List): List of tuples (x, y) of currents encountered on the travel.
+        encountered_winds (List): List of tuples (speed, angle) of winds encountered on the travel.
+        encountered_waves (List[float]): List of wave heights encountered on the travel.
+        times_of_stops (List[pd.Timestamp]): List of times at which stops for night were initiated. It gets populated only if night_travel = True.
+        stop_coords (List): List of lat/lon points at which the boat stopped for night. 
     """
     
     def __init__(self, boat: Boat, map: Map,
@@ -43,7 +54,7 @@ class Travel:
             start_day (pd.Timestamp): Day in which the travel is started.
             max_duration (int): Maximal duration of the travel (in hours).
             timestep (int): Time between subsequent steps (in minutes).
-            tolerance_distance (float, optional): Distance from target within which a travel is considered finished (in km). Defaults to 1 km.
+            tolerance_distance (float, optional): Distance from target within which a travel is considered finished (in km). Defaults to 3 km.
             twilights_of_stops (str, optional): Determines whether tips start and end at sunrise or twilight. Options are "sun" (sunrise), "civil", "nautical" and "astronomical".. Defaults to 'sun'.
         """
         self.boat = boat

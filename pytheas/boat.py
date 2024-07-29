@@ -1,19 +1,35 @@
+"""
+The Boat class of Pytheas. 
+    
+It represents a boat - a logboat, a plank canoe, a longship - you name it. In the Agent-Based Modelling framework, the Boat represents a basic Agent.
+"""
 import cartopy
 import geopy.distance as gp
 import math
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from typing import Tuple
+from typing import Tuple, List
 
 import pytheas.utilities
 
 class Boat:
     """
-    The Boat class of Pytheas. 
+    Base class for a Boat in Pytheas.
     
-    It represents a boat - a logboat, a plank canoe, a longship - you name it. In the Agent-Based Modelling framework, the Boat represents a basic Agent.
-    
+    Attributes:
+        craft (str): Name or type of boat.
+        latitude (float): Latitude at which the boat is.
+        longitude (float): Longitude at which the boat is.
+        target (Tuple[float, float]): Lat/Lon of the target landing site.
+        uncertainty_sigma (float): standard deviation of the navigation error.
+        speed_polar_diagram (pd.DataFrame): Table representing the boat speed polar diagram.
+        leeway_polar_diagram (pd.DataFrame): Table representing the boat leeway polar diagram. 
+        route_to_take (List[float]): List of lat/lon coordinates that the boat has to follow to get to target.
+        trajectory (List[float]): List of lat/lon keeping track of the trajectory of the boat.
+        distance (float): Distance (in km) covered by the boat so far.
+        bearing (float)): Current angle between launching site and target.
+        has_hit_land (bool): Boolean to record if the boat hits land before the end of the trip. 
     """
     
     def __init__(self, craft: str, 
@@ -21,16 +37,19 @@ class Boat:
                  target: Tuple[float, float], 
                  uncertainty_sigma: float = 0.0,
                  speed_polar_diagram: pd.DataFrame = None, 
-                 leeway_polar_diagram: pd.DataFrame = None):
+                 leeway_polar_diagram: pd.DataFrame = None, 
+                 route_to_take: List[float] = None):
         """Create a new boat.
 
         Args:
             craft (str): Type of boat (e.g. "Hjortspring").
             longitude (float): Current longitude of the boat. It gets updated when running move_step().
             latitude (float): Current latitude of the boat. It gets updated when running move_step().
-            target (Tuple[float, float]): Tuple of lon/lat of the target.
+            target (Tuple[float, float]): Tuple of lat/lon of the target.
+            uncertainty_sigma (float): standard deviation of the navigation error. Defaults to zero
             speed_polar_diagram (pd.DataFrame): Table representing the boat speed polar diagram. Defaults to None.
             leeway_polar_diagram (pd.DataFrame): Table representing the boat leeway polar diagram. Defaults to None.
+            route_to_take (List[float]): List of lat/lon coordinates that the boat has to follow to get to target.
         """
         self.craft = craft
         self.latitude = latitude
@@ -39,7 +58,7 @@ class Boat:
         self.uncertainty_sigma = uncertainty_sigma
         self.speed_polar_diagram = speed_polar_diagram
         self.leeway_polar_diagram = leeway_polar_diagram
-        self.route_to_take = [] # TODO implement routing
+        self.route_to_take = route_to_take # TODO implement routing
         
         self.trajectory = [(latitude, longitude)]
         self.distance = 0
