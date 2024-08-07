@@ -29,13 +29,18 @@ skagerrak_map = Map(bounding_box, earliest_time=start_day, latest_time=end_day,
 # find closest water point to launching site
 launching_site_water = skagerrak_map.find_closest_water(launching_site)
 
+# create route
+route = skagerrak_map.create_route(launching_site_water, landing_site, target_interval = 5, weights = [1, 10, 1, 100], iterations = [10, 5, 3, 1])
+
 # initiate boat
-hjortspring = Boat('hjortspring', latitude=launching_site_water[0], longitude=launching_site_water[1],
-                   target=landing_site, land_radar_on=False, speed_polar_diagram=speed_polar_diagram, leeway_polar_diagram=leeway_polar_diagram)
+# hjortspring = Boat('hjortspring', latitude=launching_site_water[0], longitude=launching_site_water[1],
+#                    target=landing_site, land_radar_on=False, speed_polar_diagram=speed_polar_diagram, leeway_polar_diagram=leeway_polar_diagram, route_to_take = route)
 
 # initiate travel
-limfjorden_lista = Travel(boat = hjortspring, map = skagerrak_map, start_day = start_day, max_duration = max_duration_h, timestep = 15, night_travel=False)
-limfjorden_lista.run(verbose=True)
+# limfjorden_lista = Travel(boat = hjortspring, map = skagerrak_map, start_day = start_day, max_duration = max_duration_h, timestep = 15, night_travel=False)
+# limfjorden_lista.run(verbose=True)
 
-output = limfjorden_lista.output_geojson('./Outputs/test_trajectory')
-limfjorden_lista.boat.plot_trajectory(bounding_box) 
+# output = limfjorden_lista.output_geojson('./Outputs/test_trajectory')
+# limfjorden_lista.boat.plot_trajectory(bounding_box)
+
+print(route)

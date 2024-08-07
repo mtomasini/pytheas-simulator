@@ -8,10 +8,12 @@
     
 import numpy as np
 import pandas as pd
-from typing import List, Tuple
+from typing import Dict, List, Optional, Tuple
 import xarray as xr
 
+from pytheas import search
 from pytheas import utilities
+
 
 class Map:
     """
@@ -372,37 +374,33 @@ class Map:
             
         else:
             return [None, None]
-        
-        
-    def weight_map(self, min_distance_from_land: float, max_distance_from_land: float, weight: float = 10) -> np.ndarray:
-        
-        dataset_now = self.currents_data.sel(time=self.earliest_time, method='nearest')
-        mask = np.isnan(dataset_now.uo.values) # put True where land is
-        weight_mask = np.ones(mask.shape) # create empty (ones) array
-        np.putmask(weight_mask, mask, np.inf) # assign infinites to land
-        indeces = np.argwhere(weight_mask != np.inf)
-        
-        for index in indeces:
-            x = index[0]
-            y = index[1]
-            
-            latitude = dataset_now.isel(latitude = x, longitude = y).latitude
-            longitude = dataset_now.isel(latitude = x, longitude = y).longitude
-            
-            # find land distance within 0.25 degrees (about 40 km)
-            closest_land_distance, closest_land_angle = self.find_closest_land([latitude, longitude], radar_radius=0.5)
-            if closest_land_distance is not None:
-                if min_distance_from_land < closest_land_distance < max_distance_from_land:
-                    weight_mask[x, y] = 1.0
-                else:
-                    weight_mask[x, y] = weight
-            else:
-                weight_mask[x, y] = weight
-            
-        return weight_mask
-        
+
     
+    def find_nearest_index_to_point(self, point):
+        id_lat = min(enumerate(self.currents_data.latitude.values), key=lambda x: abs(x[1] - point[0]))
+        id_lon = min(enumerate(self.currents_data.longitude.values), key=lambda x: abs(x[1] - point[1]))
+    
+        return id_lat[0], id_lon[0]
+    
+
+    def create_route(self, launching_site, landing_site, target_interval, **kwargs):
+        grid = search.WeightedGrid.from_map(self.currents_data.uo.sel(time=self.earliest_time, method="nearest"), **kwargs)
+        astar = search.Astar(grid)
+
+        (i,j) = self.find_nearest_index_to_point(launching_site)
+        (i_goal, j_goal) = self.find_nearest_index_to_point(landing_site)
+
+        came_from, cost_so_far = astar.search(start=(i,j), goal=(i_goal,j_goal))
+
+        # Chart the route
+        try:
+            route = astar.reconstruct_path(came_from, start=(i,j), goal=(i_goal,j_goal))
+            route = [(self.currents_data.latitude[i].values.item(), self.currents_data.longitude[j].values.item()) for i, j in route]
+            route = [route[0], *route[1:-2:target_interval], route[-1]]
+            route.reverse()
+            return route
+
+        except Exception as e:
+            raise RuntimeError("No possible route") from e
         
-    def find_route(self, launch_site, landing_site) -> List[Tuple[float, float]]:
         
-        pass

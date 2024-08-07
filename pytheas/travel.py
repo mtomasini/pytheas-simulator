@@ -108,6 +108,7 @@ class Travel:
                 else:
                     landmarks = [None, None]
                 
+                # TODO consider putting parameter `move_target` in function move_boat() to allow following either the final target or the route
                 self.boat.move_boat(landmarks, wind_here_and_now, current_here_and_now, self.timestep, self.tolerance)
             else:
                 # save stop position and time if this was not already saved last loop

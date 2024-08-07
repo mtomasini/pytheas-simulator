@@ -213,8 +213,8 @@ class Boat:
         if landmarks[0] is not None:
             land_angle = landmarks[1]
             # we need to define "ahead", this would be within +/- 45 degrees from the bearing. 
-            left_limit = (self.bearing - 45) % 360 
-            right_limit = (self.bearing + 45) % 360 
+            left_limit = (self.bearing - 45) % 360
+            right_limit = (self.bearing + 45) % 360
             
             # the bearing is given as a number between 0 and 360, we need to split here. is_ahead is True if:
             if 45 <= self.bearing <= 315:
