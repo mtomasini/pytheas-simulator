@@ -5,3 +5,4 @@ ephem==4.1.4
 xarray==2023.1.0
 xoak==0.1.1
 cartopy
+opencv-python
