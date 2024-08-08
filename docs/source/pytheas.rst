@@ -28,6 +28,14 @@ pytheas.travel module
    :undoc-members:
    :show-inheritance:
 
+pytheas.search module
+---------------------
+
+.. automodule:: pytheas.search
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pytheas.utilities module
 ------------------------
 

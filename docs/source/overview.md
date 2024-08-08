@@ -15,3 +15,13 @@ As it should happen in true OOP, the different classes deal with what pertain to
 ## Simulation
 
 Outside of the Pytheas package, a simulation file, `simulation.py` shows the base example to illustrate how to perform a travel. It comes with a `parameters.py` file containing the parameters and locations to run a simulation.
+
+## Searching algorithm
+
+The searching algorithm that I am using was developed by Victor Skärström Wåhlstrand at then Centre for Digital Humanities (now Gothenburg Research Infrastructure in Digital Humanities). It consists of an A* algorithm implemented on a weighted grid representing the geographical map. The goal of the searching algorithm is to find a trajectory between a point A and a point B that hugs the coast. To do that, the weights are set so that:
+ 
+- what is land in the current data (NaN) is an unpassable wall
+- the function `WeightedGrid.create_shoreline_contour()` generates a series of "corridors" around the shoreline with different weights
+- the closest corridor to the coast has a high weight, the second closest has the lowest weight, and the third closest has another high weight.
+
+Doing so makes the searching algorithm find a route that goes along the low-weights corridor.
