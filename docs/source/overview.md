@@ -18,8 +18,8 @@ Outside of the Pytheas package, a simulation file, `simulation.py` shows the bas
 
 ## Searching algorithm
 
-The searching algorithm that I am using was developed by Victor Skärström Wåhlstrand at then Centre for Digital Humanities (now Gothenburg Research Infrastructure in Digital Humanities). It consists of an A* algorithm implemented on a weighted grid representing the geographical map. The goal of the searching algorithm is to find a trajectory between a point A and a point B that hugs the coast. To do that, the weights are set so that:
- 
+The searching algorithm that I am using was developed by Victor Wåhlstrand Skärström at then Centre for Digital Humanities (now Gothenburg Research Infrastructure in Digital Humanities). It consists of an A* algorithm implemented on a weighted grid representing the geographical map. The goal of the searching algorithm is to find a trajectory between a point A and a point B that hugs the coast. To do that, the weights are set so that:
+
 - what is land in the current data (NaN) is an unpassable wall
 - the function `WeightedGrid.create_shoreline_contour()` generates a series of "corridors" around the shoreline with different weights
 - the closest corridor to the coast has a high weight, the second closest has the lowest weight, and the third closest has another high weight.

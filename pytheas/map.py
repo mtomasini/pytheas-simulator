@@ -376,14 +376,39 @@ class Map:
             return [None, None]
 
     
-    def find_nearest_index_to_point(self, point):
+    def find_nearest_index_to_point(self, point: Tuple[float, float]) -> Tuple[int, int]:
+        """
+        Find the index of the latitude/longitude in the data closest to a given point.
+
+        Args:
+            point (Tuple[float, float]): A geographical point in lat/lon format.
+
+        Returns:
+            Tuple[int, int]: x index and y index of closest coordinate in the data to a given point.
+        """
         id_lat = min(enumerate(self.currents_data.latitude.values), key=lambda x: abs(x[1] - point[0]))
         id_lon = min(enumerate(self.currents_data.longitude.values), key=lambda x: abs(x[1] - point[1]))
     
         return id_lat[0], id_lon[0]
     
 
-    def create_route(self, launching_site, landing_site, target_interval, **kwargs):
+    def create_route(self, launching_site: Tuple[float, float], landing_site: Tuple[float, float], target_interval: int = 5, **kwargs):
+        """
+        Create a route that hugs the coast from a launching site to a landing site. The kwargs need to be `weights` (a list) 
+        and `iterations` (also a list, of the same length as `weights`) to modify the creation of different "weight corridors" 
+        along the shoreline.
+
+        Args:
+            launching_site (Tuple[float, float]): Launching site in lat/lon format.
+            landing_site (Tuple[float, float]): Landing site in in lat/lon format.
+            target_interval (int): Interval between the nodes in the route. Defaults to 5.
+
+        Raises:
+            RuntimeError: Raised if the algorithm was unable to find a route.
+
+        Returns:
+            List[Tuple[float, float]]: List of coordinates through which the routes goes.
+        """
         grid = search.WeightedGrid.from_map(self.currents_data.uo.sel(time=self.earliest_time, method="nearest"), **kwargs)
         astar = search.Astar(grid)
 
