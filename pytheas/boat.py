@@ -207,7 +207,6 @@ class Boat:
         """
         # first, update the bearing based on the local position
         self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
-        distance_from_target = pytheas.utilities.distance_km([self.latitude, self.longitude], self.target)
         
         # if there is land ahead stir away, but only if we're not close to the target! If we're less than 20 km away from the target, let hit either target or land.
         if landmarks[0] is not None:
