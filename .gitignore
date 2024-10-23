@@ -9,3 +9,7 @@ testing_notebook.ipynb
 docs/build/
 
 Outputs/
+
+varpelev_*
+
+paper*
