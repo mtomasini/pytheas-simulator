@@ -1,0 +1,15 @@
+name: pytheas
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pandas
+  - numpy
+  - xarray
+  - opencv-python
+  - geopy
+  - cartopy
+  - ephem=4.1.1
+  - xoak
