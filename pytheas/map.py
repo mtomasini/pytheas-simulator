@@ -210,6 +210,8 @@ class Map:
         Returns:
             np.ndarray: An array containing wind speed (m/s) and wind direction (degrees).
         """
+        winds_now = self.winds_data.sel(time=time, method="nearest")
+
         # The winds dataset longitude is expressed in degrees from 0 to 360, instead of -180 to 180 like the rest of the dataset. Thus:
         latitude_minus = location[0] - radius
         latitude_plus = location[0] + radius
@@ -220,16 +222,15 @@ class Map:
         elif location[1] >= 0: 
             longitude_minus = location[1] - radius
             longitude_plus = location[1] + radius
-        
-        winds_now = self.winds_data.sel(time=time, method="nearest")
-        
+            
+            
         if (longitude_minus <= 180 and longitude_plus <= 180) or (longitude_minus > 180 and longitude_plus > 180):
             # if both longitude_minus and longitude_plus are in the same half quadrant, there is no problem in slicing the database
             winds_here_and_now = winds_now.where((winds_now.latitude >= latitude_minus) & (winds_now.latitude <= latitude_plus) &
                                                  (winds_now.longitude >= longitude_minus) & (winds_now.longitude <= longitude_plus), drop = True)
             wind_speed_si = np.nanmean(winds_here_and_now.si10.values)
             wind_direction = np.nanmean(winds_here_and_now.wdir10.values)
-            
+                
         elif (longitude_minus > 180 and longitude_plus <= 180):
             # this is the situation where the longitude_plus is in the right quadrant (0 to 180), and longitude_minus in the left quadrant (-180 to 0, transformed into 180 to 360). 
             # in this situation, because of how xarray works, we need to calculate the average quantities for the quadrant < 0 and average them with the avg quantities of the quadrant > 0:
@@ -237,14 +238,14 @@ class Map:
                                                      (winds_now.longitude >= 0) & (winds_now.longitude <= longitude_plus), drop = True)
             winds_here_and_now_neg = winds_now.where((winds_now.latitude >= latitude_minus) & (winds_now.latitude <= latitude_plus) &
                                                      (winds_now.longitude >= longitude_minus) & (winds_now.longitude < 360), drop = True)
-            
+                
             wind_speed_si = (np.nanmean(winds_here_and_now_pos.si10.values) + np.nanmean(winds_here_and_now_neg.si10.values)) / 2
             wind_direction = (np.nanmean(winds_here_and_now_pos.wdir10.values) + np.nanmean(winds_here_and_now_neg.wdir10.values)) / 2
-        
+
         return np.array([wind_speed_si, wind_direction])
         
             
-    def return_local_currents(self, location: np.ndarray, time: pd.Timestamp, radius: float = 0.07):
+    def return_local_currents(self, location: np.ndarray, time: pd.Timestamp, average: bool = True, radius: float = 0.07) -> np.ndarray:
         """
         Return horizontal and vertical components of current speed at a location and a time. Currents are measured in a square of +/-0.05 degrees around the location, 
         and an average of all the values found in that "radius" is output. The radius is chosen based on the grid size for the ECMWF dataset (~5.5 x 5.5 km).
@@ -265,23 +266,28 @@ class Map:
         
         data_now = self.currents_data.sel(time=time, method="nearest")
         
-        u = np.nanmean(data_now.uo.sel(latitude=slice(latitude_minus, latitude_plus), 
-                            longitude=slice(longitude_minus, longitude_plus)).values)
-        v = np.nanmean(data_now.vo.sel(latitude=slice(latitude_minus, latitude_plus), 
-                            longitude=slice(longitude_minus, longitude_plus)).values)
+        # TOFIX this function returns a mean ignoring nan. It's good when trying to find an average speed, but it's not good when detecting whethere one is on land or not!
+        if average:
+            u = np.nanmean(data_now.uo.sel(latitude=slice(latitude_minus, latitude_plus), 
+                                longitude=slice(longitude_minus, longitude_plus)).values)
+            v = np.nanmean(data_now.vo.sel(latitude=slice(latitude_minus, latitude_plus), 
+                                longitude=slice(longitude_minus, longitude_plus)).values)
+        else:
+            u = data_now.uo.sel(latitude=location[0], longitude=location[1], method="nearest").values
+            v = data_now.vo.sel(latitude=location[0], longitude=location[1], method="nearest").values
         
         return np.array([u, v])
     
     
-    def return_local_waves(self, location: np.ndarray, time: pd.Timestamp, radius: float = 0.05) -> float:
+    def return_local_waves(self, location: np.ndarray, time: pd.Timestamp, radius: float = 0.07) -> float:
         """
-        Return wave height at a location and a time. Waves are measured in a square of +/-0.05 degrees around the location, 
+        Return wave height at a location and a time. Waves are measured in a square of +/-0.07 degrees around the location, 
         and an average of all the values found in that "radius" is output. The radius is chosen based on the grid size for the ECMWF dataset (~5.5 x 5.5 km).
 
         Args:
             location (np.ndarray): Array of latitude and longitude of a location.
             time (pd.Timestamp): Timestamp of time at which one wants the measure.
-            radius (float, optional): "Square" radius around which the measure of wind datapoints is performed. Defaults to 0.02.
+            radius (float, optional): "Square" radius around which the measure of wind datapoints is performed. Defaults to 0.05.
 
         Returns:
             float: A wave height.
@@ -292,9 +298,12 @@ class Map:
         longitude_plus = location[1] + radius
         
         data_now = self.waves_data.sel(time=time, method="nearest")
-        wave_height = np.nanmean(data_now.VHM0.sel(latitude=slice(latitude_minus, latitude_plus), 
-                                 longitude=slice(longitude_minus, longitude_plus)).values)
-        
+        data_to_average = data_now.VHM0.sel(latitude=slice(latitude_minus, latitude_plus), longitude=slice(longitude_minus, longitude_plus)).values
+        if data_to_average.size > 0:
+            wave_height = np.nanmean(data_to_average)
+        else:
+            wave_height = None
+
         return wave_height
     
     
