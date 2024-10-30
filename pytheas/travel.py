@@ -5,8 +5,10 @@
     In the Agent-Based Modelling framework, it represents the Model.
 """
 
+import geopy.distance
 import json
 import numpy as np
+import os
 import pandas as pd
 from typing import Tuple
 
@@ -86,6 +88,12 @@ class Travel:
         """
         current_location = [self.boat.latitude, self.boat.longitude]
         
+        # Check if land was hit
+        local_point_current = self.map.return_local_currents(current_location, self.current_time, average=False)
+        if np.isnan(local_point_current[0]):
+            self.boat.has_hit_land = True
+            return
+
         wind_here_and_now = self.map.return_local_winds(current_location, self.current_time)
         current_here_and_now = self.map.return_local_currents(current_location, self.current_time)
         waves_here_and_now = self.map.return_local_waves(current_location, self.current_time)
@@ -93,10 +101,6 @@ class Travel:
         self.encountered_winds.append(wind_here_and_now.tolist())
         self.encountered_currents.append(current_here_and_now.tolist())
         self.encountered_waves.append(waves_here_and_now.tolist())
-        
-        if np.isnan(current_here_and_now[0]) or np.isnan(wind_here_and_now[0]):
-            self.boat.has_hit_land = True
-            return
         
         if self.night_travel:
             sunrise = calculate_start_of_day(self.current_time.strftime('%Y-%m-%d'), current_location, type_of_twilight=self.twilight_of_stops)
@@ -141,8 +145,7 @@ class Travel:
         max_date = self.start_time + pd.Timedelta(hours=self.max_duration)
         
         while self.current_time < max_date:
-            if self.boat.has_hit_land:
-                break
+            
             
             # check how far one is from the target
             distance_from_target = distance_km(self.boat.trajectory[-1], self.boat.target)
@@ -151,6 +154,9 @@ class Travel:
                 break
             
             self.step()
+            if self.boat.has_hit_land:
+                break
+            
             self.current_time += pd.Timedelta(minutes=self.timestep)
         
         if verbose:
@@ -192,6 +198,8 @@ class Travel:
                     "duration (h)": duration_in_seconds / 3600, # duration in hours
                     "mean_speed (km/h)": self.boat.distance / (duration_in_seconds / 3600),
                     "mean_speed (m/s)": self.boat.distance*1000 / duration_in_seconds,
+                    "crew_bearings": self.boat.nominal_bearings,
+                    "actual_bearings": self.boat.modified_bearings,
                     "launching_site": self.launching_site,
                     "landing_site": self.target,
                     "night_travel": self.night_travel,
@@ -212,3 +220,25 @@ class Travel:
             json.dump(GeoJSON_format, file, indent=4)
         
         return GeoJSON_format
+
+    def append_to_aggregates(self, output_path: str, radius_for_success: float = 5) -> None:
+        if not os.path.exists(output_path):
+            with open(output_path, 'w') as f:
+                f.write(f"Date,Duration,Distance,MeanSpeed,Success10K,WavesAvg,WavesMax,HoursAbove2m,WindAvgSpeed,WindAvgDir,CurrentsAvgX,CurrentsAvgY\n")
+
+        date = self.start_time.strftime("%Y-%m-%d")
+        duration_in_seconds = (self.current_time - self.start_time).total_seconds()
+        duration = duration_in_seconds / 3600
+        distance = self.boat.distance
+        speed = self.boat.distance / duration
+        success = 1 if geopy.distance.distance((self.boat.latitude, self.boat.longitude), self.target) <= radius_for_success else 0
+        mean_wave = np.nanmean(self.encountered_waves)
+        max_wave = np.nanmax(self.encountered_waves)
+        hours_above = sum(np.array(self.encountered_waves) > 2)*self.timestep / 60
+        avg_wind_speed = np.nanmean(np.array(self.encountered_winds)[:,0])
+        avg_wind_direction = np.nanmean(np.array(self.encountered_winds)[:,1])
+        avg_currents_x = np.nanmean(np.array(self.encountered_currents)[:,0])
+        avg_currents_y = np.nanmean(np.array(self.encountered_currents)[:,1])
+
+        with open(output_path, 'a') as f:
+            f.write(f"{date},{duration},{distance},{speed},{success},{mean_wave},{max_wave},{hours_above},{avg_wind_speed},{avg_wind_direction},{avg_currents_x},{avg_currents_y}\n")
