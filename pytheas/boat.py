@@ -30,6 +30,8 @@ class Boat:
         trajectory (List[float]): List of lat/lon keeping track of the trajectory of the boat.
         distance (float): Distance (in km) covered by the boat so far.
         bearing (float)): Current angle between launching site and target.
+        nominal_bearings (List[float]): list of all the direction that the crew takes to reach the target.
+        modified_bearings (List[float]): list of the actual bearings that the boat takes during the trip, after accounting for currents and land avoidance.
         has_hit_land (bool): Boolean to record if the boat hits land before the end of the trip. 
     """
     
@@ -67,6 +69,8 @@ class Boat:
         self.trajectory = [(latitude, longitude)]
         self.distance = 0
         self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
+        self.nominal_bearings = [self.bearing]
+        self.modified_bearings = []
         
         self.has_hit_land = False
     
@@ -207,9 +211,10 @@ class Boat:
         """
         # first, update the bearing based on the local position
         self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
+        self.nominal_bearings.append(self.bearing)
         
         # if there is land ahead stir away, but only if we're not close to the target! If we're less than 20 km away from the target, let hit either target or land.
-        if landmarks[0] is not None:
+        if landmarks[0] is not None and landmarks[0] < 20:
             land_angle = landmarks[1]
             # we need to define "ahead", this would be within +/- 45 degrees from the bearing. 
             left_limit = (self.bearing - 45) % 360
@@ -239,6 +244,8 @@ class Boat:
         
         # next, add uncertainty to the bearing and split the bearing into x and y
         bearing_with_uncertainty = self.bearing + pytheas.utilities.angle_uncertainty(self.uncertainty_sigma)
+
+        self.modified_bearings.append(bearing_with_uncertainty)
         
         if self.speed_polar_diagram is not None:
             displacement_xy = self.calculate_displacement(local_winds, local_currents, bearing_with_uncertainty, timestep)
