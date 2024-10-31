@@ -198,15 +198,15 @@ class Travel:
                     "duration (h)": duration_in_seconds / 3600, # duration in hours
                     "mean_speed (km/h)": self.boat.distance / (duration_in_seconds / 3600),
                     "mean_speed (m/s)": self.boat.distance*1000 / duration_in_seconds,
-                    "crew_bearings": self.boat.nominal_bearings,
-                    "actual_bearings": self.boat.modified_bearings,
+                    "crew_bearings (°)": self.boat.nominal_bearings,
+                    "actual_bearings (°)": self.boat.modified_bearings,
                     "launching_site": self.launching_site,
                     "landing_site": self.target,
                     "night_travel": self.night_travel,
                     "route": self.boat.route_to_take,
-                    "trip_winds": self.encountered_winds,
-                    "trip_currents": self.encountered_currents,
-                    "trip_waves": self.encountered_waves,
+                    "trip_winds (m/s, °)": self.encountered_winds,
+                    "trip_currents (m/s)": self.encountered_currents,
+                    "trip_waves (m)": self.encountered_waves,
                     "twilight_convention": self.twilight_of_stops,
                     "stop_times": [(lambda x: x.strftime('%Y-%m-%dT%H:%M:%S'))(x) for x in self.times_of_stops],
                     "stop_coords": self.stop_coords,
@@ -224,9 +224,10 @@ class Travel:
     def append_to_aggregates(self, output_path: str, radius_for_success: float = 5) -> None:
         if not os.path.exists(output_path):
             with open(output_path, 'w') as f:
-                f.write(f"Date,Duration,Distance,MeanSpeed,Success10K,WavesAvg,WavesMax,HoursAbove2m,WindAvgSpeed,WindAvgDir,CurrentsAvgX,CurrentsAvgY\n")
+                f.write(f"Date,TimeOfDeparture,Duration,Distance,MeanSpeed,Success{radius_for_success}K,WavesAvg,WavesMax,HoursAbove2m,WindAvgSpeed,WindAvgDir,CurrentsAvgX,CurrentsAvgY\n")
 
         date = self.start_time.strftime("%Y-%m-%d")
+        time_of_departure = self.start_time.strftime("%Y-%m-%dT%H:%M:%S")
         duration_in_seconds = (self.current_time - self.start_time).total_seconds()
         duration = duration_in_seconds / 3600
         distance = self.boat.distance
@@ -241,4 +242,4 @@ class Travel:
         avg_currents_y = np.nanmean(np.array(self.encountered_currents)[:,1])
 
         with open(output_path, 'a') as f:
-            f.write(f"{date},{duration},{distance},{speed},{success},{mean_wave},{max_wave},{hours_above},{avg_wind_speed},{avg_wind_direction},{avg_currents_x},{avg_currents_y}\n")
+            f.write(f"{date},{time_of_departure},{duration},{distance},{speed},{success},{mean_wave},{max_wave},{hours_above},{avg_wind_speed},{avg_wind_direction},{avg_currents_x},{avg_currents_y}\n")

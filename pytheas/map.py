@@ -26,9 +26,9 @@ class Map:
         wind_path (str): Folder where the wind data are stored.
         current_path (str): Folder where the current data are stored.
         waves_path (str): Folder where the waves data are stored.
-        winds_data (xr.DataArray): Data array containing winds data (each point is speed/angle).
-        currents_data (xr.DataArray): Data array containing currents data (each point is speed in x/y).
-        waves_data (xr.DataArray): Data array containing waves height data (each point is wave height).
+        winds_data (xr.DataArray): Data array containing winds data (each point has component speed in m/s and angle in degrees).
+        currents_data (xr.DataArray): Data array containing currents data (each point is speed in x/y - both m/s).
+        waves_data (xr.DataArray): Data array containing waves height data (each point is wave height in meters).
     """
     
     def __init__(self, 
@@ -201,6 +201,7 @@ class Map:
         """
         Return wind speed and direction given a location and a time. Winds are measured in a square of +/-0.05 degrees around the location, and an average of all the values found
         in that radius is output. The radius is chosen based on the grid size for the CERRA dataset (~2 x 2 km).
+        The value of 0.05 has been found with trial and error.
 
         Args:
             location (np.ndarray): Array of latitude and longitude of a location.
@@ -245,10 +246,11 @@ class Map:
         return np.array([wind_speed_si, wind_direction])
         
             
-    def return_local_currents(self, location: np.ndarray, time: pd.Timestamp, average: bool = True, radius: float = 0.07) -> np.ndarray:
+    def return_local_currents(self, location: np.ndarray, time: pd.Timestamp, average: bool = True, radius: float = 0.075) -> np.ndarray:
         """
-        Return horizontal and vertical components of current speed at a location and a time. Currents are measured in a square of +/-0.05 degrees around the location, 
+        Return horizontal and vertical components of current speed at a location and a time. Currents are measured in a square of +/-0.075 degrees around the location, 
         and an average of all the values found in that "radius" is output. The radius is chosen based on the grid size for the ECMWF dataset (~5.5 x 5.5 km).
+        The value of 0.075 has been found with trial and error.
 
         Args:
             location (np.ndarray): Array of latitude and longitude of a location.
@@ -279,10 +281,11 @@ class Map:
         return np.array([u, v])
     
     
-    def return_local_waves(self, location: np.ndarray, time: pd.Timestamp, radius: float = 0.07) -> float:
+    def return_local_waves(self, location: np.ndarray, time: pd.Timestamp, radius: float = 0.2) -> float:
         """
-        Return wave height at a location and a time. Waves are measured in a square of +/-0.07 degrees around the location, 
+        Return wave height at a location and a time. Waves are measured in a square of +/-0.2 degrees around the location, 
         and an average of all the values found in that "radius" is output. The radius is chosen based on the grid size for the ECMWF dataset (~5.5 x 5.5 km).
+        The value of 0.2 has been found with trial and error.
 
         Args:
             location (np.ndarray): Array of latitude and longitude of a location.

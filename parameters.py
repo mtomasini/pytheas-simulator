@@ -1,2 +1,2 @@
-SPEED_POLAR_DIAGRAM_PATH = '../PolarDiagrams/Polar Diagrams Varpelev/varpelev_speeds_5pad_1860kg_45cad_0oars.csv' # './configs/hjortspring_speeds_16pad_3000kg_44cad_75oars.txt'
+SPEED_POLAR_DIAGRAM_PATH = '../PolarDiagrams/Polar Diagrams Varpelev/varpelev_speeds_5pad_1860kg_45cad_0oars_speed1.csv' # './configs/hjortspring_speeds_16pad_3000kg_44cad_75oars.txt'
 LEEWAY_POLAR_DIAGRAM_PATH = '../PolarDiagrams/Polar Diagrams Varpelev/varpelev_leeways_5pad_1860kg_45cad_0oars.csv' # './configs/hjortspring_leeway_16pad_3000kg_44cad_75oars.txt'
