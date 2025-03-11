@@ -81,6 +81,10 @@ class Map:
         dataset = xr.open_dataset(path)
         dataset.close()
         
+        # if values are from 0 to 360, convert to -180 to 180
+        if dataset.longitude.values.min() >= 180.0:
+            dataset.coords['longitude'] = (dataset.coords['longitude'] + 180) % 360 - 180
+        
         if latest_month == earliest_month and latest_year == earliest_year:
             dataset_bounded = dataset.sel(time=slice(self.earliest_time, self.latest_time), 
                                           latitude=slice(self.bounding_box[0], self.bounding_box[2]),
@@ -127,6 +131,11 @@ class Map:
         
         dataset = xr.open_dataset(path)
         dataset.close()
+
+        # if values are from 0 to 360, convert to -180 to 180
+        if dataset.longitude.values.max() >= 180.0:
+            dataset.coords['longitude'] = (dataset.coords['longitude'] + 180) % 360 - 180
+        
         if latest_month == earliest_month and latest_year == earliest_year:
             dataset_bounded = dataset.where((dataset.latitude >= self.bounding_box[0]) & (dataset.latitude <= self.bounding_box[2]) & 
                                             (dataset.longitude >= self.bounding_box[1]) & (dataset.longitude <= self.bounding_box[3]), drop=True)
@@ -166,6 +175,11 @@ class Map:
         
         dataset = xr.open_dataset(path)
         dataset.close()
+
+        # if values are from 0 to 360, convert to -180 to 180
+        if dataset.longitude.values.max() >= 180.0:
+            dataset.coords['longitude'] = (dataset.coords['longitude'] + 180) % 360 - 180
+        
         if latest_month == earliest_month and latest_year == earliest_year:
             dataset_bounded = dataset.sel(time=slice(self.earliest_time, self.latest_time), 
                                           latitude=slice(self.bounding_box[0], self.bounding_box[2]), 
@@ -213,35 +227,45 @@ class Map:
         """
         winds_now = self.winds_data.sel(time=time, method="nearest")
 
-        # The winds dataset longitude is expressed in degrees from 0 to 360, instead of -180 to 180 like the rest of the dataset. Thus:
         latitude_minus = location[0] - radius
         latitude_plus = location[0] + radius
-        if location[1] < 0:
-            # transform number between -180 and 0 into one between 180 and 360
-            longitude_minus = 360 + location[1] - radius
-            longitude_plus = 360 + location[1] + radius
-        elif location[1] >= 0: 
-            longitude_minus = location[1] - radius
-            longitude_plus = location[1] + radius
+        longitude_minus = location[1] - radius
+        longitude_plus = location[1] + radius
+        # if location[1] < 0:
+        #     # transform number between -180 and 0 into one between 180 and 360
+        #     longitude_minus = (360 + location[1] - radius) % 360
+        #     longitude_plus = (360 + location[1] + radius) % 360
+        # elif location[1] >= 0: 
+        #     longitude_minus = (location[1] - radius) % 360
+        #     longitude_plus = (location[1] + radius) % 360
             
             
-        if (longitude_minus <= 180 and longitude_plus <= 180) or (longitude_minus > 180 and longitude_plus > 180):
+        # if (longitude_minus <= 180 and longitude_plus <= 180) or (longitude_minus > 180 and longitude_plus > 180):
             # if both longitude_minus and longitude_plus are in the same half quadrant, there is no problem in slicing the database
-            winds_here_and_now = winds_now.where((winds_now.latitude >= latitude_minus) & (winds_now.latitude <= latitude_plus) &
-                                                 (winds_now.longitude >= longitude_minus) & (winds_now.longitude <= longitude_plus), drop = True)
-            wind_speed_si = np.nanmean(winds_here_and_now.si10.values)
-            wind_direction = np.nanmean(winds_here_and_now.wdir10.values)
+        winds_here_and_now = winds_now.where((winds_now.latitude >= latitude_minus) & (winds_now.latitude <= latitude_plus) &
+                                             (winds_now.longitude >= longitude_minus) & (winds_now.longitude <= longitude_plus), drop = True)
+        wind_speed_si = np.nanmean(winds_here_and_now.si10.values)
+        wind_direction = np.nanmean(winds_here_and_now.wdir10.values)
                 
-        elif (longitude_minus > 180 and longitude_plus <= 180):
-            # this is the situation where the longitude_plus is in the right quadrant (0 to 180), and longitude_minus in the left quadrant (-180 to 0, transformed into 180 to 360). 
-            # in this situation, because of how xarray works, we need to calculate the average quantities for the quadrant < 0 and average them with the avg quantities of the quadrant > 0:
-            winds_here_and_now_pos = winds_now.where((winds_now.latitude >= latitude_minus) & (winds_now.latitude <= latitude_plus) &
-                                                     (winds_now.longitude >= 0) & (winds_now.longitude <= longitude_plus), drop = True)
-            winds_here_and_now_neg = winds_now.where((winds_now.latitude >= latitude_minus) & (winds_now.latitude <= latitude_plus) &
-                                                     (winds_now.longitude >= longitude_minus) & (winds_now.longitude < 360), drop = True)
-                
-            wind_speed_si = (np.nanmean(winds_here_and_now_pos.si10.values) + np.nanmean(winds_here_and_now_neg.si10.values)) / 2
-            wind_direction = (np.nanmean(winds_here_and_now_pos.wdir10.values) + np.nanmean(winds_here_and_now_neg.wdir10.values)) / 2
+        # elif (longitude_minus > 180 and longitude_plus <= 180):
+        #     # this is the situation where the longitude_plus is in the right quadrant (0 to 180), and longitude_minus in the left quadrant (-180 to 0, transformed into 180 to 360). 
+        #     # in this situation, because of how xarray works, we need to calculate the average quantities for the quadrant < 0 and average them with the avg quantities of the quadrant > 0:
+        #     winds_here_and_now_pos = winds_now.where((winds_now.latitude >= latitude_minus) & (winds_now.latitude <= latitude_plus) &
+        #                                              (winds_now.longitude >= 0) & (winds_now.longitude <= longitude_plus), drop = True)
+        #     winds_here_and_now_neg = winds_now.where((winds_now.latitude >= latitude_minus) & (winds_now.latitude <= latitude_plus) &
+        #                                              (winds_now.longitude >= longitude_minus) & (winds_now.longitude < 360), drop = True)
+
+        #     # in certain situations around deg 0E, one side might give numbers, but not the other, as one radius is slightly too close to 360 or 0 to fish values.
+        #     # we can set that side to zero:
+        #     if winds_here_and_now_pos.si10.values.shape == (0,0):
+        #         wind_speed_si = np.nanmean(winds_here_and_now_neg.si10.values)
+        #         wind_direction = np.nanmean(winds_here_and_now_neg.wdir10.values)
+        #     elif winds_here_and_now_neg.si10.values.shape == (0,0):
+        #         wind_speed_si = np.nanmean(winds_here_and_now_pos.si10.values)
+        #         wind_direction = np.nanmean(winds_here_and_now_pos.wdir10.values)
+        #     else:
+        #         wind_speed_si = (np.nanmean(winds_here_and_now_pos.si10.values) + np.nanmean(winds_here_and_now_neg.si10.values)) / 2
+        #         wind_direction = (np.nanmean(winds_here_and_now_pos.wdir10.values) + np.nanmean(winds_here_and_now_neg.wdir10.values)) / 2
 
         return np.array([wind_speed_si, wind_direction])
         
