@@ -20,7 +20,7 @@ bounding_box = BOUNDING_BOX_BRETAGNE
 # prepare time parameters
 max_duration_h = 720
 
-start_day = pd.Timestamp('1995-03-03T00:00')
+start_day = pd.Timestamp('1995-07-03T00:00')
 end_day = calculate_start_of_day(start_day, launching_site, type_of_twilight='civil') + pd.Timedelta(max_duration_h, unit="hours")
 
 # load map
@@ -36,7 +36,7 @@ hjortspring = Boat('Hjortspring', latitude=launching_site_water[0], longitude=la
                    target=landing_site, land_radar_on=True, speed_polar_diagram=speed_polar_diagram, leeway_polar_diagram=leeway_polar_diagram, route_to_take = route)
 
 # load and run travel
-travel = Travel(boat = hjortspring, map = bretagne_map, start_day = start_day, max_duration = max_duration_h, timestep = 15, night_travel=False, twilights_of_stops='civil')
+travel = Travel(boat = hjortspring, map = bretagne_map, start_day = start_day, max_duration = max_duration_h, timestep = 15, night_travel=False, tolerance_distance=5, twilights_of_stops='civil')
 travel.run(verbose=True)
 
 travel.output_geojson(f"./Outputs/{start_day.strftime('%Y-%m-%d')}.json") 

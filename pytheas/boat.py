@@ -67,14 +67,14 @@ class Boat:
         self.speed_polar_diagram = speed_polar_diagram
         self.leeway_polar_diagram = leeway_polar_diagram
         self.route_to_take = route_to_take
-        self.copy_of_route = route_to_take.copy()
+        self.copy_of_route = route_to_take.copy() if self.route_to_take is not None else None
         
         self.trajectory = [(latitude, longitude)]
         self.distance = 0
         self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
         self.nominal_bearings = [self.bearing]
         self.modified_bearings = []
-        self.current_target = self.copy_of_route.pop(0) # take first element of route as current_target
+        self.current_target = self.copy_of_route.pop(0) if self.copy_of_route is not None else None # take first element of route as current_target
         
         self.has_hit_land = False
     
@@ -217,11 +217,14 @@ class Boat:
         if self.route_to_take is not None:
             # 1) if current target is at least X km away from boat, don't update the target
             # 2) else, update to new current target
-            if pytheas.utilities.distance_km(self.trajectory[-1], self.current_target) > accepted_distance_from_target/10:
+            if pytheas.utilities.distance_km(self.trajectory[-1], self.current_target) > accepted_distance_from_target:
                 self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.current_target)
                 self.nominal_bearings.append(self.bearing)
             else:
-                self.current_target = self.copy_of_route.pop(0)
+                if len(self.copy_of_route) > 0:
+                    self.current_target = self.copy_of_route.pop(0)
+                else:
+                    self.current_target = self.target
 
                 self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.current_target)
                 self.nominal_bearings.append(self.bearing)
@@ -230,7 +233,7 @@ class Boat:
             self.nominal_bearings.append(self.bearing)
         
         # if there is land ahead stir away, but only if we're not close to the target! If we're less than 20 km away from the target, let hit either target or land.
-        if landmarks[0] is not None and landmarks[0] < 20:
+        if landmarks[0] is not None and landmarks[0] < 10:
             land_angle = landmarks[1]
             # we need to define "ahead", this would be within +/- 45 degrees from the bearing. 
             left_limit = (self.bearing - 45) % 360
