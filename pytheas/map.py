@@ -458,7 +458,7 @@ class Map:
             route = astar.reconstruct_path(came_from, start=(i,j), goal=(i_goal,j_goal))
             route = [(self.currents_data.latitude[i].values.item(), self.currents_data.longitude[j].values.item()) for i, j in route]
             route = [route[0], *route[1:-2:target_interval], route[-1]]
-            route.reverse()
+            # route.reverse()
             return route
 
         except Exception as e:

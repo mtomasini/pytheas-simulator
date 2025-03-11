@@ -27,12 +27,14 @@ class Boat:
         speed_polar_diagram (pd.DataFrame): Table representing the boat speed polar diagram.
         leeway_polar_diagram (pd.DataFrame): Table representing the boat leeway polar diagram. 
         route_to_take (List[float]): List of lat/lon coordinates that the boat has to follow to get to target.
+        copy_of_route (List[float]): Copy of route to manipulate and pop elements from. Using two lists to keep a final track of the whole route.
         trajectory (List[float]): List of lat/lon keeping track of the trajectory of the boat.
         distance (float): Distance (in km) covered by the boat so far.
         bearing (float)): Current angle between launching site and target.
         nominal_bearings (List[float]): list of all the direction that the crew takes to reach the target.
         modified_bearings (List[float]): list of the actual bearings that the boat takes during the trip, after accounting for currents and land avoidance.
         has_hit_land (bool): Boolean to record if the boat hits land before the end of the trip. 
+        current_target (Tuple[float, float]): Lat/Lon of current target. Updates to route intermediate targets if a route is used. Initiates to first coordinate in the route.
     """
     
     def __init__(self, craft: str, 
@@ -49,7 +51,7 @@ class Boat:
             craft (str): Type of boat (e.g. "Hjortspring").
             longitude (float): Current longitude of the boat. It gets updated when running move_step().
             latitude (float): Current latitude of the boat. It gets updated when running move_step().
-            target (Tuple[float, float]): Tuple of lat/lon of the target.
+            target (Tuple[float, float]): Tuple of lat/lon of the final target.
             land_radar_on (bool): Whether the land radar is on. Defaults to True.
             uncertainty_sigma (float): standard deviation of the navigation error. Defaults to zero
             speed_polar_diagram (pd.DataFrame): Table representing the boat speed polar diagram. Defaults to None.
@@ -64,13 +66,15 @@ class Boat:
         self.uncertainty_sigma = uncertainty_sigma
         self.speed_polar_diagram = speed_polar_diagram
         self.leeway_polar_diagram = leeway_polar_diagram
-        self.route_to_take = route_to_take # TODO implement routing
+        self.route_to_take = route_to_take
+        self.copy_of_route = route_to_take.copy()
         
         self.trajectory = [(latitude, longitude)]
         self.distance = 0
         self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
         self.nominal_bearings = [self.bearing]
         self.modified_bearings = []
+        self.current_target = self.copy_of_route.pop(0) # take first element of route as current_target
         
         self.has_hit_land = False
     
@@ -199,7 +203,7 @@ class Boat:
     
     def move_boat(self, landmarks: Tuple[float, float], 
                   local_winds: np.ndarray, local_currents: np.ndarray, 
-                  timestep: int, accepted_distance_from_target: float = 1):
+                  timestep: int, accepted_distance_from_target: float = 20):
         """Function tha determines the movement of a boat at each time step. It runs from Travel.
 
         Args:
@@ -209,9 +213,21 @@ class Boat:
             timestep (int): Time step between steps of movement, in minutes.
             acceted_distance_from_target (float): Distance from target that does not trigger stirring away from land (if target is not distant, the boat should keep going towards it, not stir away.)
         """
-        # first, update the bearing based on the local position
-        self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
-        self.nominal_bearings.append(self.bearing)
+        # first, determine target based on presence of routes
+        if self.route_to_take is not None:
+            # 1) if current target is at least X km away from boat, don't update the target
+            # 2) else, update to new current target
+            if pytheas.utilities.distance_km(self.trajectory[-1], self.current_target) > accepted_distance_from_target/10:
+                self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.current_target)
+                self.nominal_bearings.append(self.bearing)
+            else:
+                self.current_target = self.copy_of_route.pop(0)
+
+                self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.current_target)
+                self.nominal_bearings.append(self.bearing)
+        else:
+            self.bearing = pytheas.utilities.bearing_from_latlon([self.latitude, self.longitude], self.target)
+            self.nominal_bearings.append(self.bearing)
         
         # if there is land ahead stir away, but only if we're not close to the target! If we're less than 20 km away from the target, let hit either target or land.
         if landmarks[0] is not None and landmarks[0] < 20:

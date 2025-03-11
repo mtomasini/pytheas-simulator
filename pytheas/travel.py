@@ -45,7 +45,7 @@ class Travel:
                  max_duration: int,
                  timestep: int,
                  night_travel: bool = False,
-                 tolerance_distance: float = 3,
+                 tolerance_distance: float = 20,
                  twilights_of_stops: str = 'sun'):
         """
         Create a new travel.
@@ -145,8 +145,6 @@ class Travel:
         max_date = self.start_time + pd.Timedelta(hours=self.max_duration)
         
         while self.current_time < max_date:
-            
-            
             # check how far one is from the target
             distance_from_target = distance_km(self.boat.trajectory[-1], self.boat.target)
             if distance_from_target < self.tolerance:
