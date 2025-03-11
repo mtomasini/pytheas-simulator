@@ -264,7 +264,7 @@ class Boat:
         self.distance += distance_of_displacement
         
     
-    def plot_trajectory(self, bbox: Tuple[float, float, float, float]) -> None:
+    def plot_trajectory(self, bbox: Tuple[float, float, float, float], show_route: bool = False) -> None:
         """
         Quick trajectory plot utility, to show a simulated trajectory. 
 
@@ -282,5 +282,9 @@ class Boat:
         ax.plot(trajectory[1], trajectory[0], zorder=10)
         ax.scatter(self.trajectory[0][1], self.trajectory[0][0], s = 50, marker="<", color="tab:red")
         ax.scatter(self.target[1], self.target[0], s = 50, marker="X", color="tab:green")
+
+        if show_route == True:
+            route = pd.DataFrame(self.route_to_take)
+            ax.scatter(route[1], route[0], color="tab:blue")
         
         plt.show()
