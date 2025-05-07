@@ -1,6 +1,7 @@
 ### caches and related
 .pytest_cache/
 *__pycache__/
+.ipynb_checkpoints/
 
 ./configs
 
@@ -11,6 +12,7 @@ docs/build/
 Outputs/
 
 varpelev_*
-parameters_*
-
+parameters*
+demonstration*
 paper*
+

@@ -201,7 +201,7 @@ class Boat:
         return [0, 0]
     
     
-    def move_boat(self, landmarks: Tuple[float, float], 
+    def move_boat(self, landmarks: Tuple[float, float],
                   local_winds: np.ndarray, local_currents: np.ndarray, 
                   timestep: int, accepted_distance_from_target: float = 20):
         """Function tha determines the movement of a boat at each time step. It runs from Travel.
