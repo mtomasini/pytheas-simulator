@@ -4,10 +4,10 @@ Current research in the [Maritime Encounters project](https://www.gu.se/en/resea
 
 At this stage, I only make available the code [and its documentation](https://mtomasini.github.io/pytheas-simulator/); at a latter stage, I will make available:
 
--[ ] A demonstration file with attached parameters
--[ ] A complete vignette containing a description of all functionalities
--[ ] A script to download data from Copernicus for usage within Pytheas
--[ ] (Optional) A snakemake file or similar that will help the user picking a few parameters and simulating with Pytheas without having to download data locally.
+- [ ] A demonstration file with attached parameters
+- [ ] A complete vignette containing a description of all functionalities
+- [ ] A script to download data from Copernicus for usage within Pytheas
+- [ ] (Optional) A snakemake file or similar that will help the user picking a few parameters and simulating with Pytheas without having to download data locally.
 
 ## Development philosophy
 
