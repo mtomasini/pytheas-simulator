@@ -15,7 +15,7 @@ The code for Voyager was documented but had no tests. In the development of this
 
 ## Name of the software
 
-I decided to name this new iteration of the Voyager software "Pytheas". Pytheas was an ancient Greek navigator from Massalia (modern Marseille) who in around 330 BCE went on a sailing travel to the far North of Europe, reaching the British Isles and travelling further north to _Ultima Thule_ (which may be, according to Barry Cunliffe[^1], most probably Iceland, but possibly Norway or Shetland).
+I decided to name this new iteration of the Voyager software "Pytheas". As a software engineer, this is a (bad) pun on the fact that the software was developed in Python. But as an archaeologist, Pytheas was an ancient Greek navigator from Massalia (modern Marseille) who in around 330 BCE went on a sailing travel to the far North of Europe, reaching the British Isles and travelling further north to _Ultima Thule_ (which may be, according to Barry Cunliffe[^1], most probably Iceland, but possibly Norway or Shetland). Pytheas' travel has been source of inspiration and marvel for more than 2000 years.
 
 ## License
 
