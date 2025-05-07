@@ -1,0 +1,1873 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pytheas package &#8212; Pytheas simulator 1.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=8d563738"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pytheas';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="About testing" href="testing.html" />
+    <link rel="prev" title="pytheas" href="modules.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Pytheas simulator 1.0.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="overview.html">
+    Pytheas Overview
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="modules.html">
+    pytheas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="testing.html">
+    About testing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="author.html">
+    About the author
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="overview.html">
+    Pytheas Overview
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="modules.html">
+    pytheas
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="testing.html">
+    About testing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="author.html">
+    About the author
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">pytheas package</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="modules.html" class="nav-link">pytheas</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pytheas package</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="pytheas-package">
+<h1>pytheas package<a class="headerlink" href="#pytheas-package" title="Link to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-pytheas.boat">
+<span id="pytheas-boat-module"></span><h2>pytheas.boat module<a class="headerlink" href="#module-pytheas.boat" title="Link to this heading">#</a></h2>
+<p>The Boat class of Pytheas.</p>
+<p>It represents a boat - a logboat, a plank canoe, a longship - you name it. In the Agent-Based Modelling framework, the Boat represents a basic Agent.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pytheas.boat.Boat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pytheas.boat.</span></span><span class="sig-name descname"><span class="pre">Boat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">craft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">land_radar_on</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uncertainty_sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed_polar_diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leeway_polar_diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route_to_take</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.boat.Boat" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for a Boat in Pytheas.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.craft">
+<span class="sig-name descname"><span class="pre">craft</span></span><a class="headerlink" href="#pytheas.boat.Boat.craft" title="Link to this definition">#</a></dt>
+<dd><p>Name or type of boat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.latitude">
+<span class="sig-name descname"><span class="pre">latitude</span></span><a class="headerlink" href="#pytheas.boat.Boat.latitude" title="Link to this definition">#</a></dt>
+<dd><p>Latitude at which the boat is.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.longitude">
+<span class="sig-name descname"><span class="pre">longitude</span></span><a class="headerlink" href="#pytheas.boat.Boat.longitude" title="Link to this definition">#</a></dt>
+<dd><p>Longitude at which the boat is.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.target">
+<span class="sig-name descname"><span class="pre">target</span></span><a class="headerlink" href="#pytheas.boat.Boat.target" title="Link to this definition">#</a></dt>
+<dd><p>Lat/Lon of the target landing site.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.land_radar_on">
+<span class="sig-name descname"><span class="pre">land_radar_on</span></span><a class="headerlink" href="#pytheas.boat.Boat.land_radar_on" title="Link to this definition">#</a></dt>
+<dd><p>Whether the land radar algorithm acts or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.uncertainty_sigma">
+<span class="sig-name descname"><span class="pre">uncertainty_sigma</span></span><a class="headerlink" href="#pytheas.boat.Boat.uncertainty_sigma" title="Link to this definition">#</a></dt>
+<dd><p>standard deviation of the navigation error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.speed_polar_diagram">
+<span class="sig-name descname"><span class="pre">speed_polar_diagram</span></span><a class="headerlink" href="#pytheas.boat.Boat.speed_polar_diagram" title="Link to this definition">#</a></dt>
+<dd><p>Table representing the boat speed polar diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.leeway_polar_diagram">
+<span class="sig-name descname"><span class="pre">leeway_polar_diagram</span></span><a class="headerlink" href="#pytheas.boat.Boat.leeway_polar_diagram" title="Link to this definition">#</a></dt>
+<dd><p>Table representing the boat leeway polar diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.route_to_take">
+<span class="sig-name descname"><span class="pre">route_to_take</span></span><a class="headerlink" href="#pytheas.boat.Boat.route_to_take" title="Link to this definition">#</a></dt>
+<dd><p>List of lat/lon coordinates that the boat has to follow to get to target.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.copy_of_route">
+<span class="sig-name descname"><span class="pre">copy_of_route</span></span><a class="headerlink" href="#pytheas.boat.Boat.copy_of_route" title="Link to this definition">#</a></dt>
+<dd><p>Copy of route to manipulate and pop elements from. Using two lists to keep a final track of the whole route.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.trajectory">
+<span class="sig-name descname"><span class="pre">trajectory</span></span><a class="headerlink" href="#pytheas.boat.Boat.trajectory" title="Link to this definition">#</a></dt>
+<dd><p>List of lat/lon keeping track of the trajectory of the boat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.distance">
+<span class="sig-name descname"><span class="pre">distance</span></span><a class="headerlink" href="#pytheas.boat.Boat.distance" title="Link to this definition">#</a></dt>
+<dd><p>Distance (in km) covered by the boat so far.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.bearing">
+<span class="sig-name descname"><span class="pre">bearing</span></span><a class="headerlink" href="#pytheas.boat.Boat.bearing" title="Link to this definition">#</a></dt>
+<dd><p>Current angle between launching site and target.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.nominal_bearings">
+<span class="sig-name descname"><span class="pre">nominal_bearings</span></span><a class="headerlink" href="#pytheas.boat.Boat.nominal_bearings" title="Link to this definition">#</a></dt>
+<dd><p>list of all the direction that the crew takes to reach the target.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.modified_bearings">
+<span class="sig-name descname"><span class="pre">modified_bearings</span></span><a class="headerlink" href="#pytheas.boat.Boat.modified_bearings" title="Link to this definition">#</a></dt>
+<dd><p>list of the actual bearings that the boat takes during the trip, after accounting for currents and land avoidance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.has_hit_land">
+<span class="sig-name descname"><span class="pre">has_hit_land</span></span><a class="headerlink" href="#pytheas.boat.Boat.has_hit_land" title="Link to this definition">#</a></dt>
+<dd><p>Boolean to record if the boat hits land before the end of the trip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.current_target">
+<span class="sig-name descname"><span class="pre">current_target</span></span><a class="headerlink" href="#pytheas.boat.Boat.current_target" title="Link to this definition">#</a></dt>
+<dd><p>Lat/Lon of current target. Updates to route intermediate targets if a route is used. Initiates to first coordinate in the route.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.calculate_displacement">
+<span class="sig-name descname"><span class="pre">calculate_displacement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_winds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_currents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bearing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#pytheas.boat.Boat.calculate_displacement" title="Link to this definition">#</a></dt>
+<dd><p>Function to calculate the displacement in km of a boat from its current position given winds, currents and bearing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_winds</strong> (<em>np.ndarray</em>) – array containing speed and direction of the wind in the local position.</p></li>
+<li><p><strong>local_currents</strong> (<em>np.ndarray</em>) – array containing Eastward (x) and Northward (y) speed of currents in the local position.</p></li>
+<li><p><strong>bearing</strong> (<em>float</em>) – bearing taken by the boat.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>array containing Eastward and Northward displacement of the boat from current position.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.generic_displacement">
+<span class="sig-name descname"><span class="pre">generic_displacement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_winds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_currents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bearing_xy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.boat.Boat.generic_displacement" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.leeway_due_to_wind">
+<span class="sig-name descname"><span class="pre">leeway_due_to_wind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_winds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bearing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.boat.Boat.leeway_due_to_wind" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the leeway due to wind according to a polar diagram, when existing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>current_winds</strong> (<em>np.ndarray</em>) – Wind velocity (two components)</p></li>
+<li><p><strong>bearing_xy</strong> (<em>np.ndarray</em>) – bearing of the boat split in x, y components</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – Raised if the angle between the bearing and reference is a non-positive number</p></li>
+<li><p><strong>ValueError</strong> – Raised if the speed of the wind is higher than 30</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>geographic angle of leeway due to the wind to be added to the bearing to obtain the real angle</dt><dd><p>at which the boat travels, in degrees</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>leeway_angle</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.move_boat">
+<span class="sig-name descname"><span class="pre">move_boat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landmarks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_winds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_currents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accepted_distance_from_target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.boat.Boat.move_boat" title="Link to this definition">#</a></dt>
+<dd><p>Function tha determines the movement of a boat at each time step. It runs from Travel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>Tuple</strong><strong>[</strong><strong>float</strong> (<em>landmarks</em>) – List containing the distance to the closest land (in km) and the direction to the closest land (in degrees)).</p></li>
+<li><p><strong>float</strong><strong>]</strong> – List containing the distance to the closest land (in km) and the direction to the closest land (in degrees)).</p></li>
+<li><p><strong>local_winds</strong> (<em>np.ndarray</em>) – Array containing the speed and geographic angle of the wind.</p></li>
+<li><p><strong>local_currents</strong> (<em>np.ndarray</em>) – Array containing Northward and Eastward components of sea currents speed.</p></li>
+<li><p><strong>timestep</strong> (<em>int</em>) – Time step between steps of movement, in minutes.</p></li>
+<li><p><strong>acceted_distance_from_target</strong> (<em>float</em>) – Distance from target that does not trigger stirring away from land (if target is not distant, the boat should keep going towards it, not stir away.)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.plot_trajectory">
+<span class="sig-name descname"><span class="pre">plot_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_route</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pytheas.boat.Boat.plot_trajectory" title="Link to this definition">#</a></dt>
+<dd><p>Quick trajectory plot utility, to show a simulated trajectory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bbox</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em>) – list containing [min latitude, min longitude, max latitude, max longitude] for map plotting.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.boat.Boat.speed_due_to_wind">
+<span class="sig-name descname"><span class="pre">speed_due_to_wind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_winds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bearing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.boat.Boat.speed_due_to_wind" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the combined speed of paddling with the effect of the wind according to a polar diagram, when existing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>current_winds</strong> (<em>np.ndarray</em>) – Wind velocity (two components), 0-element is speed in m/s, 1-element is direction in degrees.</p></li>
+<li><p><strong>bearing_xy</strong> (<em>np.ndarray</em>) – Bearing of the boat split in x, y components.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – Raised if the angle between the bearing and reference is a non-positive number.</p></li>
+<li><p><strong>ValueError</strong> – Raised if the speed of the wind is higher than 30.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Speed in m/s of the paddling crew.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>speed (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pytheas.map">
+<span id="pytheas-map-module"></span><h2>pytheas.map module<a class="headerlink" href="#module-pytheas.map" title="Link to this heading">#</a></h2>
+<p>The map object of Pytheas.</p>
+<p>It represents the space over which the Boat will travel. It is a continuous space where we super impose three distinct layers of data: winds, currents and waves.
+The wind and current layers directly affect the movement of the boat, while the wave layer is necessary to record encountered waves.
+In the Agent-Based Modelling framework, the Map corresponds to the Space.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pytheas.map.Map">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pytheas.map.</span></span><span class="sig-name descname"><span class="pre">Map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounding_box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">earliest_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latest_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waves_data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.map.Map" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The base Map object in Pytheas.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.map.Map.bounding_box">
+<span class="sig-name descname"><span class="pre">bounding_box</span></span><a class="headerlink" href="#pytheas.map.Map.bounding_box" title="Link to this definition">#</a></dt>
+<dd><p>Bounding box including [min_latitude, min_longitude, max_latitude, max_longitude].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float, float, float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.map.Map.earliest_time">
+<span class="sig-name descname"><span class="pre">earliest_time</span></span><a class="headerlink" href="#pytheas.map.Map.earliest_time" title="Link to this definition">#</a></dt>
+<dd><p>Earliest time included in the Map dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.Timestamp</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.map.Map.latest_time">
+<span class="sig-name descname"><span class="pre">latest_time</span></span><a class="headerlink" href="#pytheas.map.Map.latest_time" title="Link to this definition">#</a></dt>
+<dd><p>Latest time included in the Map dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.Timestamp</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.map.Map.wind_path">
+<span class="sig-name descname"><span class="pre">wind_path</span></span><a class="headerlink" href="#pytheas.map.Map.wind_path" title="Link to this definition">#</a></dt>
+<dd><p>Folder where the wind data are stored.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.map.Map.current_path">
+<span class="sig-name descname"><span class="pre">current_path</span></span><a class="headerlink" href="#pytheas.map.Map.current_path" title="Link to this definition">#</a></dt>
+<dd><p>Folder where the current data are stored.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.map.Map.waves_path">
+<span class="sig-name descname"><span class="pre">waves_path</span></span><a class="headerlink" href="#pytheas.map.Map.waves_path" title="Link to this definition">#</a></dt>
+<dd><p>Folder where the waves data are stored.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.map.Map.winds_data">
+<span class="sig-name descname"><span class="pre">winds_data</span></span><a class="headerlink" href="#pytheas.map.Map.winds_data" title="Link to this definition">#</a></dt>
+<dd><p>Data array containing winds data (each point has component speed in m/s and angle in degrees).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>xr.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.map.Map.currents_data">
+<span class="sig-name descname"><span class="pre">currents_data</span></span><a class="headerlink" href="#pytheas.map.Map.currents_data" title="Link to this definition">#</a></dt>
+<dd><p>Data array containing currents data (each point is speed in x/y - both m/s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>xr.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.map.Map.waves_data">
+<span class="sig-name descname"><span class="pre">waves_data</span></span><a class="headerlink" href="#pytheas.map.Map.waves_data" title="Link to this definition">#</a></dt>
+<dd><p>Data array containing waves height data (each point is wave height in meters).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>xr.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.map.Map.create_route">
+<span class="sig-name descname"><span class="pre">create_route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">launching_site</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">landing_site</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.map.Map.create_route" title="Link to this definition">#</a></dt>
+<dd><p>Create a route that hugs the coast from a launching site to a landing site. The kwargs need to be <cite>weights</cite> (a list)
+and <cite>iterations</cite> (also a list, of the same length as <cite>weights</cite>) to modify the creation of different “weight corridors”
+along the shoreline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>launching_site</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Launching site in lat/lon format.</p></li>
+<li><p><strong>landing_site</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Landing site in in lat/lon format.</p></li>
+<li><p><strong>target_interval</strong> (<em>int</em>) – Interval between the nodes in the route. Defaults to 5.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – Raised if the algorithm was unable to find a route.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of coordinates through which the routes goes.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[Tuple[float, float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.map.Map.find_closest_land">
+<span class="sig-name descname"><span class="pre">find_closest_land</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position_on_water</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radar_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pytheas.map.Map.find_closest_land" title="Link to this definition">#</a></dt>
+<dd><p>Find land closest to a point in water.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position_on_water</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Position on the water in latitude / longitude.</p></li>
+<li><p><strong>radar_radius</strong> (<em>float</em><em>, </em><em>optional</em>) – Radius within which to look for land, in degrees. Defaults to 0.2 degrees.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Distance from closest land and angle to closest land.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.map.Map.find_closest_water">
+<span class="sig-name descname"><span class="pre">find_closest_water</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position_on_land</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radar_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pytheas.map.Map.find_closest_water" title="Link to this definition">#</a></dt>
+<dd><p>Find coordinates in water closest to a point on land.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position_on_land</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Position on land in lon/lat format.</p></li>
+<li><p><strong>radar_radius</strong> (<em>float</em><em>, </em><em>optional</em>) – Radius within which to look for water, in degrees. Defaults to 10 degrees.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Lat/lon of closest point.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.map.Map.find_nearest_index_to_point">
+<span class="sig-name descname"><span class="pre">find_nearest_index_to_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pytheas.map.Map.find_nearest_index_to_point" title="Link to this definition">#</a></dt>
+<dd><p>Find the index of the latitude/longitude in the data closest to a given point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>point</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – A geographical point in lat/lon format.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>x index and y index of closest coordinate in the data to a given point.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.map.Map.load_dataset_currents">
+<span class="sig-name descname"><span class="pre">load_dataset_currents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataArray</span></span></span><a class="headerlink" href="#pytheas.map.Map.load_dataset_currents" title="Link to this definition">#</a></dt>
+<dd><p>Load the dataset for currents in xarray’s DataArray format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Data array containing the currents data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>xr.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.map.Map.load_dataset_waves">
+<span class="sig-name descname"><span class="pre">load_dataset_waves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.map.Map.load_dataset_waves" title="Link to this definition">#</a></dt>
+<dd><p>Load the dataset for waves in xarray’s DataArray format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Data array containing the waves data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>xr.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.map.Map.load_dataset_winds">
+<span class="sig-name descname"><span class="pre">load_dataset_winds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataArray</span></span></span><a class="headerlink" href="#pytheas.map.Map.load_dataset_winds" title="Link to this definition">#</a></dt>
+<dd><p>Load the dataset for winds in xarray’s DataArray format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Data array containing the winds data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>xr.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.map.Map.return_local_currents">
+<span class="sig-name descname"><span class="pre">return_local_currents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.075</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#pytheas.map.Map.return_local_currents" title="Link to this definition">#</a></dt>
+<dd><p>Return horizontal and vertical components of current speed at a location and a time. Currents are measured in a square of +/-0.075 degrees around the location,
+and an average of all the values found in that “radius” is output. The radius is chosen based on the grid size for the ECMWF dataset (~5.5 x 5.5 km).
+The value of 0.075 has been found with trial and error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>location</strong> (<em>np.ndarray</em>) – Array of latitude and longitude of a location.</p></li>
+<li><p><strong>time</strong> (<em>pd.Timestamp</em>) – Timestamp of time at which one wants the measure.</p></li>
+<li><p><strong>radius</strong> (<em>float</em><em>, </em><em>optional</em>) – “Square” radius around which the measure of wind datapoints is performed. Defaults to 0.02.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An array containing horizontal (Eastward) and vertical (Northward) component of the currents speed.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.map.Map.return_local_waves">
+<span class="sig-name descname"><span class="pre">return_local_waves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pytheas.map.Map.return_local_waves" title="Link to this definition">#</a></dt>
+<dd><p>Return wave height at a location and a time. Waves are measured in a square of +/-0.2 degrees around the location,
+and an average of all the values found in that “radius” is output. The radius is chosen based on the grid size for the ECMWF dataset (~5.5 x 5.5 km).
+The value of 0.2 has been found with trial and error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>location</strong> (<em>np.ndarray</em>) – Array of latitude and longitude of a location.</p></li>
+<li><p><strong>time</strong> (<em>pd.Timestamp</em>) – Timestamp of time at which one wants the measure.</p></li>
+<li><p><strong>radius</strong> (<em>float</em><em>, </em><em>optional</em>) – “Square” radius around which the measure of wind datapoints is performed. Defaults to 0.05.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A wave height.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.map.Map.return_local_winds">
+<span class="sig-name descname"><span class="pre">return_local_winds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#pytheas.map.Map.return_local_winds" title="Link to this definition">#</a></dt>
+<dd><p>Return wind speed and direction given a location and a time. Winds are measured in a square of +/-0.05 degrees around the location, and an average of all the values found
+in that radius is output. The radius is chosen based on the grid size for the CERRA dataset (~2 x 2 km).
+The value of 0.05 has been found with trial and error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>location</strong> (<em>np.ndarray</em>) – Array of latitude and longitude of a location.</p></li>
+<li><p><strong>time</strong> (<em>pd.Timestamp</em>) – Timestamp of time at which one wants the measure.</p></li>
+<li><p><strong>radius</strong> (<em>float</em><em>, </em><em>optional</em>) – “Square” radius around which the measure of wind datapoints is performed. Defaults to 0.05.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An array containing wind speed (m/s) and wind direction (degrees).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pytheas.travel">
+<span id="pytheas-travel-module"></span><h2>pytheas.travel module<a class="headerlink" href="#module-pytheas.travel" title="Link to this heading">#</a></h2>
+<p>The Travel class of Pytheas.</p>
+<p>It represents a travel from A to B. This class collects all the different components of the travel of a Boat from A to B on a Map.
+In the Agent-Based Modelling framework, it represents the Model.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pytheas.travel.Travel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pytheas.travel.</span></span><span class="sig-name descname"><span class="pre">Travel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pytheas.boat.Boat" title="pytheas.boat.Boat"><span class="pre">Boat</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pytheas.map.Map" title="pytheas.map.Map"><span class="pre">Map</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_day</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">night_travel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance_distance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">twilights_of_stops</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sun'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.travel.Travel" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for a Travel in Pytheas.</p>
+<dl class="simple">
+<dt>Attr:</dt><dd><p>boat (Boat): The boat that will travel.
+map (Map): The map over which the boat will travel.
+max_duration (int): The maximal duration of the trip (in hours).
+timestep (int): Time between each step (in minutes).
+launching_site (Tuple[float, float]): Departure site in lat/lon format, inherited from boat.
+start_time (pd.Timestamp): The day and time of departure for the trip.
+target (Tuple[float, float]): Target landing site in lat/lon format, inherited from boat.
+night_travel (bool): Whether the boat is stops for night or not.
+twilight_of_stops (str): Determines whether tips start and end at sunrise or twilight. Options are “sun” (sunrise), “civil”, “nautical” and “astronomical”.
+current_time (pd.Timestamp): Keeps track of the current time in the travel.
+is_completed (bool): Marks whether the travel is completed within tolerance.
+tolerance (float): Tolerance distance from target to be considered “arrived” (in km). Defaults to 3 km, a distance within which a boat travelling at 3 m/s can travel in 15 minutes.
+encountered_currents (List): List of tuples (x, y) of currents encountered on the travel.
+encountered_winds (List): List of tuples (speed, angle) of winds encountered on the travel.
+encountered_waves (List[float]): List of wave heights encountered on the travel.
+times_of_stops (List[pd.Timestamp]): List of times at which stops for night were initiated. It gets populated only if night_travel = True.
+stop_coords (List): List of lat/lon points at which the boat stopped for night.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.travel.Travel.append_to_aggregates">
+<span class="sig-name descname"><span class="pre">append_to_aggregates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_for_success</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pytheas.travel.Travel.append_to_aggregates" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.travel.Travel.output_geojson">
+<span class="sig-name descname"><span class="pre">output_geojson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#pytheas.travel.Travel.output_geojson" title="Link to this definition">#</a></dt>
+<dd><p>Save GeoJSON file of the travel and return it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>output_path</strong> (<em>str</em>) – filepath for output.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>GeoJSON of the travel containing various data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.travel.Travel.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pytheas.travel.Travel.run" title="Link to this definition">#</a></dt>
+<dd><p>Run the travel from the launching site to the target landing site or until it hits land.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>verbose</strong> (<em>bool</em>) – Boolean determining whether to print a final short summary of the trip.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.travel.Travel.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pytheas.travel.Travel.step" title="Link to this definition">#</a></dt>
+<dd><p>Advance the travel by one step.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pytheas.search">
+<span id="pytheas-search-module"></span><h2>pytheas.search module<a class="headerlink" href="#module-pytheas.search" title="Link to this heading">#</a></h2>
+<p>Searching algorithms. This module is copied from Voyager. It was developed by Victor Wåhlstrand Skärström (&#64;waahlstrand on Github).</p>
+<p>This script contains tools to calculate paths and routes through a simulation.</p>
+<dl class="simple">
+<dt>This file can be imported as module and contains the following functions:</dt><dd><ul class="simple">
+<li><p>heuristic - Generic measure between two positions</p></li>
+</ul>
+</dd>
+<dt>And the following classes:</dt><dd><ul class="simple">
+<li><p>Grid - represents the map as an approximately equidistant grid</p></li>
+<li><p>WeightedGrid - inherits from Grid, used to symbolize a map where not all positions are equally likely to traverse</p></li>
+<li><p>PriorityQueue - used in A-star algorithm to deal with queues and stacking</p></li>
+<li><p>Astar - implementation of A-star algorithm</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="pytheas.search.Astar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pytheas.search.</span></span><span class="sig-name descname"><span class="pre">Astar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pytheas.search.WeightedGrid" title="pytheas.search.WeightedGrid"><span class="pre">WeightedGrid</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.Astar" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Implementation of A-star algorithm (see e.g. <a class="reference external" href="https://en.wikipedia.org/wiki/A*_search_algorithm">https://en.wikipedia.org/wiki/A*_search_algorithm</a>)</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.search.Astar.graph">
+<span class="sig-name descname"><span class="pre">graph</span></span><a class="headerlink" href="#pytheas.search.Astar.graph" title="Link to this definition">#</a></dt>
+<dd><p>weighted graph over which to perform the search</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pytheas.search.WeightedGrid" title="pytheas.search.WeightedGrid">WeightedGrid</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.search.Astar.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goal</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.Astar.search" title="Link to this definition">#</a></dt>
+<dd><p>find a route from a start position to a goal position</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.search.Astar.recontruct_path">
+<span class="sig-name descname"><span class="pre">recontruct_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">came_from</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goal</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.Astar.recontruct_path" title="Link to this definition">#</a></dt>
+<dd><p>reconstruct the route from the graph pointing to previous positions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.search.Astar.reconstruct_path">
+<span class="sig-name descname"><span class="pre">reconstruct_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">came_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pytheas.search.Astar.reconstruct_path" title="Link to this definition">#</a></dt>
+<dd><p>Reconstruct the route from the graph pointing to previous positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>came_from</strong> (<em>Dict</em><em>[</em><em>Position</em><em>, </em><em>Position</em><em>]</em>) – Dictionary pointing from one position to another</p></li>
+<li><p><strong>start</strong> (<em>Position</em>) – Start position</p></li>
+<li><p><strong>goal</strong> (<em>Position</em>) – End position</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resulting route as a list of positions</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Position]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd><p>Find a route from a start position to a goal position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<em>Position</em>) – Start position</p></li>
+<li><p><strong>goal</strong> (<em>Position</em>) – End position</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dict as a graph pointing to the previous position, and the current cost of the route.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[Dict[Position, Position], Dict[Position, float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pytheas.search.Grid">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pytheas.search.</span></span><span class="sig-name descname"><span class="pre">Grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.Grid" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents the map as an approximately equidistant grid, with methods to find if
+the current position is in bounds, if there are obstacles “walls”, and which are the closest places to go.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.search.Grid.width">
+<span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#pytheas.search.Grid.width" title="Link to this definition">#</a></dt>
+<dd><p>width of the grid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.search.Grid.height">
+<span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#pytheas.search.Grid.height" title="Link to this definition">#</a></dt>
+<dd><p>height of the grid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.search.Grid.walls">
+<span class="sig-name descname"><span class="pre">walls</span></span><a class="headerlink" href="#pytheas.search.Grid.walls" title="Link to this definition">#</a></dt>
+<dd><p>walls of the map, defined as unpassable steps in the A-star algorithm</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Position</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.search.Grid.in_bounds">
+<span class="sig-name descname"><span class="pre">in_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.Grid.in_bounds" title="Link to this definition">#</a></dt>
+<dd><p>Checks if the current position is in bounds</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.search.Grid.passable">
+<span class="sig-name descname"><span class="pre">passable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.Grid.passable" title="Link to this definition">#</a></dt>
+<dd><p>Checks if current position has any obstacles around (walls)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.search.Grid.neighbors">
+<span class="sig-name descname"><span class="pre">neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.Grid.neighbors" title="Link to this definition">#</a></dt>
+<dd><p>Calculates all traversable neighbors of a current position</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">in_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dd><p>Checks if the current position is in bounds of the map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>Position</em>) – Current position</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Whether position is in bounds</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the traversable neighbours of the current position as an iterator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>Position</em>) – Current position</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A traversable neighbour to the current position</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Position</p>
+</dd>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Iterator[Position]</em> – An iterator with the traversable neighbours</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">passable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<dd><p>Checks if the current position has any obstacles, so called “walls”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>Position</em>) – Current position</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Whether the position is passable, or if it has walls</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pytheas.search.PriorityQueue">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pytheas.search.</span></span><span class="sig-name descname"><span class="pre">PriorityQueue</span></span><a class="headerlink" href="#pytheas.search.PriorityQueue" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to define PriorityQueue (used in Astar).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.search.PriorityQueue.elements">
+<span class="sig-name descname"><span class="pre">elements</span></span><a class="headerlink" href="#pytheas.search.PriorityQueue.elements" title="Link to this definition">#</a></dt>
+<dd><p>elements a queue used to check points in A-star algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Tuple[float, T]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.search.PriorityQueue.empty">
+<span class="sig-name descname"><span class="pre">empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.PriorityQueue.empty" title="Link to this definition">#</a></dt>
+<dd><p>return True if self.elements is empty.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.search.PriorityQueue.put">
+<span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.PriorityQueue.put" title="Link to this definition">#</a></dt>
+<dd><p>insert new element in priority list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.search.PriorityQueue.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.PriorityQueue.get" title="Link to this definition">#</a></dt>
+<dd><p>return weight for iteration step</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id6" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pytheas.search.WeightedGrid">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pytheas.search.</span></span><span class="sig-name descname"><span class="pre">WeightedGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.WeightedGrid" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pytheas.search.Grid" title="pytheas.search.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a></p>
+<p>The WeightedGrid is a Grid used to symbolize a map where not all positions are equally likely to traverse. Some are more likely,
+these regions being weighted.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.search.WeightedGrid.weights">
+<span class="sig-name descname"><span class="pre">weights</span></span><a class="headerlink" href="#pytheas.search.WeightedGrid.weights" title="Link to this definition">#</a></dt>
+<dd><p>weights of different points of the Grid.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pytheas.search.WeightedGrid.weigthed_mask">
+<span class="sig-name descname"><span class="pre">weigthed_mask</span></span><a class="headerlink" href="#pytheas.search.WeightedGrid.weigthed_mask" title="Link to this definition">#</a></dt>
+<dd><p>mask to superpose on Grid with weights.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.search.WeightedGrid.cost">
+<span class="sig-name descname"><span class="pre">cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.WeightedGrid.cost" title="Link to this definition">#</a></dt>
+<dd><p>calculate cost of movement between two points</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.search.WeightedGrid.from_map">
+<span class="sig-name descname"><span class="pre">from_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">map</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.WeightedGrid.from_map" title="Link to this definition">#</a></dt>
+<dd><p>class method to generate WeightedGrid from an array where land is marked</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.search.WeightedGrid.create_shoreline_contour">
+<span class="sig-name descname"><span class="pre">create_shoreline_contour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[5,</span> <span class="pre">0.5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">4]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.WeightedGrid.create_shoreline_contour" title="Link to this definition">#</a></dt>
+<dd><p>creates weighted shoreline contours for the map.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pytheas.search.WeightedGrid.mask_to_graph">
+<span class="sig-name descname"><span class="pre">mask_to_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytheas.search.WeightedGrid.mask_to_graph" title="Link to this definition">#</a></dt>
+<dd><p>superposes mask on Grid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id8">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_shoreline_contour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[5,</span> <span class="pre">0.5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">4]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#id8" title="Link to this definition">#</a></dt>
+<dd><p>Create a weight mask corresponding to the shoreline contour of the map.</p>
+<p>The contours are created using dilation of the land for a number of iterations and a given kernel size. The result is
+a contour with a specific width, which is then assigned a specific weight.</p>
+<p>This mimics the tendency to avoid close shorelines and open sea.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mask</strong> (<em>np.ndarray</em>) – A mask symbolizing the land</p></li>
+<li><p><strong>weights</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of weights for each contour. Defaults to [5, 0.5].</p></li>
+<li><p><strong>iterations</strong> (<em>list</em><em>, </em><em>optional</em>) – Number of iterations to broaden the contour. Defaults to [1, 4].</p></li>
+<li><p><strong>kernel_size</strong> (<em>int</em><em>, </em><em>optional</em>) – The kernel size used for broadening of the contour. Defaults to 3.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A weighted array corresponding to a map with contours around the land</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id9">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id9" title="Link to this definition">#</a></dt>
+<dd><p>Generate a WeightedGrid from a numpy array, wehere the land is symbolized as NaN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>map</strong> (<em>np.ndarray</em>) – An array with land as NaN</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A WeightedGrid instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pytheas.search.WeightedGrid" title="pytheas.search.WeightedGrid">WeightedGrid</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id10">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mask_to_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id10" title="Link to this definition">#</a></dt>
+<dd><p>Superposes mask on Grid.
+:param mask: mask with weights to be superposed on Grid.
+:type mask: np.ndarray</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array with weighted Grid</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pytheas.search.heuristic">
+<span class="sig-prename descclassname"><span class="pre">pytheas.search.</span></span><span class="sig-name descname"><span class="pre">heuristic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pytheas.search.heuristic" title="Link to this definition">#</a></dt>
+<dd><p>Distance measure between two positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>Position</em>) – Current position</p></li>
+<li><p><strong>b</strong> (<em>Position</em>) – Other position</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A measure of the distance between the points</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pytheas.utilities">
+<span id="pytheas-utilities-module"></span><h2>pytheas.utilities module<a class="headerlink" href="#module-pytheas.utilities" title="Link to this heading">#</a></h2>
+<p>Module containing utility functions that are not used within a particular class. These are generally functions that deal with geography, measurements
+and distances, or time functions, such as ephemeris functions.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pytheas.utilities.angle_uncertainty">
+<span class="sig-prename descclassname"><span class="pre">pytheas.utilities.</span></span><span class="sig-name descname"><span class="pre">angle_uncertainty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pytheas.utilities.angle_uncertainty" title="Link to this definition">#</a></dt>
+<dd><p>Returns an angle error in radiants.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pytheas.utilities.bearing_from_latlon">
+<span class="sig-prename descclassname"><span class="pre">pytheas.utilities.</span></span><span class="sig-name descname"><span class="pre">bearing_from_latlon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pytheas.utilities.bearing_from_latlon" title="Link to this definition">#</a></dt>
+<dd><p>Gives angle between a coordinate and a target (in degrees with respect to North). Taken from Voyager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position</strong> (<em>np.ndarray</em>) – current position (lat/lon)</p></li>
+<li><p><strong>target</strong> (<em>np.ndarray</em>) – target position (lat/lon)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bearing (angle) between a position and a target in degrees</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pytheas.utilities.calculate_end_of_day">
+<span class="sig-prename descclassname"><span class="pre">pytheas.utilities.</span></span><span class="sig-name descname"><span class="pre">calculate_end_of_day</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">day</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_of_twilight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sun'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Timestamp</span></span></span><a class="headerlink" href="#pytheas.utilities.calculate_end_of_day" title="Link to this definition">#</a></dt>
+<dd><p>Function to calculate at what time the sun goes down (or twilight).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>day</strong> (<em>str</em>) – date in format ‘yyyy-mm-dd’</p></li>
+<li><p><strong>position</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – position at which you want to calculate the end of the day</p></li>
+<li><p><strong>type_of_twilight</strong> (<em>str</em><em>, </em><em>optional</em>) – whether you want to calculate sunset, civil, nautical or astronomical twilight. Defaults to ‘sun’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If ‘type_of_twilight’ is not one  of ‘civil’, ‘nautical’, ‘astronomical’ or ‘sun’.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>timestamp of date and time of end of the day.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.Timestamp</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pytheas.utilities.calculate_start_of_day">
+<span class="sig-prename descclassname"><span class="pre">pytheas.utilities.</span></span><span class="sig-name descname"><span class="pre">calculate_start_of_day</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">day</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_of_twilight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sun'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Timestamp</span></span></span><a class="headerlink" href="#pytheas.utilities.calculate_start_of_day" title="Link to this definition">#</a></dt>
+<dd><p>Function to calculate at what time the sun rises (or twilight).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>day</strong> (<em>str</em>) – date in format ‘yyyy-mm-dd’</p></li>
+<li><p><strong>position</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – position at which you want to calculate the start of the day, in format lon / lat</p></li>
+<li><p><strong>type_of_twilight</strong> (<em>str</em><em>, </em><em>optional</em>) – whether you want to calculate sunrise, civil, nautical or astronomical twilight. Defaults to ‘sun’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If ‘type_of_twilight’ is not one  of ‘civil’, ‘nautical’, ‘astronomical’ or ‘sun’.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>timestamp of date and time of end of the day.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.Timestamp</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pytheas.utilities.difference_between_geographic_angles">
+<span class="sig-prename descclassname"><span class="pre">pytheas.utilities.</span></span><span class="sig-name descname"><span class="pre">difference_between_geographic_angles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bearing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle_wind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pytheas.utilities.difference_between_geographic_angles" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the difference between geographic angles. Used to turn the absolute wind angle into the wind angle with the respect to the boat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bearing</strong> (<em>float</em>) – Bearing of the boat (in degrees).</p></li>
+<li><p><strong>angle_wind</strong> (<em>float</em>) – Absolute angle of the wind (in degrees).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the angle of the wind with respect to the boat (in degrees).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pytheas.utilities.direction_from_displacement">
+<span class="sig-prename descclassname"><span class="pre">pytheas.utilities.</span></span><span class="sig-name descname"><span class="pre">direction_from_displacement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">displacement</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pytheas.utilities.direction_from_displacement" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the absolute direction of a displacement in given as a vector (x, y).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>displacement</strong> (<em>np.ndarray</em>) – Array containing displacement (in km) in the x and y axis.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Angle of displacement with respect to the North (in degrees).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pytheas.utilities.distance_km">
+<span class="sig-prename descclassname"><span class="pre">pytheas.utilities.</span></span><span class="sig-name descname"><span class="pre">distance_km</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pytheas.utilities.distance_km" title="Link to this definition">#</a></dt>
+<dd><p>Calculates distance in km between two lat/lon points, in km</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origin</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – point of origin as [lon, lat]</p></li>
+<li><p><strong>target</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – point of destination as [lon, lat]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>distance between origin and target</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pytheas.utilities.geographic_angle_to_xy">
+<span class="sig-prename descclassname"><span class="pre">pytheas.utilities.</span></span><span class="sig-name descname"><span class="pre">geographic_angle_to_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#pytheas.utilities.geographic_angle_to_xy" title="Link to this definition">#</a></dt>
+<dd><p>From a geographic angle (with 0 degrees signifying North, 90 East, 180 South and 270 W) return x and y.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>angle</strong> (<em>float</em>) – geographic angle in degrees</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>array with dx (horizontal Eastward) and dy (vertical Northward)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pytheas.utilities.is_it_night">
+<span class="sig-prename descclassname"><span class="pre">pytheas.utilities.</span></span><span class="sig-name descname"><span class="pre">is_it_night</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_and_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_of_twilight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sun'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pytheas.utilities.is_it_night" title="Link to this definition">#</a></dt>
+<dd><p>Calculates whether a set of coordinates refer to a moment in the day or in the night. We consider sunrise time as day, and sunset time as night.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date_and_time</strong> (<em>pd.Timestamp</em>) – day of the year</p></li>
+<li><p><strong>position</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – place in format [longitude, latitude]</p></li>
+<li><p><strong>type_of_twilight</strong> (<em>str</em>) – type of twilight, “civil”, “nautical” or “astronomical”. Defaults to “sun”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>returns whether the point is during the night or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pytheas.utilities.knots_to_si">
+<span class="sig-prename descclassname"><span class="pre">pytheas.utilities.</span></span><span class="sig-name descname"><span class="pre">knots_to_si</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">knots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pytheas.utilities.knots_to_si" title="Link to this definition">#</a></dt>
+<dd><p>Converts knots to SI units (m/s)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>knots</strong> (<em>float</em>) – Speed in knots</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Speed in metres/second</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pytheas.utilities.si_to_knots">
+<span class="sig-prename descclassname"><span class="pre">pytheas.utilities.</span></span><span class="sig-name descname"><span class="pre">si_to_knots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">si</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pytheas.utilities.si_to_knots" title="Link to this definition">#</a></dt>
+<dd><p>Converts SI units (m/s) to knots</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>si</strong> (<em>float</em>) – Speed in m/s</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Speed in knots</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pytheas">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pytheas" title="Link to this heading">#</a></h2>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="modules.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pytheas</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="testing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">About testing</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pytheas.boat">pytheas.boat module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat"><code class="docutils literal notranslate"><span class="pre">Boat</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.craft"><code class="docutils literal notranslate"><span class="pre">Boat.craft</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.latitude"><code class="docutils literal notranslate"><span class="pre">Boat.latitude</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.longitude"><code class="docutils literal notranslate"><span class="pre">Boat.longitude</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.target"><code class="docutils literal notranslate"><span class="pre">Boat.target</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.land_radar_on"><code class="docutils literal notranslate"><span class="pre">Boat.land_radar_on</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.uncertainty_sigma"><code class="docutils literal notranslate"><span class="pre">Boat.uncertainty_sigma</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.speed_polar_diagram"><code class="docutils literal notranslate"><span class="pre">Boat.speed_polar_diagram</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.leeway_polar_diagram"><code class="docutils literal notranslate"><span class="pre">Boat.leeway_polar_diagram</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.route_to_take"><code class="docutils literal notranslate"><span class="pre">Boat.route_to_take</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.copy_of_route"><code class="docutils literal notranslate"><span class="pre">Boat.copy_of_route</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.trajectory"><code class="docutils literal notranslate"><span class="pre">Boat.trajectory</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.distance"><code class="docutils literal notranslate"><span class="pre">Boat.distance</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.bearing"><code class="docutils literal notranslate"><span class="pre">Boat.bearing</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.nominal_bearings"><code class="docutils literal notranslate"><span class="pre">Boat.nominal_bearings</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.modified_bearings"><code class="docutils literal notranslate"><span class="pre">Boat.modified_bearings</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.has_hit_land"><code class="docutils literal notranslate"><span class="pre">Boat.has_hit_land</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.current_target"><code class="docutils literal notranslate"><span class="pre">Boat.current_target</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.calculate_displacement"><code class="docutils literal notranslate"><span class="pre">Boat.calculate_displacement()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.generic_displacement"><code class="docutils literal notranslate"><span class="pre">Boat.generic_displacement()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.leeway_due_to_wind"><code class="docutils literal notranslate"><span class="pre">Boat.leeway_due_to_wind()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.move_boat"><code class="docutils literal notranslate"><span class="pre">Boat.move_boat()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.plot_trajectory"><code class="docutils literal notranslate"><span class="pre">Boat.plot_trajectory()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.boat.Boat.speed_due_to_wind"><code class="docutils literal notranslate"><span class="pre">Boat.speed_due_to_wind()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pytheas.map">pytheas.map module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map"><code class="docutils literal notranslate"><span class="pre">Map</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.bounding_box"><code class="docutils literal notranslate"><span class="pre">Map.bounding_box</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.earliest_time"><code class="docutils literal notranslate"><span class="pre">Map.earliest_time</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.latest_time"><code class="docutils literal notranslate"><span class="pre">Map.latest_time</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.wind_path"><code class="docutils literal notranslate"><span class="pre">Map.wind_path</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.current_path"><code class="docutils literal notranslate"><span class="pre">Map.current_path</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.waves_path"><code class="docutils literal notranslate"><span class="pre">Map.waves_path</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.winds_data"><code class="docutils literal notranslate"><span class="pre">Map.winds_data</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.currents_data"><code class="docutils literal notranslate"><span class="pre">Map.currents_data</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.waves_data"><code class="docutils literal notranslate"><span class="pre">Map.waves_data</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.create_route"><code class="docutils literal notranslate"><span class="pre">Map.create_route()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.find_closest_land"><code class="docutils literal notranslate"><span class="pre">Map.find_closest_land()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.find_closest_water"><code class="docutils literal notranslate"><span class="pre">Map.find_closest_water()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.find_nearest_index_to_point"><code class="docutils literal notranslate"><span class="pre">Map.find_nearest_index_to_point()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.load_dataset_currents"><code class="docutils literal notranslate"><span class="pre">Map.load_dataset_currents()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.load_dataset_waves"><code class="docutils literal notranslate"><span class="pre">Map.load_dataset_waves()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.load_dataset_winds"><code class="docutils literal notranslate"><span class="pre">Map.load_dataset_winds()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.return_local_currents"><code class="docutils literal notranslate"><span class="pre">Map.return_local_currents()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.return_local_waves"><code class="docutils literal notranslate"><span class="pre">Map.return_local_waves()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.map.Map.return_local_winds"><code class="docutils literal notranslate"><span class="pre">Map.return_local_winds()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pytheas.travel">pytheas.travel module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.travel.Travel"><code class="docutils literal notranslate"><span class="pre">Travel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.travel.Travel.append_to_aggregates"><code class="docutils literal notranslate"><span class="pre">Travel.append_to_aggregates()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.travel.Travel.output_geojson"><code class="docutils literal notranslate"><span class="pre">Travel.output_geojson()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.travel.Travel.run"><code class="docutils literal notranslate"><span class="pre">Travel.run()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.travel.Travel.step"><code class="docutils literal notranslate"><span class="pre">Travel.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pytheas.search">pytheas.search module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.Astar"><code class="docutils literal notranslate"><span class="pre">Astar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.Astar.graph"><code class="docutils literal notranslate"><span class="pre">Astar.graph</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.Astar.search"><code class="docutils literal notranslate"><span class="pre">Astar.search()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.Astar.recontruct_path"><code class="docutils literal notranslate"><span class="pre">Astar.recontruct_path()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.Astar.reconstruct_path"><code class="docutils literal notranslate"><span class="pre">Astar.reconstruct_path()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Astar.search()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.Grid"><code class="docutils literal notranslate"><span class="pre">Grid</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.Grid.width"><code class="docutils literal notranslate"><span class="pre">Grid.width</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.Grid.height"><code class="docutils literal notranslate"><span class="pre">Grid.height</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.Grid.walls"><code class="docutils literal notranslate"><span class="pre">Grid.walls</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.Grid.in_bounds"><code class="docutils literal notranslate"><span class="pre">Grid.in_bounds()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.Grid.passable"><code class="docutils literal notranslate"><span class="pre">Grid.passable()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.Grid.neighbors"><code class="docutils literal notranslate"><span class="pre">Grid.neighbors()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Grid.in_bounds()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Grid.neighbors()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Grid.passable()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.PriorityQueue"><code class="docutils literal notranslate"><span class="pre">PriorityQueue</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.PriorityQueue.elements"><code class="docutils literal notranslate"><span class="pre">PriorityQueue.elements</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.PriorityQueue.empty"><code class="docutils literal notranslate"><span class="pre">PriorityQueue.empty()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.PriorityQueue.put"><code class="docutils literal notranslate"><span class="pre">PriorityQueue.put()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.PriorityQueue.get"><code class="docutils literal notranslate"><span class="pre">PriorityQueue.get()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">PriorityQueue.empty()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">PriorityQueue.get()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">PriorityQueue.put()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.WeightedGrid"><code class="docutils literal notranslate"><span class="pre">WeightedGrid</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.WeightedGrid.weights"><code class="docutils literal notranslate"><span class="pre">WeightedGrid.weights</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.WeightedGrid.weigthed_mask"><code class="docutils literal notranslate"><span class="pre">WeightedGrid.weigthed_mask</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.WeightedGrid.cost"><code class="docutils literal notranslate"><span class="pre">WeightedGrid.cost()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.WeightedGrid.from_map"><code class="docutils literal notranslate"><span class="pre">WeightedGrid.from_map()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.WeightedGrid.create_shoreline_contour"><code class="docutils literal notranslate"><span class="pre">WeightedGrid.create_shoreline_contour()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.WeightedGrid.mask_to_graph"><code class="docutils literal notranslate"><span class="pre">WeightedGrid.mask_to_graph()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">WeightedGrid.cost()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">WeightedGrid.create_shoreline_contour()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">WeightedGrid.from_map()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">WeightedGrid.mask_to_graph()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.search.heuristic"><code class="docutils literal notranslate"><span class="pre">heuristic()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pytheas.utilities">pytheas.utilities module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.utilities.angle_uncertainty"><code class="docutils literal notranslate"><span class="pre">angle_uncertainty()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.utilities.bearing_from_latlon"><code class="docutils literal notranslate"><span class="pre">bearing_from_latlon()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.utilities.calculate_end_of_day"><code class="docutils literal notranslate"><span class="pre">calculate_end_of_day()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.utilities.calculate_start_of_day"><code class="docutils literal notranslate"><span class="pre">calculate_start_of_day()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.utilities.difference_between_geographic_angles"><code class="docutils literal notranslate"><span class="pre">difference_between_geographic_angles()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.utilities.direction_from_displacement"><code class="docutils literal notranslate"><span class="pre">direction_from_displacement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.utilities.distance_km"><code class="docutils literal notranslate"><span class="pre">distance_km()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.utilities.geographic_angle_to_xy"><code class="docutils literal notranslate"><span class="pre">geographic_angle_to_xy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.utilities.is_it_night"><code class="docutils literal notranslate"><span class="pre">is_it_night()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.utilities.knots_to_si"><code class="docutils literal notranslate"><span class="pre">knots_to_si()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytheas.utilities.si_to_knots"><code class="docutils literal notranslate"><span class="pre">si_to_knots()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pytheas">Module contents</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pytheas.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Matteo Tomasini.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
